@@ -13,7 +13,7 @@ open class Ometria {
     open var apiToken: String?
     open var preferences: Preferences
     public static var sharedInstance: Ometria?
-    let pushTracker = AutomaticPushTracker()
+    let automaticPushTracker = AutomaticPushTracker()
     
     open class func initialize(apiToken: String, preferences: Preferences = Preferences()) {
         let ometria = Ometria(preferences: preferences)
@@ -23,6 +23,6 @@ open class Ometria {
     
     init(preferences: Preferences) {
         self.preferences = preferences
-        pushTracker.startTracking()
+        automaticPushTracker.startTracking()
     }
 }

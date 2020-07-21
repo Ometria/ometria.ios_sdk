@@ -29,9 +29,13 @@ open class AutomaticPushTracker {
         }
         
         isRunning = false
+        unswizzleDidReceiveRemoteNotification()
+        unswizzleDidFailToRegisterForRemoteNotificationsWithError()
+        unswizzleDidRegisterForRemoteNotificationsWithDeviceToken()
     }
     
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
+        print("swizzle did register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
@@ -40,10 +44,18 @@ open class AutomaticPushTracker {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaRegisterForRemoteNotifications") { (_, _, _, _) in
+                                    print("did register for remote notifications")
         }
     }
     
+    private func unswizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
+        let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
+        let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
+        Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
+    }
+    
     private func swizzleDidFailToRegisterForRemoteNotificationsWithError() {
+        print("swizzle did fail to register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didFailToRegisterForRemoteNotificationsWithError:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
@@ -52,10 +64,18 @@ open class AutomaticPushTracker {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaDidFailToRegisterForRemoteNotificationsWithError") { (_, _, _, _) in
+                                    print("did fail to register for remote notifications")
         }
+    }
+    private func unswizzleDidFailToRegisterForRemoteNotificationsWithError() {
+        let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
+        let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
+        
+        Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
     }
     
     private func swizzleDidReceiveRemoteNotification() {
+        print("swizzle did receive remote notification")
         let newSelector = #selector(UIResponder.om_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
@@ -64,7 +84,16 @@ open class AutomaticPushTracker {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
+                                    print("did receive remote notification")
+                                    Ometria.sharedInstance?.automaticPushTracker.stopTracking()
         }
+    }
+    
+    private func unswizzleDidReceiveRemoteNotification() {
+        let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
+        let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
+        
+        Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
     }
 }
 

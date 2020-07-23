@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
         Ometria.initialize(apiToken: "")
+        Ometria.sharedInstance?.isLoggerEnabled = true
         configurePushNotifications()
         return true
     }
@@ -48,15 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("here")
+        Ometria.sharedInstance.remoteNotificationHandler.didRegister
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("fcm token")
         print(fcmToken)
-    }
-
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     }
 }
 

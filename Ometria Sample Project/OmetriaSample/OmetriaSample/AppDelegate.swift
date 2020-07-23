@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Ometria.initialize(apiToken: "")
         Ometria.sharedInstance?.isLoggerEnabled = true
         configurePushNotifications()
+        
+        Ometria.sharedInstance?.trackEvent(type: .addProductToCart, value: "", configurationBlock: { (event) in
+        })
         return true
     }
 
@@ -46,15 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (_, _) in
         }
         UIApplication.shared.registerForRemoteNotifications()
-    }
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Ometria.sharedInstance.remoteNotificationHandler.didRegister
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("fcm token")
-        print(fcmToken)
     }
 }
 

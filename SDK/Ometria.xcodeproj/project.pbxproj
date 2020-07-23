@@ -18,6 +18,7 @@
 		4EE7A8CE24C82E3D00B316A7 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8CD24C82E3D00B316A7 /* Logger.swift */; };
 		4EE7A8D024C8483600B316A7 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */; };
 		4EE7A8D324C88F0500B316A7 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8D224C88F0500B316A7 /* Event.swift */; };
+		7C363A6E425F44FFEE54FB1B /* Pods_Ometria.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F5D7686F934DEAE653B4617 /* Pods_Ometria.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,9 @@
 		4EE7A8CD24C82E3D00B316A7 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		4EE7A8D224C88F0500B316A7 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		7F5D7686F934DEAE653B4617 /* Pods_Ometria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ometria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E750436EFC1B6598EEA4520 /* Pods-Ometria.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ometria.release.xcconfig"; path = "Target Support Files/Pods-Ometria/Pods-Ometria.release.xcconfig"; sourceTree = "<group>"; };
+		A1B7AFEBFDF7B19818B01D32 /* Pods-Ometria.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ometria.debug.xcconfig"; path = "Target Support Files/Pods-Ometria/Pods-Ometria.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EBDBF9824C5F0AC00AB8DCE /* UserNotifications.framework in Frameworks */,
+				7C363A6E425F44FFEE54FB1B /* Pods_Ometria.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */,
+				7F5D7686F934DEAE653B4617 /* Pods_Ometria.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,6 +117,7 @@
 				4EDB18F324B5E9D500CFE550 /* Ometria */,
 				4EDB18F224B5E9D500CFE550 /* Products */,
 				4EBDBF9524C5EFFB00AB8DCE /* Frameworks */,
+				969CF008EC7AA7889B59E7BB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,6 +186,16 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		969CF008EC7AA7889B59E7BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A1B7AFEBFDF7B19818B01D32 /* Pods-Ometria.debug.xcconfig */,
+				9E750436EFC1B6598EEA4520 /* Pods-Ometria.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -197,6 +214,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EDB190524B5E9D600CFE550 /* Build configuration list for PBXNativeTarget "Ometria" */;
 			buildPhases = (
+				A150B3A3F49B8F796FF9DC27 /* [CP] Check Pods Manifest.lock */,
 				4EDB18EC24B5E9D500CFE550 /* Headers */,
 				4EDB18ED24B5E9D500CFE550 /* Sources */,
 				4EDB18EE24B5E9D500CFE550 /* Frameworks */,
@@ -254,6 +272,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A150B3A3F49B8F796FF9DC27 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ometria-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4EDB18ED24B5E9D500CFE550 /* Sources */ = {
@@ -397,6 +440,7 @@
 		};
 		4EDB190624B5E9D600CFE550 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1B7AFEBFDF7B19818B01D32 /* Pods-Ometria.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -423,6 +467,7 @@
 		};
 		4EDB190724B5E9D600CFE550 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9E750436EFC1B6598EEA4520 /* Pods-Ometria.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;

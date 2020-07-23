@@ -48,7 +48,19 @@ open class Ometria {
         }
     }
     
-    open func trackEvent() -> Event {
-        return Event(type: .newAppSession, value: "")
+    open func trackEvent(_ event: Event) {
+        Logger.info(message: "Track Event \(event)", category: LogCategory.events)
     }
+    
+    open func trackEvent(type: OmetriaEventType, value: String, configurationBlock: (( _ event: Event) -> Void)? = nil) {
+        let event = Event(type: .addProductToCart, value: value)
+        configurationBlock?(event)
+        trackEvent(event)
+    }
+    
+    open func trackCustomEvent(customEventType: String, value: String, configurationBlock: (( _ event: Event) -> Void)? = nil) {
+        trackEvent(type: .custom(customType: customEventType), value: value, configurationBlock: configurationBlock)
+    }
+    
+    
 }

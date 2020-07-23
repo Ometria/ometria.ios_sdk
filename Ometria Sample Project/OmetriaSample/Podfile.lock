@@ -1,4 +1,6 @@
 PODS:
+  - Firebase (6.21.0):
+    - Firebase/Core (= 6.21.0)
   - Firebase/Analytics (6.21.0):
     - Firebase/Core
   - Firebase/Core (6.21.0):
@@ -82,7 +84,8 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Ometria (1.0)
+  - Ometria (1.0):
+    - Firebase
   - PromisesObjC (1.2.8)
   - Protobuf (3.11.4)
 
@@ -129,7 +132,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 12f02e5c8f09c055615de90bcd5ba2c375546051
   GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Ometria: fac5ed027228f5c4ca9cd85c21ad8631039be8e3
+  Ometria: 05d4b49db2c554af0548721800fb6ce278b21785
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
 

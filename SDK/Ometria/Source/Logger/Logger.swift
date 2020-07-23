@@ -101,7 +101,7 @@ class Logger {
     open class func debug(message: @autoclosure() -> Any,
                           _ path: String = #file,
                           _ function: String = #function,
-                          _ category: LogCategory = .general)
+                          category: LogCategory = .general)
     {
         var enabledLevels = Set<LogLevel>()
         concurrencyLock.read {
@@ -115,7 +115,7 @@ class Logger {
     open class func info(message: @autoclosure() -> Any,
                          _ path: String = #file,
                          _ function: String = #function,
-                         _ category: LogCategory = .general)
+                         category: LogCategory = .general)
     {
         var enabledLevels = Set<LogLevel>()
         concurrencyLock.read {
@@ -129,7 +129,7 @@ class Logger {
     open class func warning(message: @autoclosure() -> Any,
                             _ path: String = #file,
                             _ function: String = #function,
-                            _ category: LogCategory = .general)
+                            category: LogCategory = .general)
     {
         var enabledLevels = Set<LogLevel>()
         concurrencyLock.read {
@@ -143,7 +143,7 @@ class Logger {
     open class func error(message: @autoclosure() -> Any,
                           _ path: String = #file,
                           _ function: String = #function,
-                          _ category: LogCategory = .general)
+                          category: LogCategory = .general)
     {
         var enabledLevels = Set<LogLevel>()
         concurrencyLock.read {

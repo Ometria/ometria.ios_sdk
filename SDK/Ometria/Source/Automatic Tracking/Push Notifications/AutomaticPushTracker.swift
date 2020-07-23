@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FirebaseMessaging
 
 open class AutomaticPushTracker {
     open var isRunning: Bool = false
@@ -22,7 +23,7 @@ open class AutomaticPushTracker {
         swizzleDidFailToRegisterForRemoteNotificationsWithError()
         swizzleDidReceiveRemoteNotification()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(firebaseTokenDidRefresh(notification:)), name: "kFIRMessagingRegistrationTokenRefreshNotification", object: <#T##Any?#>)
+        NotificationCenter.default.addObserver(self, selector: #selector(firebaseTokenDidRefresh(notification:)), name: Notification.Name.MessagingRegistrationTokenRefreshed, object: nil)
     }
     
     open func stopTracking() {
@@ -34,6 +35,7 @@ open class AutomaticPushTracker {
         unswizzleDidReceiveRemoteNotification()
         unswizzleDidFailToRegisterForRemoteNotificationsWithError()
         unswizzleDidRegisterForRemoteNotificationsWithDeviceToken()
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
@@ -69,6 +71,7 @@ open class AutomaticPushTracker {
                                     print("did fail to register for remote notifications")
         }
     }
+    
     private func unswizzleDidFailToRegisterForRemoteNotificationsWithError() {
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
@@ -99,7 +102,10 @@ open class AutomaticPushTracker {
     }
     
     @objc private func firebaseTokenDidRefresh(notification: Notification) {
-        
+        let token = Messaging.messaging().fcmToken
+        if (token != nil) {
+            Logger.info(message: "firebase token automatically captured:\n\(String(describing: token!))")
+        }
     }
 }
 

@@ -63,30 +63,36 @@ public enum OmetriaEventType {
     }
 }
 
-open class BaseEvent {
+open class BaseEvent: Codable {
+    var applicationID: String
+    var applicationVersion: String
+    var buildNumber: String
+    var sdkVersion: String
+    let osType: String = "iOS"
+    var creationDate = Date()
+    var flushDate: Date?
+    var isFlushed = false
+    
+    init() {
+        applicationID = ""
+        applicationVersion = ""
+        buildNumber = ""
+        sdkVersion = ""
+    }
 }
 
 open class Event: BaseEvent {
     open var value: String?
     open var type: OmetriaEventType
-    open var customTypeName: String
-    open var params: [String: Any]
-    private var creationDate = Date()
-    private var isFlushed = false
+    open var params: [String: Any] = [:]
     
-    
-    
-    init(type: OmetriaEventType, value: String?) {
+    public init(type: OmetriaEventType, value: String?, params: [String: Any] = [:]) {
         self.type = type
+        self.params = params
+        super.init()
     }
     
-    func addParam(key: String, value: String) -> Event {
-        params[key] = value
-        return self
-    }
-    
-    func setType(_ type: OmetriaEventType) -> Event {
-        self.type = type
-        return self
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
 }

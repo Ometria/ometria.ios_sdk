@@ -89,7 +89,6 @@ class Swizzler {
             }
         }
     }
-
 }
 
 class Swizzle: CustomStringConvertible {

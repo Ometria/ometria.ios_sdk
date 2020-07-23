@@ -11,9 +11,11 @@ import Foundation
 open class Preferences {
     
     public var flushLimit: Int
-    var trackNotifications: Bool = true
-    var trackAppLifecycle: Bool = true
-    var trackScreenListing: Bool = true
+    var automaticallyTrackNotifications: Bool = true
+    var automaticallyTrackAppLifecycle: Bool = true
+    var automaticallyTrackScreenListing: Bool = true
+    var isLoggingEnabled: Bool = true
+    var logLevel: LogLevel = .warning
     
     public init(flushLimit: Int = 20) {
         self.flushLimit = flushLimit

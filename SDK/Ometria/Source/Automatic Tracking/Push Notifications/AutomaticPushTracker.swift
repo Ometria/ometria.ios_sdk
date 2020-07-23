@@ -21,6 +21,8 @@ open class AutomaticPushTracker {
         swizzleDidRegisterForRemoteNotificationsWithDeviceToken()
         swizzleDidFailToRegisterForRemoteNotificationsWithError()
         swizzleDidReceiveRemoteNotification()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(firebaseTokenDidRefresh(notification:)), name: "kFIRMessagingRegistrationTokenRefreshNotification", object: <#T##Any?#>)
     }
     
     open func stopTracking() {
@@ -84,7 +86,7 @@ open class AutomaticPushTracker {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
-                                    print("did receive remote notification")
+                                    Logger.debug(message: "Did receive remote notification")
                                     Ometria.sharedInstance?.automaticPushTracker.stopTracking()
         }
     }
@@ -95,9 +97,13 @@ open class AutomaticPushTracker {
         
         Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
     }
+    
+    @objc private func firebaseTokenDidRefresh(notification: Notification) {
+        
+    }
 }
 
-// MARK: -
+// MARK: - UIResponder swizzled method implementations
 
 extension UIResponder {
     @objc func om_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

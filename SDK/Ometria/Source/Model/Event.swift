@@ -64,7 +64,7 @@ public enum OmetriaEventType {
 }
 
 open class BaseEvent: Codable {
-    var applicationID: String
+    var applicationID: String = Bundle.main.bundleIdentifier!
     var applicationVersion: String
     var buildNumber: String
     var sdkVersion: String

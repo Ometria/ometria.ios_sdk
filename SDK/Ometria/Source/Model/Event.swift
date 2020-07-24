@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public enum OmetriaEventType {
     // MARK: Product related event types
@@ -27,6 +28,7 @@ public enum OmetriaEventType {
     case bringApplicationToForeground
     case sendApplicationToBackground
     case identifyApplication
+    case resetApplicationIdentification
     
     // MARK: Notification related event types
     case refreshPushToken
@@ -54,6 +56,7 @@ public enum OmetriaEventType {
             case .bringApplicationToForeground: return "BRING_APPLICATION_TO_FOREGROUND"
             case .sendApplicationToBackground: return "SEND_APPLICATION_TO_BACKGROUND"
             case .identifyApplication: return "IDENTIFY_APPLICATION"
+            case .resetApplicationIdentification: return "RESET_APPLICATION_IDENTIFICATION"
             case .refreshPushToken: return "REFRESN_PUSH_TOKEN"
             case .receivedNotification: return "RECEIVED_NOTIFICATION"
             case .tapOnNotification: return "TAP_ON_NOTIFICATION"
@@ -64,20 +67,26 @@ public enum OmetriaEventType {
 }
 
 open class BaseEvent: Codable {
-    var applicationID: String = Bundle.main.bundleIdentifier!
+    var applicationID = Bundle.main.bundleIdentifier!
+    var installmentID: String
     var applicationVersion: String
     var buildNumber: String
     var sdkVersion: String
-    let osType: String = "iOS"
+    let platform = UIDevice.current.systemName
+    let osVersion = UIDevice.current.systemVersion
+    let deviceManufacturer = "Apple"
+    let deviceModel = UIDevice.current.model
     var creationDate = Date()
     var flushDate: Date?
     var isFlushed = false
+    var isAutomaticallyTracked = false
     
     init() {
         applicationID = ""
         applicationVersion = ""
         buildNumber = ""
         sdkVersion = ""
+        installmentID = ""
     }
 }
 

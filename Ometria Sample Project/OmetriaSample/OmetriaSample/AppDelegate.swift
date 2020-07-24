@@ -19,11 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
         Ometria.initialize(apiToken: "")
-        Ometria.sharedInstance?.isLoggerEnabled = true
+        Ometria.sharedInstance().isLoggerEnabled = true
         configurePushNotifications()
-        
-        Ometria.sharedInstance?.trackEvent(type: .addProductToCart, value: "", configurationBlock: { (event) in
-        })
         return true
     }
 

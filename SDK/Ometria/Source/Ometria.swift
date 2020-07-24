@@ -12,14 +12,23 @@ open class Ometria {
     
     open var apiToken: String?
     private var preferences: Preferences
-    public static var sharedInstance: Ometria?
+    static var instance: Ometria?
     let automaticPushTracker = AutomaticPushTracker()
     let automaticLifecycleTracker = AutomaticLifecycleTracker()
     
-    open class func initialize(apiToken: String, preferences: Preferences = Preferences()) {
+    @discardableResult
+    open class func initialize(apiToken: String, preferences: Preferences = Preferences()) -> Ometria {
         let ometria = Ometria(preferences: preferences)
         ometria.apiToken = apiToken
-        sharedInstance = ometria
+        instance = ometria
+        return ometria
+    }
+    
+    open class func sharedInstance() -> Ometria {
+        guard instance != nil else {
+            assert(false, "You are not allowed to call the sharedInstance() method before calling initialize(apiToken:preferences:).")
+        }
+        return instance!
     }
     
     init(preferences: Preferences) {

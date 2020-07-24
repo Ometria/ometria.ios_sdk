@@ -68,7 +68,7 @@ open class AutomaticPushTracker {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaDidFailToRegisterForRemoteNotificationsWithError") { (_, _, _, _) in
-                                    print("did fail to register for remote notifications")
+                                    Logger.debug(message: "Did fail to register for remote notifications")
         }
     }
     
@@ -90,7 +90,6 @@ open class AutomaticPushTracker {
                                  for: delegateClass,
                                  name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
                                     Logger.debug(message: "Did receive remote notification")
-                                    Ometria.sharedInstance?.automaticPushTracker.stopTracking()
         }
     }
     

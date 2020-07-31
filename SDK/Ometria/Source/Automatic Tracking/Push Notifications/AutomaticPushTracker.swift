@@ -307,11 +307,11 @@ extension NSObject {
     
     @objc func om_userNotificationCenter(_ center: UNUserNotificationCenter,
                                          newWillPresent notification: UNNotification,
-                                         withCompletionHandler completionHandler: @escaping () -> Void) {
+                                         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let originalSelector = NSSelectorFromString("userNotificationCenter:willPresentNotification:withCompletionHandler:")
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
-            typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotification, @escaping () -> Void) -> Void
+            typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotification, @escaping (UNNotificationPresentationOptions) -> Void) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             curriedImplementation(self, originalSelector, center, notification, completionHandler)
             

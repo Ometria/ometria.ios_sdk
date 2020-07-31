@@ -35,6 +35,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     init(apiToken: String, preferences: Preferences) {
         self.preferences = preferences
         self.apiToken = apiToken
+        super.init()
         
         isLoggerEnabled = preferences.isLoggingEnabled
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
@@ -60,7 +61,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func setLoggerEnabled(_ enabled: Bool) {
         if enabled {
-//            Logger.enableLevel(.debug)
+            Logger.enableLevel(.debug)
             Logger.enableLevel(.info)
             Logger.enableLevel(.warning)
             Logger.enableLevel(.error)
@@ -69,7 +70,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         } else {
             Logger.debug(message: "Logger Disabled")
 
-//            Logger.disableLevel(.debug)
+            Logger.disableLevel(.debug)
             Logger.disableLevel(.info)
             Logger.disableLevel(.warning)
             Logger.disableLevel(.error)

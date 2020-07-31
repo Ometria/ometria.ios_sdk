@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 extension Ometria {
+
     
     static func isiOSAppExtension() -> Bool {
         return Bundle.main.bundlePath.hasSuffix(".appex")

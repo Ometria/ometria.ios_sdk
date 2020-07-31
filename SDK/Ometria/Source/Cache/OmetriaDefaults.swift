@@ -39,12 +39,14 @@ struct UserDefault<T> {
 }
 
 struct OmetriaDefaults {
-    @UserDefault(key: "com.ometria.did_run_more_than_once", defaultValue: false)
-    static var didRunMoreThanOnce: Bool
+    @UserDefault(key: "com.ometria.is_first_launch", defaultValue: true)
+    static var isFirstLaunch: Bool
     @UserDefault(key: "com.ometria.apple_push_token", defaultValue: nil)
     static var applePushToken: String?
     @UserDefault(key: "com.ometria.fcm_token", defaultValue: nil)
     static var fcmToken: String?
     @UserDefault(key: "com.ometria.last_launch_date", defaultValue: nil)
     static var lastLaunchDate: Date?
+    @UserDefault(key: "com.ometria.installment_id", defaultValue: nil)
+    static var installmentID: String?
 }

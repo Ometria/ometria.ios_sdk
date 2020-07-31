@@ -66,7 +66,7 @@ public enum OmetriaEventType {
     }
 }
 
-open class BaseEvent: Codable {
+open class BaseEvent: Codable, CustomDebugStringConvertible {
     var applicationID = Bundle.main.bundleIdentifier!
     var installmentID: String
     var applicationVersion: String
@@ -88,6 +88,10 @@ open class BaseEvent: Codable {
         sdkVersion = ""
         installmentID = ""
     }
+    
+    public var debugDescription: String {
+        return ""
+    }
 }
 
 open class Event: BaseEvent {
@@ -98,10 +102,18 @@ open class Event: BaseEvent {
     public init(type: OmetriaEventType, value: String?, params: [String: Any] = [:]) {
         self.type = type
         self.params = params
+        self.value = value
         super.init()
     }
     
     required public init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
+    }
+    
+    public override var debugDescription: String {
+        return super.debugDescription +
+        "\(type.id):" +
+        "   value: \(value ?? "nil")" +
+        "   params: \(params)"
     }
 }

@@ -169,9 +169,9 @@ class Logger {
         let finalMessage = "OmetriaSDK -\(additionalInfo) \(message)"
         
         if #available(iOS 12, *) {
-            systemLog(message: finalMessage, level: level, category: category)
+            systemLog(message: "📘" + finalMessage, level: level, category: category)
         } else {
-            print("[\(category)] " + finalMessage)
+            print("📘 [\(category)] " + finalMessage)
         }
     }
 }

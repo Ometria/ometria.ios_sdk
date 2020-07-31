@@ -1,4 +1,6 @@
 PODS:
+  - Firebase (6.21.0):
+    - Firebase/Core (= 6.21.0)
   - Firebase/Analytics (6.21.0):
     - Firebase/Core
   - Firebase/Core (6.21.0):
@@ -82,7 +84,8 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Ometria (1.0)
+  - Ometria (1.0):
+    - Firebase
   - PromisesObjC (1.2.8)
   - Protobuf (3.11.4)
 
@@ -92,7 +95,7 @@ DEPENDENCIES:
   - Ometria (from `../../SDK`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -129,10 +132,10 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 12f02e5c8f09c055615de90bcd5ba2c375546051
   GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Ometria: 24e31ff0afbee02e0eaa33da48a1c4f713c72264
+  Ometria: 06f38db36203e4d8560e8b811328d64e7ec4a5c1
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
 
 PODFILE CHECKSUM: 8f5e0ec598d4256bfb5a899375ffc620599e7bf5
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.9.1

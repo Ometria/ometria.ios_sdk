@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseMessaging
 import Ometria
 import UserNotifications
 
@@ -15,9 +16,10 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Ometria.initialize(apiToken: "")
+        FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
-        Ometria.initialize(apiToken: "")
         configurePushNotifications()
         return true
     }
@@ -46,10 +48,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.registerForRemoteNotifications()
     }
     
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("fcm token")
-        print(fcmToken)
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("Reaching delegate did register for remote notifications")
+        print(deviceToken.base64EncodedString())
     }
-
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Did receive notification response")
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Will present notification")
+    }
 }
 

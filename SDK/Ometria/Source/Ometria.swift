@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class Ometria {
+open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open var apiToken: String
     private var preferences: Preferences
@@ -16,6 +16,7 @@ open class Ometria {
     private let automaticPushTracker = AutomaticPushTracker()
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
     private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
+    private let notificationHandler = NotificationHandler()
     
     @discardableResult
     open class func initialize(apiToken: String, preferences: Preferences = Preferences()) -> Ometria {
@@ -121,19 +122,20 @@ open class Ometria {
     // MARK: - Push notifications
     
     open func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                newDidReceive response: UNNotificationResponse,
+                                didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        notificationHandler.handleNotificationResponse(response, withCompletionHandler: completionHandler)
     }
     
-    open func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                newWillPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
+    open func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        notificationHandler.handleReceivedNotification(notification, withCompletionHandler: completionHandler)
     }
     
     open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     }
     
     open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
     }
     
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

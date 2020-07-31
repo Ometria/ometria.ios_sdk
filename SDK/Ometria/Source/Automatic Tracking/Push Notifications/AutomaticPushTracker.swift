@@ -202,8 +202,7 @@ open class AutomaticPushTracker: NSObject {
 
 extension UIResponder {
     @objc func om_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        Logger.debug(message: "Custom did register for remote notifications")
+        Logger.debug(message: "Did register for remote notifications with device token: \(deviceToken)")
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -212,9 +211,6 @@ extension UIResponder {
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
             aClass = type(of: UNDelegate)
-        } else if #available(iOS 10.0, *) {
-            //            UNUserNotificationCenter.current().addDelegateObserver(ae: self)
-            //            hasAddedObserver = true
         }
         
         if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
@@ -228,10 +224,12 @@ extension UIResponder {
                 block(self, swizzle.selector, application, deviceToken as AnyObject)
             }
         }
+        
+        Ometria.sharedInstance().application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
     @objc func om_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Logger.debug(message: "Custom did fail to register for remote notifications")
+        Logger.debug(message: "Did fail to register for remote notifications with error: \(error.localizedDescription)")
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -253,10 +251,12 @@ extension UIResponder {
                 block(self, swizzle.selector, application, error as AnyObject)
             }
         }
+        
+        Ometria.sharedInstance().application(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
     
     @objc func om_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Logger.debug(message: "Custom did receive remote notifications")
+        Logger.debug(message: "Did receive remote notification with user info: \(userInfo)")
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -278,6 +278,8 @@ extension UIResponder {
                 block(self, swizzle.selector, application, userInfo as AnyObject)
             }
         }
+        
+        Ometria.sharedInstance().application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
 }
 
@@ -299,6 +301,8 @@ extension NSObject {
                 block(self, swizzle.selector, center as AnyObject?, response.notification.request.content.userInfo as AnyObject?)
             }
         }
+        
+        Ometria.sharedInstance().userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
     }
     
     @objc func om_userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -315,5 +319,7 @@ extension NSObject {
                 block(self, swizzle.selector, center as AnyObject?, notification.request.content.userInfo as AnyObject?)
             }
         }
+        
+        Ometria.sharedInstance().userNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
     }
 }

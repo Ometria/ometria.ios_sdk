@@ -11,7 +11,6 @@ import UIKit
 
 extension Ometria {
 
-    
     static func isiOSAppExtension() -> Bool {
         return Bundle.main.bundlePath.hasSuffix(".appex")
     }
@@ -48,4 +47,8 @@ extension Ometria {
         
         return false
     }
+}
+
+extension Data {
+    
 }

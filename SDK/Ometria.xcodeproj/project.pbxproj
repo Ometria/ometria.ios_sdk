@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */; };
 		4E96AB4824D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */; };
+		4E96AB4F24D4927900623FA6 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */; };
 		4EBDBF8D24C1906600AB8DCE /* Swizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */; };
 		4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */; };
 		4EBDBF9824C5F0AC00AB8DCE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaDefaults.swift; sourceTree = "<group>"; };
 		4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticScreenViewsTracker.swift; sourceTree = "<group>"; };
+		4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzler.swift; sourceTree = "<group>"; };
 		4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticPushTracker.swift; sourceTree = "<group>"; };
 		4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
@@ -57,6 +59,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E96AB4D24D4926A00623FA6 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		4EBDBF8B24C1904F00AB8DCE /* Automatic Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				4EC94EDB24B8B9ED00B8591C /* Ometria.swift */,
+				4E96AB4D24D4926A00623FA6 /* Notifications */,
 				4EE7A8D524C89C3E00B316A7 /* Network */,
 				4EE7A8D424C89C3400B316A7 /* Cache */,
 				4EE7A8D124C88EF900B316A7 /* Model */,
@@ -309,6 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EE7A8D024C8483600B316A7 /* ReadWriteLock.swift in Sources */,
+				4E96AB4F24D4927900623FA6 /* NotificationHandler.swift in Sources */,
 				4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */,
 				4EE7A8D324C88F0500B316A7 /* Event.swift in Sources */,
 				4EC94EDE24B8BCFB00B8591C /* Preferences.swift in Sources */,

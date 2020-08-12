@@ -1,5 +1,5 @@
 //
-//  Event.swift
+//  OmetriaEvent.swift
 //  Ometria
 //
 //  Created by Cata on 7/22/20.
@@ -66,7 +66,7 @@ public enum OmetriaEventType {
     }
 }
 
-open class BaseEvent: Codable, CustomDebugStringConvertible {
+class OmetriaEvent: BaseOmetriaEvent {
     var applicationID = Bundle.main.bundleIdentifier!
     var installmentID: String
     var applicationVersion: String
@@ -76,33 +76,22 @@ open class BaseEvent: Codable, CustomDebugStringConvertible {
     let osVersion = UIDevice.current.systemVersion
     let deviceManufacturer = "Apple"
     let deviceModel = UIDevice.current.model
-    var creationDate = Date()
+    let creationDate = Date()
     var flushDate: Date?
     var isFlushed = false
     var isAutomaticallyTracked = false
     
-    init() {
+    var type: OmetriaEventType
+    var data: [String: Codable] = [:]
+    
+    public init(type: OmetriaEventType, data: [String: Codable]) {
+        self.type = type
+        self.data = data
         applicationID = ""
         applicationVersion = ""
         buildNumber = ""
         sdkVersion = ""
         installmentID = ""
-    }
-    
-    public var debugDescription: String {
-        return ""
-    }
-}
-
-open class Event: BaseEvent {
-    open var value: String?
-    open var type: OmetriaEventType
-    open var params: [String: Any] = [:]
-    
-    public init(type: OmetriaEventType, value: String?, params: [String: Any] = [:]) {
-        self.type = type
-        self.params = params
-        self.value = value
         super.init()
     }
     
@@ -113,7 +102,6 @@ open class Event: BaseEvent {
     public override var debugDescription: String {
         return super.debugDescription +
         "\(type.id):" +
-        "   value: \(value ?? "nil")" +
-        "   params: \(params)"
+        "   data: \(data)"
     }
 }

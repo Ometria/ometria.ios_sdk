@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
@@ -85,7 +86,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             handleAppInstall()
         }
         
-        trackEvent(type: .launchApplication, value: nil)
+//        trackEvent(type: .launchApplication, value: nil)
     }
     
     private func handleAppInstall() {
@@ -95,7 +96,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             installmentID = generateInstallmentID()
             OmetriaDefaults.installmentID = installmentID
         }
-        trackEvent(type: .installApplication, value: installmentID!)
+//        trackEvent(type: .installApplication, value: installmentID!)
     }
     
   
@@ -106,19 +107,19 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     // MARK: - Event Tracking
     
-    open func trackEvent(_ event: Event) {
+    private func trackEvent(_ event: OmetriaEvent) {
         Logger.info(message: "Track Event \(event)", category: LogCategory.events)
     }
     
-    open func trackEvent(type: OmetriaEventType, value: String?, configurationBlock: (( _ event: Event) -> Void)? = nil) {
-        let event = Event(type: type, value: value)
-        configurationBlock?(event)
+    private func trackEvent(type: OmetriaEventType, data: [String: Codable]) {
+        let event = OmetriaEvent(type: type, data: data)
         trackEvent(event)
     }
     
-    open func trackCustomEvent(customEventType: String, value: String?, configurationBlock: (( _ event: Event) -> Void)? = nil) {
-        trackEvent(type: .custom(customType: customEventType), value: value, configurationBlock: configurationBlock)
+    open func trackCustomEvent(customEventType: String, data: [String: Codable]) {
+        trackEvent(type: .custom(customType: customEventType), data: data)
     }
+    
     
     // MARK: - Push notifications
     

@@ -60,6 +60,6 @@ extension UIViewController {
         
         let screenClassName = String(describing:type(of:self))
         Logger.info(message: "Custom view did appear: \(screenClassName)")
-        Ometria.sharedInstance().trackEvent(type: .viewScreen, value: screenClassName)
+//        Ometria.sharedInstance().trackEvent(type: .viewScreen, value: screenClassName)
     }
 }

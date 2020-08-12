@@ -11,62 +11,61 @@ import UIKit
 
 public enum OmetriaEventType {
     // MARK: Product related event types
-    case viewProduct
-    case addProductToCart
-    case removeProductFromCart
-    case viewCart
-    case startCheckout
-    case completeOrder
-    case addProductToWishlist
-    case removeProductFromWishlist
-    case addProductToCartFromWishlist
+    case basketUpdated
+    case basketViewed
+    case orderCompleted
+    case productCategoryViewed
+    case productViewed
+    case wishlistAddedTo
+    case wishlistRemovedFrom
     
     // MARK: Application related event types
-    case viewScreen
-    case installApplication
-    case launchApplication
-    case bringApplicationToForeground
-    case sendApplicationToBackground
-    case identifyApplication
-    case resetApplicationIdentification
+    case appInstalled
+    case appLaunched
+    case appBackgrounded
+    case appForegrounded
+    case screenViewed
+    
+    case profileIdentified
+    case profileDeidentified
     
     // MARK: Notification related event types
-    case refreshPushToken
-    case receivedNotification
-    case tapOnNotification
+    case pushTokenRefreshed
+    case notificationReceived
+    case notificationInteracted
     
     // MARK: Other event types
-    case openDeepLink
+    case deepLinkOpened
     case custom(customType: String)
     
     var id: String {
         switch self {
-            case .viewProduct: return "VIEW_PRODUCT"
-            case .addProductToCart: return "ADD_PRODUCT_TO_CART"
-            case .removeProductFromCart: return "REMOVE_PRODUCT_FROM_CART"
-            case .viewCart: return "VIEW_CART"
-            case .startCheckout: return "START_CHECKOUT"
-            case .completeOrder: return "COMPLETE_ORDER"
-            case .addProductToWishlist: return "ADD_PRODUCT_TO_WISHLIST"
-            case .removeProductFromWishlist: return "REMOVE_PRODUCT_FROM_WISHLIST"
-            case .addProductToCartFromWishlist: return "ADD_PRODUCT_TO_CART_FROM_WISHLIST"
-            case .viewScreen: return "VIEW_SCREEN"
-            case .installApplication: return "INSTALL_APPLICATION"
-            case .launchApplication: return "LAUNCH_APPLICATION"
-            case .bringApplicationToForeground: return "BRING_APPLICATION_TO_FOREGROUND"
-            case .sendApplicationToBackground: return "SEND_APPLICATION_TO_BACKGROUND"
-            case .identifyApplication: return "IDENTIFY_APPLICATION"
-            case .resetApplicationIdentification: return "RESET_APPLICATION_IDENTIFICATION"
-            case .refreshPushToken: return "REFRESN_PUSH_TOKEN"
-            case .receivedNotification: return "RECEIVED_NOTIFICATION"
-            case .tapOnNotification: return "TAP_ON_NOTIFICATION"
-            case .openDeepLink: return "OPEN_DEEP_LINK"
-            case .custom(let customType): return customType
+        case .appInstalled: return "appInstalled"
+        case .appLaunched: return "appLaunched"
+        case .appBackgrounded: return "appBackgrounded"
+        case .appForegrounded: return "appForegrounded"
+        case .screenViewed: return "screenViewed"
+            
+        case .basketUpdated: return "basketUpdated"
+        case .basketViewed: return "basketViewed"
+        case .orderCompleted: return "orderCompleted"
+        case .productCategoryViewed: return "productCategoryViewed"
+        case .productViewed: return "productViewed"
+        case .wishlistAddedTo: return "wishlistAddedTo"
+        case .wishlistRemovedFrom: return "wishlistRemovedFrom"
+            
+        case .profileIdentified: return "profileIdentified"
+        case .profileDeidentified: return "profileDeidentified"
+        case .pushTokenRefreshed: return "pushTokenRefreshed"
+        case .notificationInteracted: return "notificationInteracted"
+        case .notificationReceived: return "notificationReceived"
+        case .deepLinkOpened: return "deepLinkOpened"
+        case .custom(let customType): return customType
         }
     }
 }
 
-class OmetriaEvent: BaseOmetriaEvent {
+class OmetriaEvent {
     var applicationID = Bundle.main.bundleIdentifier!
     var installmentID: String
     var applicationVersion: String
@@ -92,16 +91,14 @@ class OmetriaEvent: BaseOmetriaEvent {
         buildNumber = ""
         sdkVersion = ""
         installmentID = ""
-        super.init()
     }
     
     required public init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
     
-    public override var debugDescription: String {
-        return super.debugDescription +
-        "\(type.id):" +
+    public var debugDescription: String {
+        return "\(type.id):" +
         "   data: \(data)"
     }
 }

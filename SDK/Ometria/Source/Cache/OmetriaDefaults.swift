@@ -48,5 +48,7 @@ struct OmetriaDefaults {
     @UserDefault(key: "com.ometria.last_launch_date", defaultValue: nil)
     static var lastLaunchDate: Date?
     @UserDefault(key: "com.ometria.installment_id", defaultValue: nil)
-    static var installmentID: String?
+    static var installationID: String?
+//    @UserDefault(key: "com.ometra.cachedEvents", defaultValue: [])
+//    static var cachedEvents: [OmetriaEvent]
 }

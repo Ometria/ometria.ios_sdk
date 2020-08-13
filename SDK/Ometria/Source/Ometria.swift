@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
@@ -85,39 +86,132 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             handleAppInstall()
         }
         
-        trackEvent(type: .launchApplication, value: nil)
+        trackAppLaunchedEvent()
     }
     
     private func handleAppInstall() {
         OmetriaDefaults.isFirstLaunch = false
-        var installmentID = OmetriaDefaults.installmentID
-        if installmentID == nil {
-            installmentID = generateInstallmentID()
-            OmetriaDefaults.installmentID = installmentID
+        var installationID = OmetriaDefaults.installationID
+        if installationID == nil {
+            installationID = generateInstallationID()
+            OmetriaDefaults.installationID = installationID
         }
-        trackEvent(type: .installApplication, value: installmentID!)
+        trackAppInstalledEvent()
     }
     
   
-    private func generateInstallmentID() -> String {
-        let installmentID = UUID().uuidString
-        return installmentID
+    private func generateInstallationID() -> String {
+        let installationID = UUID().uuidString
+        return installationID
     }
     
     // MARK: - Event Tracking
     
-    open func trackEvent(_ event: Event) {
+    private func trackEvent(_ event: OmetriaEvent) {
         Logger.info(message: "Track Event \(event)", category: LogCategory.events)
     }
     
-    open func trackEvent(type: OmetriaEventType, value: String?, configurationBlock: (( _ event: Event) -> Void)? = nil) {
-        let event = Event(type: type, value: value)
-        configurationBlock?(event)
+    private func trackEvent(type: OmetriaEventType, data: [String: Codable] = [:]) {
+        let event = OmetriaEvent(type: type, data: data)
         trackEvent(event)
     }
     
-    open func trackCustomEvent(customEventType: String, value: String?, configurationBlock: (( _ event: Event) -> Void)? = nil) {
-        trackEvent(type: .custom(customType: customEventType), value: value, configurationBlock: configurationBlock)
+    // MARK: Application Related Events
+    
+    func trackAppInstalledEvent() {
+        trackEvent(type: .appInstalled)
+    }
+    
+    func trackAppLaunchedEvent() {
+        trackEvent(type: .appLaunched)
+    }
+    
+    func trackAppBackgroundedEvent() {
+        trackEvent(type: .appBackgrounded)
+    }
+    
+    func trackAppForegroundedEvent() {
+        trackEvent(type: .appForegrounded)
+    }
+    
+    open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Codable] = [:]) {
+        var data = additionalInfo
+        data["page"] = screenName
+        trackEvent(type: .screenViewed, data: data)
+    }
+    
+    open func trackProfileIdentifiedEvent(email: String) {
+        trackEvent(type: .profileIdentified, data: ["email": email])
+    }
+    
+    open func trackProfileIdentifiedEvent(customerId: String) {
+        trackEvent(type: .profileIdentified, data: ["customerId": customerId])
+    }
+    
+    open func trackProfileDeidentifiedEvent() {
+        trackEvent(type: .profileDeidentified)
+    }
+    
+    // MARK: Product Related Events
+    
+    open func trackProductViewedEvent(productId: String) {
+        trackEvent(type: .productViewed, data: ["productId": productId])
+    }
+    
+    open func trackProductCategoryViewedEvent(category: String) {
+        trackEvent(type: .productCategoryViewed, data: ["category": category])
+    }
+    
+    open func trackWishlistAddedToEvent(productId: String) {
+        trackEvent(type: .wishlistAddedTo, data: ["productId": productId])
+    }
+    
+    open func trackWishlistRemovedFromEvent(productId: String) {
+        trackEvent(type: .wishlistRemovedFrom, data: ["productId": productId])
+    }
+    
+    open func trackBasketViewedEvent() {
+        trackEvent(type: .basketViewed)
+    }
+    
+    open func trackBasketUpdatedEvent(basket: OmetriaBasket) {
+        trackEvent(type: .basketUpdated, data: ["basket": basket])
+    }
+    
+    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket) {
+        trackEvent(type: .orderCompleted, data: ["orderId": orderId,
+                                                 "basket": basket])
+    }
+    
+    // MARK: Notification Related Events
+    
+    open func trackPushTokenRefreshedEvent(pushToken: String) {
+        trackEvent(type: .pushTokenRefreshed, data: ["pushToken": pushToken])
+    }
+    
+    open func trackNotificationReceivedEvent(notificationId: String) {
+        trackEvent(type: .notificationReceived, data: ["notificationId": notificationId])
+    }
+    
+    open func trackNotificationInteractedEvent(notificationId: String) {
+        trackEvent(type: .notificationInteracted, data: ["notificationId": notificationId])
+    }
+    
+    // MARK: Other Events
+    
+    open func trackDeepLinkOpenedEvent(link: String, screenName: String) {
+        trackEvent(type: .deepLinkOpened, data: ["link": link,
+                                                 "page": screenName])
+    }
+    
+    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Codable]) {
+        var data = additionalInfo
+        data["customEventType"] = customEventType
+        trackEvent(type: .custom(customType: customEventType), data: data)
+    }
+    
+    open func flush() {
+        // TODO: Implement Method
     }
     
     // MARK: - Push notifications

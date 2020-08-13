@@ -86,7 +86,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             handleAppInstall()
         }
         
-//        trackEvent(type: .launchApplication, value: nil)
+        trackAppLaunchedEvent()
     }
     
     private func handleAppInstall() {
@@ -96,7 +96,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             installationID = generateInstallationID()
             OmetriaDefaults.installationID = installationID
         }
-//        trackEvent(type: .installApplication, value: installmentID!)
+        trackAppInstalledEvent()
     }
     
   

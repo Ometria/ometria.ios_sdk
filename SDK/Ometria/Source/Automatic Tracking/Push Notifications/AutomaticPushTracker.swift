@@ -112,7 +112,7 @@ open class AutomaticPushTracker: NSObject {
                                  for: delegateClass,
                                  name: "OmetriaDidReceiveSilentNotification") { (_, _, _, _) in
                                     Logger.debug(message: "Application didReceiveSilentNotification")
-//                                    Ometria.sharedInstance().trackEvent(type: .receivedNotification, value: nil)
+                                    Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
         }
     }
     
@@ -146,7 +146,7 @@ open class AutomaticPushTracker: NSObject {
                                      for: newClass,
                                      name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
                                         Logger.debug(message: "Application didReceiveRemoteNotification")
-//                                        Ometria.sharedInstance().trackEvent(type: .tapOnNotification, value: nil)
+                                        Ometria.sharedInstance().trackNotificationInteractedEvent(notificationId: "sample id (replace this in code)")
             }
             
             let newWillPresentSelector = #selector(NSObject.om_userNotificationCenter(_:newWillPresent:withCompletionHandler:))
@@ -156,7 +156,7 @@ open class AutomaticPushTracker: NSObject {
                                      for: newClass,
                                      name: "OmetriaWillPresentRemoteNotification") { (_, _, _, _) in
                                         Logger.debug(message: "Application willPresentRemoteNotification")
-//                                        Ometria.sharedInstance().trackEvent(type: .receivedNotification, value: nil)
+                                        Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
             }
         }
     }
@@ -183,9 +183,9 @@ open class AutomaticPushTracker: NSObject {
     
     @objc private func firebaseTokenDidRefresh(notification: Notification) {
         let token = Messaging.messaging().fcmToken
-        if token != nil {
-            Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token!))")
-//            Ometria.sharedInstance().trackEvent(type: .refreshPushToken, value: token!)
+        if let token = token {
+            Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
+            Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
         }
     }
     

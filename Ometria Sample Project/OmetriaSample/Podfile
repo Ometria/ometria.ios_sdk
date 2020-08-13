@@ -6,8 +6,6 @@ target 'OmetriaSample' do
   use_frameworks!
 
   # Pods for OmetriaSample
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Messaging'
   pod 'Ometria', :path => '../../SDK'
 
 end

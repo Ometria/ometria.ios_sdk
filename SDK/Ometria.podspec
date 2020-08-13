@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.header_mappings_dir = ''
   s.frameworks          = 'UIKit'
   s.static_framework    = true
-  s.dependency 'Firebase'
+  s.dependency 'Firebase/Messaging'
 end

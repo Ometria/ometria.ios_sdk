@@ -25,7 +25,6 @@ public enum OmetriaEventType {
     case appBackgrounded
     case appForegrounded
     case screenViewed
-    
     case profileIdentified
     case profileDeidentified
     

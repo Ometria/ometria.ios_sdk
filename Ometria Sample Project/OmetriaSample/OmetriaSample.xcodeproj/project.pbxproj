@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4EC94EEC24BC52D000B8591C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEB24BC52D000B8591C /* AppDelegate.swift */; };
-		4EC94EEE24BC52D000B8591C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EED24BC52D000B8591C /* SceneDelegate.swift */; };
 		4EC94EF024BC52D000B8591C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEF24BC52D000B8591C /* ViewController.swift */; };
 		4EC94EF324BC52D000B8591C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF124BC52D000B8591C /* Main.storyboard */; };
 		4EC94EF524BC52D300B8591C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF424BC52D300B8591C /* Assets.xcassets */; };
@@ -59,7 +58,6 @@
 /* Begin PBXFileReference section */
 		4EC94EE824BC52D000B8591C /* OmetriaSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmetriaSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EC94EEB24BC52D000B8591C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4EC94EED24BC52D000B8591C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4EC94EEF24BC52D000B8591C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4EC94EF224BC52D000B8591C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4EC94EF424BC52D300B8591C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 				4EC94F2E24BDA5BA00B8591C /* OmetriaSample.entitlements */,
 				4EC94F2B24BCA7C700B8591C /* GoogleService-Info.plist */,
 				4EC94EEB24BC52D000B8591C /* AppDelegate.swift */,
-				4EC94EED24BC52D000B8591C /* SceneDelegate.swift */,
 				4EC94EEF24BC52D000B8591C /* ViewController.swift */,
 				4EC94EF124BC52D000B8591C /* Main.storyboard */,
 				4EC94EF424BC52D300B8591C /* Assets.xcassets */,
@@ -359,7 +356,6 @@
 			files = (
 				4EC94EF024BC52D000B8591C /* ViewController.swift in Sources */,
 				4EC94EEC24BC52D000B8591C /* AppDelegate.swift in Sources */,
-				4EC94EEE24BC52D000B8591C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +542,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -568,7 +564,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

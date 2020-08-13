@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class OmetriaBasketItem: Encodable {
+open class OmetriaBasketItem: Codable {
     var productId: String
     var sku: String
     var quantity: Int

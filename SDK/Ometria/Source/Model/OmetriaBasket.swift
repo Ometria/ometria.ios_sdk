@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class OmetriaBasket: Encodable {
+open class OmetriaBasket: Codable {
     var currency: String
     var totalPrice: Float
     var items: [OmetriaBasketItem] = []

@@ -64,7 +64,7 @@ public enum OmetriaEventType {
     }
 }
 
-class OmetriaEvent {
+class OmetriaEvent: CustomDebugStringConvertible {
     var applicationID = Bundle.main.bundleIdentifier!
     var installmentID: String
     var applicationVersion: String

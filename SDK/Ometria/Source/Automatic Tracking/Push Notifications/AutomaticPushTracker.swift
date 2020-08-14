@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import Firebase
+import FirebaseMessaging
 
 @available(iOS 10.0, *)
 extension UNUserNotificationCenter {

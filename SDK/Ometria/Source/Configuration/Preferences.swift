@@ -1,5 +1,5 @@
 //
-//  Preferences.swift
+//  OmetriaConfig.swift
 //  Ometria
 //
 //  Created by Cata on 7/10/20.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-open class Preferences {
+open class OmetriaConfig {
     
-    public var flushLimit: Int
+    open var flushLimit: Int
     var automaticallyTrackNotifications: Bool = true
     var automaticallyTrackAppLifecycle: Bool = true
     var automaticallyTrackScreenListing: Bool = true

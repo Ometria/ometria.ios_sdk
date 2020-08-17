@@ -38,9 +38,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         self.apiToken = apiToken
         super.init()
         
-        isLoggerEnabled = preferences.isLoggingEnabled
+        isLoggingEnabled = preferences.isLoggingEnabled
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
-        setLoggerEnabled(isLoggerEnabled)
+        setLoggerEnabled(isLoggingEnabled)
         
         if preferences.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
@@ -54,9 +54,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         handleApplicationLaunch()
     }
     
-    open var isLoggerEnabled: Bool = false {
+    open var isLoggingEnabled: Bool = false {
         didSet {
-            setLoggerEnabled(isLoggerEnabled)
+            setLoggerEnabled(isLoggingEnabled)
         }
     }
     
@@ -209,6 +209,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         data["customEventType"] = customEventType
         trackEvent(type: .custom(customType: customEventType), data: data)
     }
+    
+    // MARK: - Flush
     
     open func flush() {
         // TODO: Implement Method

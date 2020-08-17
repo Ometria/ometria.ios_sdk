@@ -65,18 +65,16 @@ public enum OmetriaEventType {
 }
 
 class OmetriaEvent: CustomDebugStringConvertible {
-    var applicationID = Bundle.main.bundleIdentifier!
-    var installmentID: String
-    var applicationVersion: String
-    var buildNumber: String
+    var appId = Bundle.main.bundleIdentifier ?? "unknown"
+    var installationId = OmetriaDefaults.installationID ?? "unknown"
+    var appVersion: String?
+    var appBuildNumber: String?
     var sdkVersion: String
     let platform = UIDevice.current.systemName
     let osVersion = UIDevice.current.systemVersion
     let deviceManufacturer = "Apple"
     let deviceModel = UIDevice.current.model
-    let creationDate = Date()
-    var flushDate: Date?
-    var isFlushed = false
+    let timestampOccurred = Date()
     var isAutomaticallyTracked = false
     
     var type: OmetriaEventType
@@ -85,11 +83,13 @@ class OmetriaEvent: CustomDebugStringConvertible {
     public init(type: OmetriaEventType, data: [String: Codable]) {
         self.type = type
         self.data = data
-        applicationID = ""
-        applicationVersion = ""
-        buildNumber = ""
-        sdkVersion = ""
-        installmentID = ""
+        
+        let infoDict = Bundle.main.infoDictionary
+        if let infoDict = infoDict {
+            appBuildNumber = infoDict["CFBundleVersion"]
+            appVersion = infoDict["CFBundleShortVersionString"]
+        }
+        sdkVersion = Bundle(for: self).
     }
     
     required public init(from decoder: Decoder) throws {

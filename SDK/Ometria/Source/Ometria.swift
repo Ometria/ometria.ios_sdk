@@ -12,15 +12,16 @@ import UIKit
 open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open var apiToken: String
-    private var preferences: Preferences
+    private var preferences: OmetriaConfig
     static var instance: Ometria?
     private let automaticPushTracker = AutomaticPushTracker()
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
     private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
     private let notificationHandler = NotificationHandler()
+    private let eventHandler = EventHandler()
     
     @discardableResult
-    open class func initialize(apiToken: String, preferences: Preferences = Preferences()) -> Ometria {
+    open class func initialize(apiToken: String, preferences: OmetriaConfig = OmetriaConfig()) -> Ometria {
         let ometria = Ometria(apiToken: apiToken, preferences: preferences)
         instance = ometria
         return ometria
@@ -33,7 +34,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return instance!
     }
     
-    init(apiToken: String, preferences: Preferences) {
+    init(apiToken: String, preferences: OmetriaConfig) {
         self.preferences = preferences
         self.apiToken = apiToken
         super.init()
@@ -107,13 +108,10 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     // MARK: - Event Tracking
     
-    private func trackEvent(_ event: OmetriaEvent) {
-        Logger.info(message: "Track Event \(event)", category: LogCategory.events)
-    }
+    
     
     private func trackEvent(type: OmetriaEventType, data: [String: Codable] = [:]) {
-        let event = OmetriaEvent(type: type, data: data)
-        trackEvent(event)
+        eventHandler.processEvent(type: type, data: data)
     }
     
     // MARK: Application Related Events
@@ -207,7 +205,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     open func trackCustomEvent(customEventType: String, additionalInfo: [String: Codable]) {
         var data = additionalInfo
         data["customEventType"] = customEventType
-        trackEvent(type: .custom(customType: customEventType), data: data)
+        trackEvent(type: .custom, data: data)
     }
     
     // MARK: - Flush

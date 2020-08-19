@@ -66,6 +66,7 @@ public enum OmetriaEventType: String, Codable {
 }
 
 class OmetriaEvent: CustomDebugStringConvertible, Codable {
+    var eventId: String
     var appId = Bundle.main.bundleIdentifier ?? "unknown"
     var installationId = OmetriaDefaults.installationID ?? "unknown"
     var appVersion: String?
@@ -77,28 +78,33 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var deviceModel = UIDevice.current.model
     var timestampOccurred = Date()
     var isAutomaticallyTracked = false
+    var isBeingFlushed = false
     
     var eventType: OmetriaEventType
     var data: [String: Codable] = [:]
     
     enum CodingKeys: String, CodingKey {
-       case appId
-       case installationId
-       case appVersion
-       case appBuildNumber
-       case sdkVersion
-       case platform
-       case osVersion
-       case deviceManufacturer
-       case deviceModel
-       case timestampOccurred
-       case isAutomaticallyTracked
-       case eventType = "type"
-       case data
+        case eventId
+        case appId
+        case installationId
+        case appVersion
+        case appBuildNumber
+        case sdkVersion
+        case platform
+        case osVersion
+        case deviceManufacturer
+        case deviceModel
+        case timestampOccurred
+        case isAutomaticallyTracked
+        case isBeingFlushed
+        
+        case eventType = "type"
+        case data
     }
 
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        eventId = try values.decode(String.self, forKey: .eventId)
         appId = try values.decode(String.self, forKey: .appId)
         installationId = try values.decode(String.self, forKey: .installationId)
         appVersion = try values.decode(String.self, forKey: .appVersion)
@@ -110,6 +116,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         deviceModel = try values.decode(String.self, forKey: .deviceModel)
         timestampOccurred = try values.decode(Date.self, forKey: .timestampOccurred)
         isAutomaticallyTracked = try values.decode(Bool.self, forKey: .isAutomaticallyTracked)
+        isBeingFlushed = try values.decode(Bool.self, forKey: .isBeingFlushed)
         eventType = try values.decode(OmetriaEventType.self, forKey: .eventType)
         
         if values.contains(.data), let jsonData = try? values.decode(Data.self, forKey: .data) {
@@ -124,6 +131,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         if !data.isEmpty, let jsonData = try? JSONSerialization.data(withJSONObject: data) {
             try container.encode(jsonData, forKey: .data)
         }
+        try container.encode(eventId, forKey: .eventId)
         try container.encode(appId, forKey: .appId)
         try container.encode(installationId, forKey: .installationId)
         try container.encode(appVersion, forKey: .appVersion)
@@ -135,10 +143,12 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(deviceModel, forKey: .deviceModel)
         try container.encode(timestampOccurred, forKey: .timestampOccurred)
         try container.encode(isAutomaticallyTracked, forKey: .isAutomaticallyTracked)
+        try container.encode(isBeingFlushed, forKey: .isBeingFlushed)
         try container.encode(eventType, forKey: .eventType)
     }
     
     public init(eventType: OmetriaEventType, data: [String: Codable]) {
+        self.eventId = UUID().uuidString
         self.eventType = eventType
         self.data = data
         

@@ -48,7 +48,9 @@ extension CodableCaching where T: Codable {
             guard let jsonData = try loadContentFromFile() else {
                 return nil
             }
-            return try JSONDecoder().decode(T.self, from: jsonData)
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            return try decoder.decode(T.self, from: jsonData)
         } catch let error as NSError {
             Logger.error(message: "Failed to load JSON \(path)\n\(error)", category: .cache)
         }
@@ -67,7 +69,9 @@ extension CodableCaching where T: Codable {
         
         let save = {
             do {
-                let jsonData = try JSONEncoder().encode(object)
+                let encoder = JSONEncoder()
+                encoder.dateEncodingStrategy = .iso8601
+                let jsonData = try encoder.encode(object)
                 try self.saveToFile(data: jsonData)
             }  catch let error as NSError {
                 Logger.error(message: "CodableCaching: ERROR saving: \(error)", category: .cache)

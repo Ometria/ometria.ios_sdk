@@ -49,6 +49,11 @@ extension Ometria {
     }
 }
 
-extension Data {
-    
+extension ISO8601DateFormatter {
+    static var ometriaDateFormatter = { () -> ISO8601DateFormatter in
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.timeZone = Calendar.current.timeZone
+        dateFormatter.formatOptions = [.withFullDate, .withFullTime, .withTimeZone]
+        return dateFormatter
+    }()
 }

@@ -84,7 +84,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var data: [String: Codable] = [:]
     
     enum CodingKeys: String, CodingKey {
-        case eventId
+        case eventId = "id"
         case appId
         case installationId
         case appVersion
@@ -102,7 +102,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case data
     }
 
-    public required init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         eventId = try values.decode(String.self, forKey: .eventId)
         appId = try values.decode(String.self, forKey: .appId)
@@ -126,7 +126,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         }
     }
 
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if !data.isEmpty, let jsonData = try? JSONSerialization.data(withJSONObject: data) {
             try container.encode(jsonData, forKey: .data)
@@ -147,7 +147,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(eventType, forKey: .eventType)
     }
     
-    public init(eventType: OmetriaEventType, data: [String: Codable]) {
+    init(eventType: OmetriaEventType, data: [String: Codable]) {
         self.eventId = UUID().uuidString
         self.eventType = eventType
         self.data = data
@@ -161,8 +161,39 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         sdkVersion = Bundle(for: type(of: self)).infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
     }
     
-    public var debugDescription: String {
+    // MARK: - CustomDebugStringConvertible
+    
+    var debugDescription: String {
         return "\(eventType.id):" +
         "   data: \(data)"
+    }
+    
+    // MARK: - Dictionary
+    
+    var baseDictionary: [String: Any]? {
+        let encoder = JSONEncoder.iso8601DateJSONEncoder
+        guard let data = try? encoder.encode(self) else {
+            return nil
+        }
+        let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+        return dictionary?.filter({
+            ![.data,
+              .eventId,
+              .eventType,
+              .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
+        })
+    }
+    
+    var dictionary: [String: Any]? {
+        let encoder = JSONEncoder.iso8601DateJSONEncoder
+        guard let data = try? encoder.encode(self) else {
+            return nil
+        }
+        let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+        return dictionary?.filter({
+            [.data,
+             .eventType,
+             .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
+        })
     }
 }

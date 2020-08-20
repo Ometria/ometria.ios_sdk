@@ -208,10 +208,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .custom, data: data)
     }
     
-    // MARK: - Flush
+    // MARK: - Flush/Clear
     
     open func flush() {
-        // TODO: Implement Method
+        eventHandler.flushEvents()
+    }
+    
+    open func clear() {
+        eventHandler.clearEvents()
     }
     
     // MARK: - Push notifications

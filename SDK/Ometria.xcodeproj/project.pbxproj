@@ -8,10 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */; };
+		4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */; };
+		4E5B2E2824ED4B470063FA50 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B2E2724ED4B470063FA50 /* NetworkService.swift */; };
+		4E5B2E2A24ED4C320063FA50 /* HTTPNetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B2E2924ED4C320063FA50 /* HTTPNetworkResponse.swift */; };
+		4E5B2E2E24ED4CCB0063FA50 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B2E2D24ED4CCB0063FA50 /* NetworkError.swift */; };
+		4E88929424ED9A07002593FD /* EventNetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E88929324ED9A07002593FD /* EventNetworkRouter.swift */; };
 		4E96478524E3F90B00274FC3 /* OmetriaBasketItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96478324E3F90B00274FC3 /* OmetriaBasketItem.swift */; };
 		4E96478624E3F90B00274FC3 /* OmetriaBasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96478424E3F90B00274FC3 /* OmetriaBasket.swift */; };
 		4E96AB4824D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */; };
 		4E96AB4F24D4927900623FA6 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */; };
+		4EA10CE524ED5A97007FF49D /* JSONDecoder+KeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */; };
+		4EA10CE724ED70AB007FF49D /* ParamEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */; };
+		4EA10CED24ED73B9007FF49D /* OmetriaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */; };
 		4EBDBF8D24C1906600AB8DCE /* Swizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */; };
 		4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */; };
 		4EBDBF9824C5F0AC00AB8DCE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */; };
@@ -31,10 +39,18 @@
 
 /* Begin PBXFileReference section */
 		4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaDefaults.swift; sourceTree = "<group>"; };
+		4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Ometria.swift"; sourceTree = "<group>"; };
+		4E5B2E2724ED4B470063FA50 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		4E5B2E2924ED4C320063FA50 /* HTTPNetworkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPNetworkResponse.swift; sourceTree = "<group>"; };
+		4E5B2E2D24ED4CCB0063FA50 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		4E88929324ED9A07002593FD /* EventNetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventNetworkRouter.swift; sourceTree = "<group>"; };
 		4E96478324E3F90B00274FC3 /* OmetriaBasketItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaBasketItem.swift; sourceTree = "<group>"; };
 		4E96478424E3F90B00274FC3 /* OmetriaBasket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaBasket.swift; sourceTree = "<group>"; };
 		4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticScreenViewsTracker.swift; sourceTree = "<group>"; };
 		4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
+		4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+KeyPath.swift"; sourceTree = "<group>"; };
+		4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamEncoder.swift; sourceTree = "<group>"; };
+		4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaError.swift; sourceTree = "<group>"; };
 		4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzler.swift; sourceTree = "<group>"; };
 		4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticPushTracker.swift; sourceTree = "<group>"; };
 		4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
@@ -69,12 +85,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E5B2E2624ED4B310063FA50 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				4E88929324ED9A07002593FD /* EventNetworkRouter.swift */,
+				4E5B2E2724ED4B470063FA50 /* NetworkService.swift */,
+				4E5B2E2924ED4C320063FA50 /* HTTPNetworkResponse.swift */,
+				4E5B2E2D24ED4CCB0063FA50 /* NetworkError.swift */,
+				4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */,
+				4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		4E96AB4D24D4926A00623FA6 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
 				4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		4EA10CEB24ED739D007FF49D /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 		4EBDBF8B24C1904F00AB8DCE /* Automatic Tracking */ = {
@@ -124,10 +161,11 @@
 		4EC94EDA24B8B94C00B8591C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4EA10CEB24ED739D007FF49D /* Error */,
+				4E5B2E2624ED4B310063FA50 /* Network */,
 				4EFF18B924EA63100020389A /* Event Handling */,
 				4EC94EDB24B8B9ED00B8591C /* Ometria.swift */,
 				4E96AB4D24D4926A00623FA6 /* Notifications */,
-				4EE7A8D524C89C3E00B316A7 /* Network */,
 				4EE7A8D424C89C3400B316A7 /* Cache */,
 				4EE7A8D124C88EF900B316A7 /* Model */,
 				4EE7A8CC24C82A0100B316A7 /* Logger */,
@@ -207,15 +245,9 @@
 				4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */,
 				4EFF18B524EA55690020389A /* JSONCache.swift */,
 				4EFF18B724EA559A0020389A /* CodableCaching.swift */,
+				4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */,
 			);
 			path = Cache;
-			sourceTree = "<group>";
-		};
-		4EE7A8D524C89C3E00B316A7 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		4EFF18B924EA63100020389A /* Event Handling */ = {
@@ -343,13 +375,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EE7A8D024C8483600B316A7 /* ReadWriteLock.swift in Sources */,
+				4E88929424ED9A07002593FD /* EventNetworkRouter.swift in Sources */,
 				4E96AB4F24D4927900623FA6 /* NotificationHandler.swift in Sources */,
 				4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */,
 				4EE7A8D324C88F0500B316A7 /* OmetriaEvent.swift in Sources */,
+				4E5B2E2824ED4B470063FA50 /* NetworkService.swift in Sources */,
 				4EC94EDE24B8BCFB00B8591C /* Preferences.swift in Sources */,
 				4E96478624E3F90B00274FC3 /* OmetriaBasket.swift in Sources */,
 				4EFF18B824EA559A0020389A /* CodableCaching.swift in Sources */,
+				4EA10CE724ED70AB007FF49D /* ParamEncoder.swift in Sources */,
+				4E5B2E2E24ED4CCB0063FA50 /* NetworkError.swift in Sources */,
+				4EA10CED24ED73B9007FF49D /* OmetriaError.swift in Sources */,
 				4EC94EDC24B8B9ED00B8591C /* Ometria.swift in Sources */,
+				4EA10CE524ED5A97007FF49D /* JSONDecoder+KeyPath.swift in Sources */,
+				4E5B2E2A24ED4C320063FA50 /* HTTPNetworkResponse.swift in Sources */,
 				4E96478524E3F90B00274FC3 /* OmetriaBasketItem.swift in Sources */,
 				4E96AB4824D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift in Sources */,
 				4EE7A8CA24C81BDD00B316A7 /* ApplicationUtils.swift in Sources */,
@@ -359,6 +398,7 @@
 				4EFF18B624EA55690020389A /* JSONCache.swift in Sources */,
 				4EE7A8C824C81BC600B316A7 /* AutomaticLifecycleTracker.swift in Sources */,
 				4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */,
+				4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

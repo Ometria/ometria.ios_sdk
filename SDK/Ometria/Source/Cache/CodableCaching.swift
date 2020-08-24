@@ -42,7 +42,7 @@ extension CodableCaching where T: Codable {
     /// load json file from disk and tranlate into an mappable object
     func loadFromFile() -> T? {
         let path = filePath as String
-        Logger.debug(message: "CodableCaching: \(String(describing: T.self)) - Loading \(fileName) from file.", category: .cache)
+        Logger.verbose(message: "CodableCaching: \(String(describing: T.self)) - Loading \(fileName) from file.", category: .cache)
         
         do {
             guard let jsonData = try loadContentFromFile() else {
@@ -78,7 +78,7 @@ extension CodableCaching where T: Codable {
             }
         }
         
-        Logger.debug(message: "CodableCaching: \(String(describing: T.self)) - Saving \'\(fileName)\' to file.", category: .cache)
+        Logger.verbose(message: "CodableCaching: \(String(describing: T.self)) - Saving \'\(fileName)\' to file.", category: .cache)
         if async {
             DispatchQueue.global(qos: .background).async {
                 save()

@@ -54,7 +54,8 @@ class EventsAPI {
                 case .failure(let error):
                     Logger.error(message: error.localizedDescription, category: .network)
                 case .success(let response):
-                    Logger.info(message: response, category: .network)
+//                    Logger.info(message: ""response, category: .network)
+                    break
                 }
                 DispatchQueue.main.async {
                     completion(result)

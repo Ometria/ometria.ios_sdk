@@ -21,7 +21,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private let eventHandler: EventHandler
     
     @discardableResult
-    private class func initialize(apiToken: String, config: OmetriaConfig = OmetriaConfig()) -> Ometria {
+    open class func initialize(apiToken: String, config: OmetriaConfig = OmetriaConfig()) -> Ometria {
         let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
         ometria.handleApplicationLaunch()

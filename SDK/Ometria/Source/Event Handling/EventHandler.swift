@@ -30,14 +30,14 @@ class EventHandler {
     func flushEventsIfNeeded() {
         let events = retrieveFlushableEvents()
         
-        if events.count > flushLimit {
+        print("flushable events: \(events.count)")
+        if events.count >= flushLimit {
             flushEvents()
         }
     }
     
     func flushEvents() {
         let events = retrieveFlushableEvents()
-        
         guard events.count != 0 else {
             return
         }
@@ -56,7 +56,8 @@ class EventHandler {
     private func flushEvents(events: [OmetriaEvent]) {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
-        
+        let flushableEvents = retrieveFlushableEvents()
+        print("flushable events: \(flushableEvents.count)")
         EventsAPI.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return
@@ -70,24 +71,25 @@ class EventHandler {
             case .failure(_):
                 Logger.debug(message: "Failed to flush \(events.count) events.", category: .events)
                 events.forEach({$0.isBeingFlushed = false})
-                self.saveLocallyCachedEvents()
+                self.saveMemoryCachedEvents()
             }
         }
     }
     
     // MARK: - Cache accessibility
     
-    private func clearEvents() {
-        Logger.debug(message: "Clear all Events from local cache.", category: .events)
+    func clearEvents() {
+        Logger.verbose(message: "Clear all Events from local cache.", category: .events)
         trackedEvents.removeAll()
         JSONCache.trackedEvents.saveToFile(nil, async: true)
     }
     
     private func retrieveEvents() -> [OmetriaEvent] {
         if !hasLoadedEvents {
-            Logger.debug(message: "Load Events from local cache", category: .cache)
+            Logger.verbose(message: "Load Events from local cache", category: .cache)
             
             if let cachedEvents = JSONCache.trackedEvents.loadFromFile() {
+                hasLoadedEvents = true
                 trackedEvents = cachedEvents
             }
         }
@@ -99,7 +101,7 @@ class EventHandler {
         return events.filter({ !$0.isBeingFlushed })
     }
     
-    private func saveLocallyCachedEvents() {
+    private func saveMemoryCachedEvents() {
         let events = retrieveEvents()
        
         saveEvents(events)
@@ -113,7 +115,7 @@ class EventHandler {
     }
     
     private func saveEvents(_ events: [OmetriaEvent]) {
-        Logger.debug(message: "Save Events to local cache", category: .cache)
+        Logger.verbose(message: "Save Events to local cache", category: .cache)
         trackedEvents = events
         JSONCache.trackedEvents.saveToFile(events, async: true)
     }

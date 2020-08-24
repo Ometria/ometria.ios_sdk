@@ -87,7 +87,7 @@ class Logger {
     open class func verbose(message: @autoclosure() -> Any,
                             _ path: String = #file,
                             _ function: String = #function,
-                            _ category: LogCategory = .general)
+                            category: LogCategory = .general)
     {
         var enabledLevels = Set<LogLevel>()
         concurrencyLock.read {

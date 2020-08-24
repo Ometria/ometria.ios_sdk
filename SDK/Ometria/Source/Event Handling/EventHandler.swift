@@ -13,6 +13,11 @@ class EventHandler {
     
     private var trackedEvents: [OmetriaEvent] = []
     private var hasLoadedEvents: Bool = false
+    var flushLimit: Int
+    
+    init(flushLimit: Int) {
+        self.flushLimit = flushLimit
+    }
     
     func processEvent(type: OmetriaEventType, data: [String: Codable]) {
         let event = OmetriaEvent(eventType: type, data: data)
@@ -24,7 +29,7 @@ class EventHandler {
     
     func flushEventsIfNeeded() {
         let events = retrieveEvents()
-        if events.count > 1 {
+        if events.count > flushLimit {
             flushEvents()
         }
     }

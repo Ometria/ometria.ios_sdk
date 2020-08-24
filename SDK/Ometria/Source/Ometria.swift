@@ -12,17 +12,17 @@ import UIKit
 open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open var apiToken: String
-    private var preferences: OmetriaConfig
+    private var config: OmetriaConfig
     static var instance: Ometria?
     private let automaticPushTracker = AutomaticPushTracker()
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
     private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
     private let notificationHandler = NotificationHandler()
-    private let eventHandler
+    private let eventHandler: EventHandler
     
     @discardableResult
-    open class func initialize(apiToken: String, preferences: OmetriaConfig = OmetriaConfig()) -> Ometria {
-        let ometria = Ometria(apiToken: apiToken, preferences: preferences)
+    private class func initialize(apiToken: String, config: OmetriaConfig = OmetriaConfig()) -> Ometria {
+        let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
         ometria.handleApplicationLaunch()
         return ometria
@@ -35,23 +35,24 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return instance!
     }
     
-    init(apiToken: String, preferences: OmetriaConfig) {
-        self.preferences = preferences
+    init(apiToken: String, config: OmetriaConfig) {
+        self.config = config
         self.apiToken = apiToken
+        self.eventHandler = EventHandler(flushLimit: config.flushLimit)
         super.init()
         
-        isLoggingEnabled = preferences.isLoggingEnabled
+        isLoggingEnabled = config.isLoggingEnabled
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
         setLoggerEnabled(isLoggingEnabled)
         
-        eventHandler = EventHandler()
-        if preferences.automaticallyTrackNotifications {
+      
+        if config.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
         }
-        if preferences.automaticallyTrackAppLifecycle {
+        if config.automaticallyTrackAppLifecycle {
             automaticLifecycleTracker.startTracking()
         }
-        if preferences.automaticallyTrackScreenListing {
+        if config.automaticallyTrackScreenListing {
             automaticScreenViewsTracker.startTracking()
         }
     }

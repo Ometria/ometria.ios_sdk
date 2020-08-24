@@ -84,7 +84,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var data: [String: Codable] = [:]
     
     enum CodingKeys: String, CodingKey {
-        case eventId = "id"
+        case eventId
         case appId
         case installationId
         case appVersion
@@ -192,6 +192,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
         return dictionary?.filter({
             [.data,
+             .eventId,
              .eventType,
              .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
         })

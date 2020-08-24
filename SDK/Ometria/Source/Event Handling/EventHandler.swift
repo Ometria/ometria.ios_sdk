@@ -21,36 +21,72 @@ class EventHandler {
     
     func processEvent(type: OmetriaEventType, data: [String: Codable]) {
         let event = OmetriaEvent(eventType: type, data: data)
-        Logger.info(message: "Process Event \(event)", category: LogCategory.events)
         
-        saveEvent(event: event)
+        Logger.info(message: "Process Event \(event)", category: LogCategory.events)
+        saveEvent(event)
         flushEventsIfNeeded()
     }
     
     func flushEventsIfNeeded() {
-        let events = retrieveEvents()
+        let events = retrieveFlushableEvents()
+        
         if events.count > flushLimit {
             flushEvents()
         }
     }
     
     func flushEvents() {
-        Logger.debug(message: "Flush Events", category: .events)
-        let events = retrieveEvents()
-        EventsAPI.flushEvents(events, completion: { () in
-            
-        })
+        let events = retrieveFlushableEvents()
+        
+        guard events.count != 0 else {
+            return
+        }
+        
+        let batchedEvents = batchEvents(events: events)
+        
+        for key in batchedEvents.keys {
+            let batch = batchedEvents[key]!
+            let flushSizedChunks = batch.chunked(into: flushLimit)
+            for chunk in flushSizedChunks {
+                flushEvents(events: chunk)
+            }
+        }
     }
     
-    func clearEvents() {
-        Logger.debug(message: "Clear all Events", category: .events)
+    private func flushEvents(events: [OmetriaEvent]) {
+        Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
+        events.forEach({$0.isBeingFlushed = true})
+        
+        EventsAPI.flushEvents(events) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+            
+            case .success(_):
+                Logger.debug(message: "Successfully flushed \(events.count) events.", category: .events)
+                self.removeEvents(events)
+            case .failure(_):
+                Logger.debug(message: "Failed to flush \(events.count) events.", category: .events)
+                events.forEach({$0.isBeingFlushed = false})
+                self.saveLocallyCachedEvents()
+            }
+        }
+    }
+    
+    // MARK: - Cache accessibility
+    
+    private func clearEvents() {
+        Logger.debug(message: "Clear all Events from local cache.", category: .events)
         trackedEvents.removeAll()
         JSONCache.trackedEvents.saveToFile(nil, async: true)
     }
     
-    func retrieveEvents() -> [OmetriaEvent] {
+    private func retrieveEvents() -> [OmetriaEvent] {
         if !hasLoadedEvents {
             Logger.debug(message: "Load Events from local cache", category: .cache)
+            
             if let cachedEvents = JSONCache.trackedEvents.loadFromFile() {
                 trackedEvents = cachedEvents
             }
@@ -58,15 +94,43 @@ class EventHandler {
         return trackedEvents
     }
     
-    func saveEvent(event: OmetriaEvent) {
-        Logger.debug(message: "Save Events to local cache", category: .cache)
+    private func retrieveFlushableEvents() -> [OmetriaEvent] {
+        let events = retrieveEvents()
+        return events.filter({ !$0.isBeingFlushed })
+    }
+    
+    private func saveLocallyCachedEvents() {
+        let events = retrieveEvents()
+       
+        saveEvents(events)
+    }
+    
+    private func saveEvent(_ event: OmetriaEvent) {
         var events = retrieveEvents()
+        
         events.append(event)
+        saveEvents(events)
+    }
+    
+    private func saveEvents(_ events: [OmetriaEvent]) {
+        Logger.debug(message: "Save Events to local cache", category: .cache)
         trackedEvents = events
         JSONCache.trackedEvents.saveToFile(events, async: true)
     }
     
+    private func removeEvents(_ events: [OmetriaEvent]) {
+        let eventIds = events.map({$0.eventId})
+        var savedEvents = retrieveEvents()
+        
+        savedEvents.removeAll(where: { eventIds.contains($0.eventId) })
+        saveEvents(savedEvents)
+    }
+    
     // MARK: - Event Batching
     
-    
+    private func batchEvents(events: [OmetriaEvent]) -> [Int: [OmetriaEvent]] {
+        let batchedEvents = Dictionary.init(grouping: events, by: { $0.commonInfoHash })
+        
+        return batchedEvents
+    }
 }

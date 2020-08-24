@@ -196,4 +196,21 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
              .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
         })
     }
+    
+    // MARK: - Batching Hash
+    
+    var commonInfoHash: Int {
+        var hasher = Hasher()
+        hasher.combine(appId)
+        hasher.combine(installationId)
+        hasher.combine(appVersion)
+        hasher.combine(appBuildNumber)
+        hasher.combine(sdkVersion)
+        hasher.combine(platform)
+        hasher.combine(osVersion)
+        hasher.combine(deviceManufacturer)
+        hasher.combine(deviceModel)
+        let hash = hasher.finalize()
+        return hash
+    }
 }

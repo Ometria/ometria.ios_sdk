@@ -44,7 +44,7 @@ class EventsAPI {
         }
     }
     
-    class func flushEvents(_ events: [OmetriaEvent], completion: @escaping ()->()) {
+    class func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) {
         var parameters = events.first!.baseDictionary
         parameters?["events"] = events.map({$0.dictionary})
         parameters?["timestampSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
@@ -55,6 +55,9 @@ class EventsAPI {
                     Logger.error(message: error.localizedDescription, category: .network)
                 case .success(let response):
                     Logger.info(message: response, category: .network)
+                }
+                DispatchQueue.main.async {
+                    completion(result)
                 }
             }
         }

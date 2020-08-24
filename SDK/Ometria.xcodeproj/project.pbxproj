@@ -31,6 +31,7 @@
 		4EE7A8CE24C82E3D00B316A7 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8CD24C82E3D00B316A7 /* Logger.swift */; };
 		4EE7A8D024C8483600B316A7 /* ReadWriteLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */; };
 		4EE7A8D324C88F0500B316A7 /* OmetriaEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8D224C88F0500B316A7 /* OmetriaEvent.swift */; };
+		4EF3710A24F39C4B00450B52 /* Array+Chunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF3710924F39C4B00450B52 /* Array+Chunks.swift */; };
 		4EFF18B624EA55690020389A /* JSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B524EA55690020389A /* JSONCache.swift */; };
 		4EFF18B824EA559A0020389A /* CodableCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B724EA559A0020389A /* CodableCaching.swift */; };
 		4EFF18BB24EA63230020389A /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18BA24EA63230020389A /* EventHandler.swift */; };
@@ -64,6 +65,7 @@
 		4EE7A8CD24C82E3D00B316A7 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
 		4EE7A8D224C88F0500B316A7 /* OmetriaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaEvent.swift; sourceTree = "<group>"; };
+		4EF3710924F39C4B00450B52 /* Array+Chunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Chunks.swift"; sourceTree = "<group>"; };
 		4EFF18B524EA55690020389A /* JSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCache.swift; sourceTree = "<group>"; };
 		4EFF18B724EA559A0020389A /* CodableCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableCaching.swift; sourceTree = "<group>"; };
 		4EFF18BA24EA63230020389A /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
@@ -93,8 +95,6 @@
 				4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */,
 				4E5B2E2924ED4C320063FA50 /* Result.swift */,
 				4E5B2E2D24ED4CCB0063FA50 /* APIError.swift */,
-				4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */,
-				4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -162,6 +162,7 @@
 		4EC94EDA24B8B94C00B8591C /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4EF3710724F39C2100450B52 /* Util */,
 				4EC94EDB24B8B9ED00B8591C /* Ometria.swift */,
 				4EA10CEB24ED739D007FF49D /* Error */,
 				4E5B2E2624ED4B310063FA50 /* Network */,
@@ -172,7 +173,6 @@
 				4EE7A8CC24C82A0100B316A7 /* Logger */,
 				4EBDBF8B24C1904F00AB8DCE /* Automatic Tracking */,
 				4EDB190C24B62E6000CFE550 /* Configuration */,
-				4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -248,6 +248,17 @@
 				4EFF18B724EA559A0020389A /* CodableCaching.swift */,
 			);
 			path = Cache;
+			sourceTree = "<group>";
+		};
+		4EF3710724F39C2100450B52 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */,
+				4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */,
+				4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */,
+				4EF3710924F39C4B00450B52 /* Array+Chunks.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		4EFF18B924EA63100020389A /* Event Handling */ = {
@@ -389,6 +400,7 @@
 				4EC94EDC24B8B9ED00B8591C /* Ometria.swift in Sources */,
 				4EA10CE524ED5A97007FF49D /* JSONDecoder+KeyPath.swift in Sources */,
 				4E5B2E2A24ED4C320063FA50 /* Result.swift in Sources */,
+				4EF3710A24F39C4B00450B52 /* Array+Chunks.swift in Sources */,
 				4E96478524E3F90B00274FC3 /* OmetriaBasketItem.swift in Sources */,
 				4E96AB4824D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift in Sources */,
 				4EE7A8CA24C81BDD00B316A7 /* ApplicationUtils.swift in Sources */,

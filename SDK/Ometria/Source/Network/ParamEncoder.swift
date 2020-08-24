@@ -28,7 +28,6 @@ public struct JSONParamEncoder: ParamEncoder {
         guard let parameters = parameters else {
             return urlRequest
         }
-        
         var mutableRequest = urlRequest
 
         let data = try JSONSerialization.data(withJSONObject: parameters, options: writingOptions)

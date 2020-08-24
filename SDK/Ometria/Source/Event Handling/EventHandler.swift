@@ -32,7 +32,7 @@ class EventHandler {
     func flushEvents() {
         Logger.debug(message: "Flush Events", category: .events)
         let events = retrieveEvents()
-        EventNetworkRouter.flushEvents(events, completion: { () in
+        EventsAPI.flushEvents(events, completion: { () in
             
         })
     }

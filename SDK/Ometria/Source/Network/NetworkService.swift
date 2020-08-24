@@ -26,14 +26,17 @@ protocol NetworkServiceConfig {
 }
 
 class NetworkService<Config: NetworkServiceConfig> {
-    let urlSession = URLSession(configuration: .default)
+    
+    fileprivate var acceptableStatusCodes: [Int] { return Array(200..<300) }
+    fileprivate var acceptableContentTypes: [String] { return ["*/*"] }
+    private let urlSession = URLSession(configuration: .default)
     
     @discardableResult
     func request(_ method: HTTPMethod,
                  path: String,
                  parameters: HTTPParams = nil,
                  headers: HTTPHeaders = nil,
-                 completion: @escaping (_ result: Result<String>) -> ()) throws -> URLSessionTask
+                 completion: @escaping (_ result: Result<Any>) -> ()) throws -> URLSessionTask
     {
         let url = URL(string: Config.serverUrl)!.appendingPathComponent(path)
         
@@ -45,94 +48,79 @@ class NetworkService<Config: NetworkServiceConfig> {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        do {
-            request = try URLParamEncoder().encodeHeaders(request, with: mutableHeaders)
-            request = try JSONParamEncoder(writingOptions: .fragmentsAllowed).encode(request, with: parameters)
-        } catch {
-            print(error)
-        }
-        request.timeoutInterval = 30.0;//seconds
-        let dataTask = urlSession.dataTask(with: request) { (data, response, error) in
-            print(data)
+        request = try URLParamEncoder().encodeHeaders(request, with: mutableHeaders)
+        request = try JSONParamEncoder(writingOptions: .fragmentsAllowed).encode(request, with: parameters)
+        request.timeoutInterval = Config.timeoutInterval
+        
+        let dataTask = urlSession.dataTask(with: request) { [weak self] (data, response, error) in
+            guard let self = self else {
+                return
+            }
+            
+            let validationResult = self.validate(data: data, response: response, error: error)
+            switch validationResult {
+            case .failure(let error):
+                completion(.failure(error))
+            case .success(_):
+                let serializationResult = self.serializeJSONResponse(data: data!, response: response as! HTTPURLResponse)
+                completion(serializationResult)
+            }
         }
         dataTask.resume()
         return dataTask
     }
     
-//    public static func apiErrorResponseSerializer() -> DataResponseSerializer<()> {
-//        return DataResponseSerializer { request, response, data, error in
-//
-//            var apiError = error
-//            if let data = data {
-//                do {
-//                    apiError = try JSONDecoder().decode(APIError.self, from: data)
-//                } catch DecodingError.dataCorrupted(let context) {
-//                    print(context.debugDescription)
-//                } catch DecodingError.keyNotFound(let key, let context) {
-//                    //No error
-//                    print("\(key.stringValue) was not found, \(context.debugDescription)")
-//                } catch DecodingError.typeMismatch(let type, let context) {
-//                    print("\(type) was expected, \(context.debugDescription)")
-//                } catch DecodingError.valueNotFound(let type, let context) {
-//                    print("no value was found for \(type), \(context.debugDescription)")
-//                } catch {
-//                    print("Unknown error")
-//                }
-//            }
-//
-//            guard apiError == nil else {
-//                print("\n❗ Request failed: ",
-//                      request?.httpMethod ?? "",
-//                      request?.url?.absoluteString ?? "",
-//                      "\n\tResponse: " + (data.flatMap({ String(data:$0, encoding: .utf8) }) ?? ""))
-//
-//
-//                let missingSession = apiError == .missingSession
-//                let accessDenied = response?.statusCode == 403 || response?.statusCode == 401 || missingSession
-//                if accessDenied {
-//                    DispatchQueue.main.async {
-//                        Session.close(error: apiError!)
-//                    }
-//                }
-//
-//                return .failure(apiError!)
-//            }
-//
-//            return .success(())
-//        }
-//    }
-//
-//    public func responseAPIDecode<T: Decodable>(decoder: JSONDecoder = JSONDecoder(), keyPath: String? = nil,
-//                                                completion: @escaping (DataResponse<T>, Tapptitude.Result<T>) -> ()) -> Self {
-//        let serializer: DataResponseSerializer<T> = DataRequest.apiDecodableSerializer(decoder: decoder, keyPath: keyPath)
-//        return validate().response(queue: nil, responseSerializer: serializer, completionHandler: { response in
-//            if !self.responseWasCanceled(response) {
-//                let result: Tapptitude.Result<T> = response.result.map({ $0 })
-//                completion(response, result)
-//            }
-//        })
-//    }
-//
-//    public static func apiDecodableSerializer<T: Decodable>(decoder: JSONDecoder, keyPath: String? = nil) -> DataResponseSerializer<T> {
-//        return DataResponseSerializer { request, response, data, error in
-//            let result = apiErrorResponseSerializer().serializeResponse(request, response, data, error)
-//            switch result {
-//            case .success(_):
-//                do {
-//                    var object:T
-//                    if let keyPath = keyPath {
-//                        object = try decoder.decode(T.self, from: data!, keyPath: keyPath, separator: ".")
-//                    } else {
-//                        object = try decoder.decode(T.self, from: data!)
-//                    }
-//                    return .success(object)
-//                }
-//                catch {
-//                    return .failure(error)
-//                }
-//            case .failure(let error):
-//                return .failure(error)
-//            }
-//        }
-//    }
+    private func validate(data: Data?, response: URLResponse?, error: Error?) -> Result<Void> {
+        guard error == nil else {
+            return .failure(error!)
+        }
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return .failure(OmetriaError.invalidAPIResponse)
+        }
+        
+        guard acceptableStatusCodes.contains(httpResponse.statusCode) else {
+            let error = serializeErrorResponse(data: data, response: httpResponse)
+            return .failure(error)
+        }
+        
+        return .success()
+    }
+    
+    private func serializeErrorResponse(data: Data?, response: HTTPURLResponse) -> Error {
+        
+        var apiError: OmetriaError? = nil
+        if let data = data {
+            do {
+                let error = try JSONDecoder().decode(APIError.self, from: data)
+                apiError = .apiError(underlyingError: error)
+            } catch {
+                apiError = OmetriaError.decodingFailed(underlyingError: error)
+            }
+        } else {
+            let underlyingError = APIError(status: response.statusCode, type: "Unkown", title: "Unknown Error", detail: "Error details were not provided by server.")
+            apiError = .apiError(underlyingError: underlyingError)
+        }
+        
+        return apiError!
+    }
+    
+    private func serializeDataResponse<T: Decodable>(data: Data, response: HTTPURLResponse) -> Result<T> {
+        do {
+            let object:T = try JSONDecoder().decode(T.self, from: data)
+            return .success(object)
+        }
+        catch {
+            let apiError = OmetriaError.decodingFailed(underlyingError: error)
+            return .failure(apiError)
+        }
+    }
+    
+    private func serializeJSONResponse(data: Data, response: HTTPURLResponse) -> Result<Any> {
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            return .success(json)
+        } catch {
+            return .failure(OmetriaError.decodingFailed(underlyingError: error))
+        }
+    }
 }

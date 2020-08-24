@@ -18,12 +18,13 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
     private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
     private let notificationHandler = NotificationHandler()
-    private let eventHandler = EventHandler()
+    private let eventHandler
     
     @discardableResult
     open class func initialize(apiToken: String, preferences: OmetriaConfig = OmetriaConfig()) -> Ometria {
         let ometria = Ometria(apiToken: apiToken, preferences: preferences)
         instance = ometria
+        ometria.handleApplicationLaunch()
         return ometria
     }
     
@@ -43,6 +44,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
         setLoggerEnabled(isLoggingEnabled)
         
+        eventHandler = EventHandler()
         if preferences.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
         }
@@ -52,7 +54,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if preferences.automaticallyTrackScreenListing {
             automaticScreenViewsTracker.startTracking()
         }
-        handleApplicationLaunch()
     }
     
     open var isLoggingEnabled: Bool = false {

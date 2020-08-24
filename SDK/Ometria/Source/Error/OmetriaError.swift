@@ -8,7 +8,27 @@
 import Foundation
 
 public enum OmetriaError: Error {
-    case networkParamEncoding
-    case networkError(code: Int, message: String)
+    case parameterEncodingFailed
+    case apiError(underlyingError: APIError)
+    case invalidAPIResponse
+    case decodingFailed(underlyingError: Error)
+    
     case requestMissingURL
+}
+
+extension OmetriaError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .parameterEncodingFailed:
+            return "Failed to encode request parameters."
+        case .apiError(let underlyingError):
+            return "Network request failed with error: \(underlyingError.localizedDescription)"
+        case .invalidAPIResponse:
+            return "Network request failed because it was unable to process the server response."
+        case .decodingFailed(let underlyingError):
+            return "Decoding failed with error: \(underlyingError.localizedDescription)"
+        case .requestMissingURL:
+            return "Network request failed because the url is missing."
+        }
+    }
 }

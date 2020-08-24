@@ -13,6 +13,11 @@ enum Result<T> {
     case failure(Error)
 }
 
+extension Result where T == Void {
+    static func success() -> Result {
+        return .success(())
+    }
+}
 //struct HTTPNetworkResponse {
 //
 //    // Properly checks and handles the status code of the response

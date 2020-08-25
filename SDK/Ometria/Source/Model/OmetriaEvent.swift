@@ -186,10 +186,14 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     
     var dictionary: [String: Any]? {
         let encoder = JSONEncoder.iso8601DateJSONEncoder
-        guard let data = try? encoder.encode(self) else {
+        guard let encodedObject = try? encoder.encode(self) else {
             return nil
         }
-        let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+        var dictionary = try? JSONSerialization.jsonObject(with: encodedObject, options: .allowFragments) as? [String: Any]
+        if data.count != 0 {
+            dictionary?[CodingKeys.data.rawValue] = data
+        }
+        
         return dictionary?.filter({
             [.data,
              .eventId,

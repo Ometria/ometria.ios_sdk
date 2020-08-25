@@ -20,4 +20,15 @@ open class NotificationHandler {
         Ometria.sharedInstance().trackNotificationInteractedEvent(notificationId: "sample id (replace this in code)")
         completionHandler()
     }
+    
+    func processDeliveredNotifications() {
+        UNUserNotificationCenter.current().getDeliveredNotifications { [weak self] (notifications) in
+            let lastProcessedDate = OmetriaDefaults.notificationProcessDate
+            let newNotifications = notifications.filter({$0.date > lastProcessedDate})
+            OmetriaDefaults.notificationProcessDate = Date()
+            newNotifications.forEach({
+                self?.handleReceivedNotification($0, withCompletionHandler: {_ in })
+            })
+        }
+    }
 }

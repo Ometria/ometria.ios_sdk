@@ -13,7 +13,7 @@ open class NotificationHandler {
     
     func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
-        completionHandler([.sound, .alert])
+        completionHandler([])
     }
     
     func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {

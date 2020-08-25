@@ -132,6 +132,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func trackAppForegroundedEvent() {
         trackEvent(type: .appForegrounded)
+        notificationHandler.processDeliveredNotifications()
     }
     
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Codable] = [:]) {

@@ -70,7 +70,7 @@ open class AutomaticPushTracker: NSObject {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaRegisterForRemoteNotifications") { (_, _, _, _) in
-                                    Logger.debug(message: "Application did register for remote notifications")
+                                    Logger.verbose(message: "Application did register for remote notifications")
         }
     }
     
@@ -90,7 +90,7 @@ open class AutomaticPushTracker: NSObject {
                                  withSelector: newSelector,
                                  for: delegateClass,
                                  name: "OmetriaDidFailToRegisterForRemoteNotificationsWithError") { (_, _, _, _) in
-                                    Logger.debug(message: "Application did fail to register for remote notifications")
+                                    Logger.verbose(message: "Application did fail to register for remote notifications")
         }
     }
     
@@ -112,7 +112,6 @@ open class AutomaticPushTracker: NSObject {
                                  for: delegateClass,
                                  name: "OmetriaDidReceiveSilentNotification") { (_, _, _, _) in
                                     Logger.debug(message: "Application didReceiveSilentNotification")
-                                    Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
         }
     }
     
@@ -146,7 +145,6 @@ open class AutomaticPushTracker: NSObject {
                                      for: newClass,
                                      name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
                                         Logger.debug(message: "Application didReceiveRemoteNotification")
-                                        Ometria.sharedInstance().trackNotificationInteractedEvent(notificationId: "sample id (replace this in code)")
             }
             
             let newWillPresentSelector = #selector(NSObject.om_userNotificationCenter(_:newWillPresent:withCompletionHandler:))
@@ -156,7 +154,6 @@ open class AutomaticPushTracker: NSObject {
                                      for: newClass,
                                      name: "OmetriaWillPresentRemoteNotification") { (_, _, _, _) in
                                         Logger.debug(message: "Application willPresentRemoteNotification")
-                                        Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
             }
         }
     }
@@ -167,6 +164,7 @@ open class AutomaticPushTracker: NSObject {
         }
         
         var newClass: AnyClass?
+        
         if let UNDelegate = UNUserNotificationCenter.current().delegate {
             newClass = type(of: UNDelegate)
         } else {
@@ -183,6 +181,7 @@ open class AutomaticPushTracker: NSObject {
     
     @objc private func firebaseTokenDidRefresh(notification: Notification) {
         let token = Messaging.messaging().fcmToken
+        
         if let token = token {
             Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
             Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
@@ -191,8 +190,7 @@ open class AutomaticPushTracker: NSObject {
     
     // MARK: - Observer
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if #available(iOS 10.0, *),
-            keyPath == "delegate" {
+        if #available(iOS 10.0, *), keyPath == "delegate" {
             swizzleDidReceiveRemoteNotification()
         }
     }
@@ -236,6 +234,7 @@ extension UIResponder {
         
         var aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
+        
         if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
             aClass = type(of: UNDelegate)
         }
@@ -263,6 +262,7 @@ extension UIResponder {
         
         var aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
+       
         if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
             aClass = type(of: UNDelegate)
         }

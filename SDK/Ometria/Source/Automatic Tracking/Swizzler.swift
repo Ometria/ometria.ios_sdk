@@ -71,7 +71,7 @@ class Swizzler {
                 method_setImplementation(originalMethod, swizzledMethodImplementation)
             }
         } else {
-            Logger.error(message: "Swizzling error: Cannot find method for "
+            Logger.verbose(message: "Swizzling error: Cannot find method for "
                 + "\(NSStringFromSelector(originalSelector)) on \(NSStringFromClass(aClass))")
         }
     }

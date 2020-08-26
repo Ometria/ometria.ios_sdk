@@ -128,10 +128,12 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func trackAppBackgroundedEvent() {
         trackEvent(type: .appBackgrounded)
+        eventHandler.flushEvents()
     }
     
     func trackAppForegroundedEvent() {
         trackEvent(type: .appForegrounded)
+        eventHandler.flushEvents()
         notificationHandler.processDeliveredNotifications()
     }
     
@@ -188,6 +190,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open func trackPushTokenRefreshedEvent(pushToken: String) {
         trackEvent(type: .pushTokenRefreshed, data: ["pushToken": pushToken])
+        eventHandler.flushEvents()
     }
     
     open func trackNotificationReceivedEvent(notificationId: String) {

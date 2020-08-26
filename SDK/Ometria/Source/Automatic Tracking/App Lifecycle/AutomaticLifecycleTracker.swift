@@ -33,6 +33,13 @@ open class AutomaticLifecycleTracker {
             notificationCenter.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
             notificationCenter.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         }
+        
+        notificationCenter.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
+    }
+    
+    deinit {
+        stopTracking()
     }
     
     func stopTracking() {
@@ -44,26 +51,30 @@ open class AutomaticLifecycleTracker {
     }
     
     @objc func handleDidFinishLaunch(notification: NSNotification) {
-        Logger.debug(message: "Application did finish Launch")
+        Logger.verbose(message: "Application did finish Launch", category: .application)
+    }
+    
+    @objc func appWillTerminate() {
+        Logger.verbose(message: "Application will terminate", category: .application)
     }
     
     @objc func appDidEnterBackground() {
-        Logger.debug(message: "Application did enter background")
+        Logger.verbose(message: "Application did enter background", category: .application)
         Ometria.sharedInstance().trackAppBackgroundedEvent()
     }
     
     @objc func appWillEnterForeground() {
         Ometria.sharedInstance().trackAppForegroundedEvent()
-        Logger.debug(message: "Application will enter foreground")
+        Logger.verbose(message: "Application will enter foreground", category: .application)
     }
     
     @objc func appWillResignActive() {
         Ometria.sharedInstance().trackAppBackgroundedEvent()
-        Logger.debug(message: "Application will resign active")
+        Logger.verbose(message: "Application will resign active", category: .application)
     }
     
     @objc func appDidBecomeActive() {
         Ometria.sharedInstance().trackAppForegroundedEvent()
-        Logger.debug(message: "Application did become active")
+        Logger.verbose(message: "Application did become active", category: .application)
     }
 }

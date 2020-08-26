@@ -62,7 +62,7 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - Ometria (1.0):
+  - Ometria (1.0.1):
     - Firebase/Messaging
   - PromisesObjC (1.2.9)
   - Protobuf (3.12.0)
@@ -104,10 +104,10 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: d70a561f7d236af529fee598835caad5e25f6d3d
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  Ometria: d331ad6189335749fc4a75fcc39ce58eb61a86e2
+  Ometria: c6502d5c812703c97f9818d15287b8232d8da889
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
 
-PODFILE CHECKSUM: 69f80dc4ddb539e1cc8c8b31b71026b50d0c2145
+PODFILE CHECKSUM: b42cce303eaf002d96cd066f6fd141763a446e9a
 
 COCOAPODS: 1.9.1

@@ -157,15 +157,14 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
             appBuildNumber = infoDict["CFBundleVersion"] as? String
             appVersion = infoDict["CFBundleShortVersionString"] as? String
         }
-        
-        sdkVersion = Bundle(for: type(of: self)).infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+        sdkVersion = Constants.sdkVersion
     }
     
     // MARK: - CustomDebugStringConvertible
     
     var debugDescription: String {
-        return "\(eventType.id):" +
-        "   data: \(data)"
+        return "_\(eventType.id)_\n" +
+        "   data: \(data)\n"
     }
     
     // MARK: - Dictionary

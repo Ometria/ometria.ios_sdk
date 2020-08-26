@@ -17,7 +17,7 @@ open class OmetriaConfig {
     var isLoggingEnabled: Bool = true
     var logLevel: LogLevel = .warning
     
-    public init(flushLimit: Int = 20) {
+    public init(flushLimit: Int = Constants.defaultTriggerLimit) {
         self.flushLimit = flushLimit
     }
 }

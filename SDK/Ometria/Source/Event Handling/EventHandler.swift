@@ -19,7 +19,7 @@ class EventHandler {
         self.flushLimit = flushLimit
     }
     
-    func processEvent(type: OmetriaEventType, data: [String: Codable]) {
+    func processEvent(type: OmetriaEventType, data: [String: Any]) {
         let event = OmetriaEvent(eventType: type, data: data)
         
         Logger.info(message: "Process Event \(event)", category: LogCategory.events)

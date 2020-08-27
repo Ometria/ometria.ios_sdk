@@ -14,7 +14,7 @@ struct OmetriaNotificationBody {
     
     init(dictionary: [String: Any]) throws {
         guard let context = dictionary["context"] as? [String: Any] else {
-            throw OmetriaError.invalidNotificationBody(content: dictionary)
+            throw OmetriaError.invalidNotificationContent(content: dictionary)
         }
         self.context = context
         self.imageURL = dictionary["imageUrl"] as? String

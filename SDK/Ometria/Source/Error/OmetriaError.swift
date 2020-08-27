@@ -11,7 +11,7 @@ public enum OmetriaError: Error {
     case parameterEncodingFailed
     case apiError(underlyingError: APIError)
     case invalidAPIResponse
-    case invalidNotificationBody(content: Any)
+    case invalidNotificationContent(content: Any)
     case decodingFailed(underlyingError: Error)
     
     case requestMissingURL
@@ -30,8 +30,8 @@ extension OmetriaError: LocalizedError {
             return "Decoding failed with error: \(underlyingError.localizedDescription)"
         case .requestMissingURL:
             return "Network request failed because the url is missing."
-        case .invalidNotificationBody(let content):
-            return "The notification body had missing fields or was incorrectly formatted.\n\(content)"
+        case .invalidNotificationContent(let content):
+            return "The notification content has missing fields or is incorrectly formatted.\n\(content)"
         }
     }
 }

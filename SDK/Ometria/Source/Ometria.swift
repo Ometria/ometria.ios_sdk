@@ -133,8 +133,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func trackAppForegroundedEvent() {
         trackEvent(type: .appForegrounded)
-        eventHandler.flushEvents()
+        notificationHandler.checkNotificationSettings()
         notificationHandler.processDeliveredNotifications()
+        eventHandler.flushEvents()
     }
     
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
@@ -206,6 +207,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func trackNotificationInteractedEvent(context: [String: Any]) {
         trackEvent(type: .notificationInteracted, data: ["context": context])
+    }
+    
+    func trackPermissionsUpdateEvent(hasPermissions: Bool) {
+        let permissionsValue = hasPermissions ? "opt-in": "opt-out"
+        trackEvent(type: .permissionsUpdate, data: ["notifications": permissionsValue])
     }
     
     // MARK: Other Events

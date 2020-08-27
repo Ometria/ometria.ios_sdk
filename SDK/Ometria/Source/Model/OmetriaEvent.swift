@@ -33,6 +33,7 @@ public enum OmetriaEventType: String, Codable {
     case pushTokenRefreshed
     case notificationReceived
     case notificationInteracted
+    case permissionsUpdate
     
     // MARK: Other event types
     case deepLinkOpened
@@ -59,6 +60,7 @@ public enum OmetriaEventType: String, Codable {
         case .pushTokenRefreshed: return "pushTokenRefreshed"
         case .notificationInteracted: return "notificationInteracted"
         case .notificationReceived: return "notificationReceived"
+        case .permissionsUpdate: return "permissionsUpdate"
         case .deepLinkOpened: return "deepLinkOpened"
         case .custom: return "custom"
         }
@@ -163,7 +165,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     // MARK: - CustomDebugStringConvertible
     
     var debugDescription: String {
-        return "_\(eventType.id)_\n" +
+        return "'\(eventType.id)'\n" +
         "   data: \(data)\n"
     }
     

@@ -13,14 +13,14 @@ import UserNotifications
 class NotificationHandler {
     
     func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        if let notificationBody = retrieveContext(notification: notification) {
+        if let notificationBody = validateAndRetrieveNotificationContent(notification: notification) {
             Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         }
         completionHandler([])
     }
     
     func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if let notificationBody = retrieveContext(notification: response.notification) {
+        if let notificationBody = validateAndRetrieveNotificationContent(notification: response.notification) {
             Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
         }
         completionHandler()
@@ -37,7 +37,7 @@ class NotificationHandler {
         }
     }
     
-    func retrieveContext(notification: UNNotification) -> OmetriaNotificationBody? {
+    func validateAndRetrieveNotificationContent(notification: UNNotification) -> OmetriaNotificationBody? {
         let info = notification.request.content.userInfo
         guard let aps = info["aps"] as? [String: Any],
             let alert = aps["alert"] as? [String: Any],
@@ -51,5 +51,36 @@ class NotificationHandler {
             Logger.error(message: error.localizedDescription)
             return nil
         }
+    }
+    
+    func checkNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
+            let lastKnownStatusInt = OmetriaDefaults.lastKnownNotificationAuthorizationStatus
+            let lastKnownStatus = UNAuthorizationStatus(rawValue: lastKnownStatusInt)
+            
+            switch settings.authorizationStatus {
+            case .authorized, .provisional:
+                if lastKnownStatus != .authorized,
+                    #available(iOS 12.0, *), lastKnownStatus != .provisional {
+                    Logger.verbose(message: "Notification authorization status changed to 'authorized'.", category: .push)
+                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                }
+                
+            case .denied:
+                if lastKnownStatus != .denied {
+                    Logger.verbose(message: "Notification authorization status changed to 'denied'.", category: .push)
+                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
+                }
+            case .notDetermined:
+                if lastKnownStatus != .notDetermined {
+                    Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
+                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
+                }
+            @unknown default:
+                Logger.verbose(message: "Notification authorization status changed to an unknown status.", category: .push)
+            }
+            
+            OmetriaDefaults.lastKnownNotificationAuthorizationStatus = settings.authorizationStatus.rawValue
+        })
     }
 }

@@ -11,44 +11,59 @@ import Foundation
 
 class EventHandler {
     
+    private var eventsQueue: DispatchQueue
+//    private var memoryCacheLock: ReadWriteLock = ReadWriteLock(label: "com.ometria.eventsMemoryCacheLock")
     private var trackedEvents: [OmetriaEvent] = []
     private var hasLoadedEvents: Bool = false
     var flushLimit: Int
     
     init(flushLimit: Int) {
         self.flushLimit = flushLimit
+        eventsQueue = DispatchQueue(label: "com.ometria.eventQueue", qos: .utility)
     }
     
     func processEvent(type: OmetriaEventType, data: [String: Any]) {
-        let event = OmetriaEvent(eventType: type, data: data)
-        
-        Logger.info(message: "Process Event \(event)", category: LogCategory.events)
-        saveEvent(event)
-        flushEventsIfNeeded()
+        eventsQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            let event = OmetriaEvent(eventType: type, data: data)
+            
+            Logger.info(message: "Process Event \(event)", category: .events)
+            self.saveEvent(event)
+            self.flushEventsIfNeeded()
+        }
     }
     
-    func flushEventsIfNeeded() {
+    private func flushEventsIfNeeded() {
         let events = retrieveFlushableEvents()
         
-        print("flushable events: \(events.count)")
+        Logger.verbose(message: "Flushable events: \(events.count)", category: .events)
         if events.count >= flushLimit {
             flushEvents()
         }
     }
     
     func flushEvents() {
-        let events = retrieveFlushableEvents()
-        guard events.count != 0 else {
-            return
-        }
-        
-        let batchedEvents = batchEvents(events: events)
-        
-        for key in batchedEvents.keys {
-            let batch = batchedEvents[key]!
-            let flushSizedChunks = batch.chunked(into: flushLimit)
-            for chunk in flushSizedChunks {
-                flushEvents(events: chunk)
+        eventsQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            let events = self.retrieveFlushableEvents()
+            guard events.count != 0 else {
+                return
+            }
+            
+            let batchedEvents = self.batchEvents(events: events)
+            
+            for key in batchedEvents.keys {
+                let batch = batchedEvents[key]!
+                let flushSizedChunks = batch.chunked(into: Constants.flushMaxBatchSize)
+                for chunk in flushSizedChunks {
+                    self.flushEvents(events: chunk)
+                }
             }
         }
     }
@@ -56,8 +71,6 @@ class EventHandler {
     private func flushEvents(events: [OmetriaEvent]) {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
-        let flushableEvents = retrieveFlushableEvents()
-        print("flushable events: \(flushableEvents.count)")
         EventsAPI.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return
@@ -79,9 +92,16 @@ class EventHandler {
     // MARK: - Cache accessibility
     
     func clearEvents() {
-        Logger.verbose(message: "Clear all Events from local cache.", category: .events)
-        trackedEvents.removeAll()
-        JSONCache.trackedEvents.saveToFile(nil, async: true)
+        eventsQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            Logger.verbose(message: "Clear all Events from local cache.", category: .events)
+            self.trackedEvents.removeAll()
+            JSONCache.trackedEvents.saveToFile(nil, async: true)
+        }
+        
     }
     
     private func retrieveEvents() -> [OmetriaEvent] {

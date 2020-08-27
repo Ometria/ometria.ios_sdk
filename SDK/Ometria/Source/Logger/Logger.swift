@@ -69,7 +69,7 @@ enum LogLevel: String {
 
 class Logger {
     private static var enabledLevels = Set<LogLevel>()
-    private static let concurrencyLock: ReadWriteLock = ReadWriteLock(label: "logger")
+    private static let concurrencyLock: ReadWriteLock = ReadWriteLock(label: "com.ometria.Logger")
     
     open class func enableLevel(_ level: LogLevel) {
         concurrencyLock.write {

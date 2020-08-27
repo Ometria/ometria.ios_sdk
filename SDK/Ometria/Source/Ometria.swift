@@ -151,6 +151,13 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .profileIdentified, data: ["customerId": customerId])
     }
     
+    private func trackProfileIdentifiedEvent(data: [String: Any]) {
+        trackEvent(type: .profileIdentified, data: data)
+        if let fcmToken = OmetriaDefaults.fcmToken {
+            trackPushTokenRefreshedEvent(pushToken: fcmToken)
+        }
+    }
+    
     open func trackProfileDeidentifiedEvent() {
         trackEvent(type: .profileDeidentified)
     }

@@ -88,29 +88,21 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if OmetriaDefaults.isFirstLaunch {
             handleAppInstall()
         }
-        
         trackAppLaunchedEvent()
     }
     
     private func handleAppInstall() {
         OmetriaDefaults.isFirstLaunch = false
-        var installationID = OmetriaDefaults.installationID
-        if installationID == nil {
-            installationID = generateInstallationID()
-            OmetriaDefaults.installationID = installationID
-        }
+        resetAppInstallationId()
+    }
+    
+    private func resetAppInstallationId() {
+        let installationID = UUID().uuidString
+        OmetriaDefaults.installationID = installationID
         trackAppInstalledEvent()
     }
     
-  
-    private func generateInstallationID() -> String {
-        let installationID = UUID().uuidString
-        return installationID
-    }
-    
     // MARK: - Event Tracking
-    
-    
     
     private func trackEvent(type: OmetriaEventType, data: [String: Any] = [:]) {
         eventHandler.processEvent(type: type, data: data)
@@ -161,6 +153,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open func trackProfileDeidentifiedEvent() {
         trackEvent(type: .profileDeidentified)
+        resetAppInstallationId()
     }
     
     // MARK: Product Related Events

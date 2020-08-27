@@ -81,7 +81,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var isBeingFlushed = false
     
     var eventType: OmetriaEventType
-    var data: [String: Codable] = [:]
+    var data: [String: Any] = [:]
     
     enum CodingKeys: String, CodingKey {
         case eventId
@@ -120,9 +120,9 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         eventType = try values.decode(OmetriaEventType.self, forKey: .eventType)
         
         if values.contains(.data), let jsonData = try? values.decode(Data.self, forKey: .data) {
-            data = (try? JSONSerialization.jsonObject(with: jsonData) as? [String : Codable]) ?? [String:Codable]()
+            data = (try? JSONSerialization.jsonObject(with: jsonData) as? [String : Any]) ?? [String:Any]()
         } else {
-            data = [String:Codable]()
+            data = [String:Any]()
         }
     }
 
@@ -147,7 +147,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(eventType, forKey: .eventType)
     }
     
-    init(eventType: OmetriaEventType, data: [String: Codable]) {
+    init(eventType: OmetriaEventType, data: [String: Any]) {
         self.eventId = UUID().uuidString
         self.eventType = eventType
         self.data = data

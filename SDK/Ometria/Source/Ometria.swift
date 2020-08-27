@@ -112,7 +112,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     
     
-    private func trackEvent(type: OmetriaEventType, data: [String: Codable] = [:]) {
+    private func trackEvent(type: OmetriaEventType, data: [String: Any] = [:]) {
         eventHandler.processEvent(type: type, data: data)
     }
     
@@ -137,7 +137,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         notificationHandler.processDeliveredNotifications()
     }
     
-    open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Codable] = [:]) {
+    open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
         var data = additionalInfo
         data["page"] = screenName
         trackEvent(type: .screenViewed, data: data)
@@ -195,17 +195,17 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     // MARK: Notification Related Events
     
-    open func trackPushTokenRefreshedEvent(pushToken: String) {
+    func trackPushTokenRefreshedEvent(pushToken: String) {
         trackEvent(type: .pushTokenRefreshed, data: ["pushToken": pushToken])
         eventHandler.flushEvents()
     }
     
-    open func trackNotificationReceivedEvent(notificationId: String) {
-        trackEvent(type: .notificationReceived, data: ["notificationId": notificationId])
+    func trackNotificationReceivedEvent(context: [String: Any]) {
+        trackEvent(type: .notificationReceived, data: ["context": context])
     }
     
-    open func trackNotificationInteractedEvent(notificationId: String) {
-        trackEvent(type: .notificationInteracted, data: ["notificationId": notificationId])
+    func trackNotificationInteractedEvent(context: [String: Any]) {
+        trackEvent(type: .notificationInteracted, data: ["context": context])
     }
     
     // MARK: Other Events
@@ -215,7 +215,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
                                                  "page": screenName])
     }
     
-    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Codable]) {
+    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]) {
         var data = additionalInfo
         data["customEventType"] = customEventType
         trackEvent(type: .custom, data: data)
@@ -235,15 +235,22 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void) {
+                                withCompletionHandler completionHandler: @escaping () -> Void)
+    {
+        
         notificationHandler.handleNotificationResponse(response, withCompletionHandler: completionHandler)
     }
     
-    open func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    open func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                     willPresent notification: UNNotification,
+                                     withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        
         notificationHandler.handleReceivedNotification(notification, withCompletionHandler: completionHandler)
     }
     
     open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
     }
     
     open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -251,6 +258,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
     }
     
 }

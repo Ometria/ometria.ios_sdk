@@ -9,15 +9,20 @@
 import Foundation
 import UserNotifications
 
-open class NotificationHandler {
+
+class NotificationHandler {
     
     func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        Ometria.sharedInstance().trackNotificationReceivedEvent(notificationId: "sample id (replace this in code)")
+        if let notificationBody = retrieveContext(notification: notification) {
+            Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
+        }
         completionHandler([])
     }
     
     func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        Ometria.sharedInstance().trackNotificationInteractedEvent(notificationId: "sample id (replace this in code)")
+        if let notificationBody = retrieveContext(notification: response.notification) {
+            Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
+        }
         completionHandler()
     }
     
@@ -29,6 +34,22 @@ open class NotificationHandler {
             newNotifications.forEach({
                 self?.handleReceivedNotification($0, withCompletionHandler: {_ in })
             })
+        }
+    }
+    
+    func retrieveContext(notification: UNNotification) -> OmetriaNotificationBody? {
+        let info = notification.request.content.userInfo
+        guard let aps = info["aps"] as? [String: Any],
+            let alert = aps["alert"] as? [String: Any],
+            let ometriaContent = alert["ometria"] as? [String: Any] else {
+            return nil
+        }
+        do {
+            let notificationBody = try OmetriaNotificationBody(dictionary: ometriaContent)
+            return notificationBody
+        } catch {
+            Logger.error(message: error.localizedDescription)
+            return nil
         }
     }
 }

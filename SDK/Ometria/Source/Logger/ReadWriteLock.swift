@@ -20,6 +20,7 @@ class ReadWriteLock {
             closure()
         }
     }
+    
     func write(closure: () -> ()) {
         self.concurentQueue.sync(flags: .barrier, execute: {
             closure()

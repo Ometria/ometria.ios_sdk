@@ -13,14 +13,14 @@ import UserNotifications
 class NotificationHandler {
     
     func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        if let notificationBody = validateAndRetrieveNotificationContent(notification: notification) {
+        if let notificationBody = parseNotificationContent(notification.request.content) {
             Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         }
         completionHandler([])
     }
     
     func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        if let notificationBody = validateAndRetrieveNotificationContent(notification: response.notification) {
+        if let notificationBody = parseNotificationContent(response.notification.request.content) {
             Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
         }
         completionHandler()
@@ -37,8 +37,8 @@ class NotificationHandler {
         }
     }
     
-    func validateAndRetrieveNotificationContent(notification: UNNotification) -> OmetriaNotificationBody? {
-        let info = notification.request.content.userInfo
+    func parseNotificationContent(_ content: UNNotificationContent) -> OmetriaNotificationBody? {
+        let info = content.userInfo
         guard let aps = info["aps"] as? [String: Any],
             let alert = aps["alert"] as? [String: Any],
             let ometriaContent = alert["ometria"] as? [String: Any] else {

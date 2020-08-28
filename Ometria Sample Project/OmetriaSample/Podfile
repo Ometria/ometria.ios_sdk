@@ -2,10 +2,21 @@
  platform :ios, '10.0'
 
 target 'OmetriaSample' do
-  # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for OmetriaSample
   pod 'Ometria', :path => '../../SDK'
+  
+  target 'OmetriaSampleNotificationService' do
+    pod 'Ometria', :path => '../../SDK'
+  end
 
 end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
+     end
+  end
+end
+

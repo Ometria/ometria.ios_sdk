@@ -133,7 +133,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
         var data = additionalInfo
         data["page"] = screenName
-        trackEvent(type: .screenViewed, data: data)
+        trackEvent(type: .screenViewedExplicit, data: data)
+    }
+    
+    func trackScreenViewedAutomaticEvent(screenName: String) {
+        trackEvent(type: .screenViewedAutomatic, data: ["page": screenName])
     }
     
     open func trackProfileIdentifiedEvent(email: String) {

@@ -25,7 +25,8 @@ public enum OmetriaEventType: String, Codable {
     case appLaunched
     case appBackgrounded
     case appForegrounded
-    case screenViewed
+    case screenViewedAutomatic
+    case screenViewedExplicit
     case profileIdentified
     case profileDeidentified
     
@@ -45,7 +46,8 @@ public enum OmetriaEventType: String, Codable {
         case .appLaunched: return "appLaunched"
         case .appBackgrounded: return "appBackgrounded"
         case .appForegrounded: return "appForegrounded"
-        case .screenViewed: return "screenViewed"
+        case .screenViewedAutomatic: return "screenViewedAutomatic"
+        case .screenViewedExplicit: return "screenViewedExplicit"
             
         case .basketUpdated: return "basketUpdated"
         case .basketViewed: return "basketViewed"

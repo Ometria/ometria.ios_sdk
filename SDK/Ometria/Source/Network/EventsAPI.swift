@@ -47,7 +47,7 @@ class EventsAPI {
     class func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) {
         var parameters = events.first!.baseDictionary ?? [:]
         parameters["events"] = events.compactMap({$0.dictionary})
-        parameters["timestampSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
+        parameters["dtSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
         
         Logger.debug(message: "Performing flush with parameters:", category: .network)
         Logger.debug(message: parameters as Any, category: .network)

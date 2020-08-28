@@ -95,7 +95,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case osVersion
         case deviceManufacturer
         case deviceModel
-        case timestampOccurred
+        case dtOccurred
         case isBeingFlushed
         
         case eventType = "type"
@@ -114,7 +114,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         osVersion = try values.decode(String.self, forKey: .osVersion)
         deviceManufacturer = try values.decode(String.self, forKey: .deviceManufacturer)
         deviceModel = try values.decode(String.self, forKey: .deviceModel)
-        timestampOccurred = try values.decode(Date.self, forKey: .timestampOccurred)
+        timestampOccurred = try values.decode(Date.self, forKey: .dtOccurred)
         isBeingFlushed = try values.decode(Bool.self, forKey: .isBeingFlushed)
         eventType = try values.decode(OmetriaEventType.self, forKey: .eventType)
         
@@ -140,7 +140,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(osVersion, forKey: .osVersion)
         try container.encode(deviceManufacturer, forKey: .deviceManufacturer)
         try container.encode(deviceModel, forKey: .deviceModel)
-        try container.encode(timestampOccurred, forKey: .timestampOccurred)
+        try container.encode(timestampOccurred, forKey: .dtOccurred)
         try container.encode(isBeingFlushed, forKey: .isBeingFlushed)
         try container.encode(eventType, forKey: .eventType)
     }
@@ -177,7 +177,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
             ![.data,
               .eventId,
               .eventType,
-              .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
+              .dtOccurred].contains(CodingKeys(rawValue:$0.key))
         })
     }
     
@@ -195,7 +195,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
             [.data,
              .eventId,
              .eventType,
-             .timestampOccurred].contains(CodingKeys(rawValue:$0.key))
+             .dtOccurred].contains(CodingKeys(rawValue:$0.key))
         })
     }
     

@@ -61,7 +61,7 @@ open class AutomaticPushTracker: NSObject {
     }
     
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
-        Logger.debug(message: "swizzle did register for remote notifications")
+        Logger.verbose(message: "Swizzle did register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
@@ -81,7 +81,7 @@ open class AutomaticPushTracker: NSObject {
     }
     
     private func swizzleDidFailToRegisterForRemoteNotificationsWithError() {
-        Logger.debug(message: "swizzle did fail to register for remote notifications")
+        Logger.verbose(message: "Swizzle did fail to register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didFailToRegisterForRemoteNotificationsWithError:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
@@ -102,7 +102,7 @@ open class AutomaticPushTracker: NSObject {
     }
     
     private func swizzleDidReceiveSilentNotification() {
-        Logger.debug(message: "swizzle application:didReceiveRemoteNotification:fetchCompletionHandler:")
+        Logger.verbose(message: "Swizzle application:didReceiveRemoteNotification:fetchCompletionHandler:")
         let newSelector = #selector(UIResponder.om_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
@@ -201,6 +201,8 @@ open class AutomaticPushTracker: NSObject {
 extension UIResponder {
     @objc func om_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Logger.debug(message: "Did register for remote notifications with device token: \(deviceToken)")
+        
+        
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -211,6 +213,7 @@ extension UIResponder {
             aClass = type(of: UNDelegate)
         }
         
+        let method = class_getInstanceMethod(aClass, originalSelector)
         if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UIApplication, Data) -> Void

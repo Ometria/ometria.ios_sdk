@@ -42,37 +42,48 @@ class Swizzler {
                                                   _ command: Selector,
                                                   _ param1: AnyObject?,
                                                   _ param2: AnyObject?) -> Void)) {
-
-        if let originalMethod = class_getInstanceMethod(aClass, originalSelector),
-            let swizzledMethod = class_getInstanceMethod(aClass, newSelector) {
+        
+        if let swizzledMethod = class_getInstanceMethod(aClass, newSelector) {
 
             let swizzledMethodImplementation = method_getImplementation(swizzledMethod)
-            let originalMethodImplementation = method_getImplementation(originalMethod)
-
-            var swizzle = getSwizzle(for: originalMethod)
-            if swizzle == nil {
-                swizzle = Swizzle(block: block,
-                                  name: name,
-                                  aClass: aClass,
-                                  selector: originalSelector,
-                                  originalMethod: originalMethodImplementation)
-                setSwizzle(swizzle!, for: originalMethod)
+            
+            if let originalMethod = class_getInstanceMethod(aClass, originalSelector) {
+                let originalMethodImplementation = method_getImplementation(originalMethod)
+                
+                var swizzle = getSwizzle(for: originalMethod)
+                if swizzle == nil {
+                    swizzle = Swizzle(block: block,
+                                      name: name,
+                                      aClass: aClass,
+                                      selector: originalSelector,
+                                      originalMethod: originalMethodImplementation)
+                    setSwizzle(swizzle!, for: originalMethod)
+                } else {
+                    swizzle?.blocks[name] = block
+                }
+                
+                let didAddMethod = class_addMethod(aClass,
+                                                   originalSelector,
+                                                   swizzledMethodImplementation,
+                                                   method_getTypeEncoding(swizzledMethod))
+                if didAddMethod {
+                    setSwizzle(swizzle!, for: class_getInstanceMethod(aClass, originalSelector)!)
+                } else {
+                    method_setImplementation(originalMethod, swizzledMethodImplementation)
+                }
             } else {
-                swizzle?.blocks[name] = block
-            }
-
-            let didAddMethod = class_addMethod(aClass,
-                                               originalSelector,
-                                               swizzledMethodImplementation,
-                                               method_getTypeEncoding(swizzledMethod))
-            if didAddMethod {
-                setSwizzle(swizzle!, for: class_getInstanceMethod(aClass, originalSelector)!)
-            } else {
-                method_setImplementation(originalMethod, swizzledMethodImplementation)
+                let didAddMethod = class_addMethod(aClass,
+                                                   originalSelector,
+                                                   swizzledMethodImplementation,
+                                                   method_getTypeEncoding(swizzledMethod))
+                if !didAddMethod {
+                    Logger.verbose(message: "Swizzling error: Could not implement method "
+                        + "\(NSStringFromSelector(originalSelector)) on \(NSStringFromClass(aClass))")
+                }
             }
         } else {
             Logger.verbose(message: "Swizzling error: Cannot find method for "
-                + "\(NSStringFromSelector(originalSelector)) on \(NSStringFromClass(aClass))")
+                + "\(NSStringFromSelector(newSelector)) on \(NSStringFromClass(aClass))")
         }
     }
 

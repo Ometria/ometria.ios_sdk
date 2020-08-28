@@ -34,6 +34,7 @@
 		4EF3710A24F39C4B00450B52 /* Array+Chunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF3710924F39C4B00450B52 /* Array+Chunks.swift */; };
 		4EF3710D24F56D0E00450B52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF3710C24F56D0E00450B52 /* Constants.swift */; };
 		4EF3711224F7912D00450B52 /* OmetriaNotificationBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF3711124F7912C00450B52 /* OmetriaNotificationBody.swift */; };
+		4EF3711424F8468B00450B52 /* OmetriaNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */; };
 		4EFF18B624EA55690020389A /* JSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B524EA55690020389A /* JSONCache.swift */; };
 		4EFF18B824EA559A0020389A /* CodableCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B724EA559A0020389A /* CodableCaching.swift */; };
 		4EFF18BB24EA63230020389A /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18BA24EA63230020389A /* EventHandler.swift */; };
@@ -70,6 +71,7 @@
 		4EF3710924F39C4B00450B52 /* Array+Chunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Chunks.swift"; sourceTree = "<group>"; };
 		4EF3710C24F56D0E00450B52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4EF3711124F7912C00450B52 /* OmetriaNotificationBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaNotificationBody.swift; sourceTree = "<group>"; };
+		4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaNotificationServiceExtension.swift; sourceTree = "<group>"; };
 		4EFF18B524EA55690020389A /* JSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCache.swift; sourceTree = "<group>"; };
 		4EFF18B724EA559A0020389A /* CodableCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableCaching.swift; sourceTree = "<group>"; };
 		4EFF18BA24EA63230020389A /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */,
+				4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				4EE7A8C824C81BC600B316A7 /* AutomaticLifecycleTracker.swift in Sources */,
 				4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */,
 				4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */,
+				4EF3711424F8468B00450B52 /* OmetriaNotificationServiceExtension.swift in Sources */,
 				4EF3710D24F56D0E00450B52 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

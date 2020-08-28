@@ -8,16 +8,16 @@
 
 import Foundation
 
-open class OmetriaConfig {
+class OmetriaConfig {
     
-    open var flushLimit: Int
+    var flushLimit: Int
     var automaticallyTrackNotifications: Bool = true
     var automaticallyTrackAppLifecycle: Bool = true
     var automaticallyTrackScreenListing: Bool = true
     var isLoggingEnabled: Bool = true
     var logLevel: LogLevel = .warning
     
-    public init(flushLimit: Int = Constants.defaultTriggerLimit) {
+    init(flushLimit: Int = Constants.defaultTriggerLimit) {
         self.flushLimit = flushLimit
     }
 }

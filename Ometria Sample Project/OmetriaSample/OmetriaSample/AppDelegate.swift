@@ -33,9 +33,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func configurePushNotifications() {
         UNUserNotificationCenter.current().delegate = self
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (_, _) in
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) {
+            [weak self] (granted, error) in
+            
+            print("Permission granted: \(granted)")
+            guard granted else { return }
+            self?.getNotificationSettings()
         }
         UIApplication.shared.registerForRemoteNotifications()
+    }
+    
+    func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            print("Notification settings: \(settings)")
+            guard #available(iOS 12.0, *), settings.authorizationStatus == .provisional ||
+                settings.authorizationStatus == .authorized else {
+                return
+            }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

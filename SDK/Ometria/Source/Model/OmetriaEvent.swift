@@ -79,7 +79,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var deviceManufacturer = "Apple"
     var deviceModel = UIDevice.current.model
     var timestampOccurred = Date()
-    var isAutomaticallyTracked = false
     var isBeingFlushed = false
     
     var eventType: OmetriaEventType
@@ -97,7 +96,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case deviceManufacturer
         case deviceModel
         case timestampOccurred
-        case isAutomaticallyTracked
         case isBeingFlushed
         
         case eventType = "type"
@@ -117,7 +115,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         deviceManufacturer = try values.decode(String.self, forKey: .deviceManufacturer)
         deviceModel = try values.decode(String.self, forKey: .deviceModel)
         timestampOccurred = try values.decode(Date.self, forKey: .timestampOccurred)
-        isAutomaticallyTracked = try values.decode(Bool.self, forKey: .isAutomaticallyTracked)
         isBeingFlushed = try values.decode(Bool.self, forKey: .isBeingFlushed)
         eventType = try values.decode(OmetriaEventType.self, forKey: .eventType)
         
@@ -144,7 +141,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(deviceManufacturer, forKey: .deviceManufacturer)
         try container.encode(deviceModel, forKey: .deviceModel)
         try container.encode(timestampOccurred, forKey: .timestampOccurred)
-        try container.encode(isAutomaticallyTracked, forKey: .isAutomaticallyTracked)
         try container.encode(isBeingFlushed, forKey: .isBeingFlushed)
         try container.encode(eventType, forKey: .eventType)
     }

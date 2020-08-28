@@ -53,6 +53,6 @@ struct OmetriaDefaults {
     static var notificationProcessDate: Date
     @UserDefault(key: "com.ometria.pushNotificationSettings", defaultValue: 0)
     static var lastKnownNotificationAuthorizationStatus: Int
-//    @UserDefault(key: "com.ometra.cachedEvents", defaultValue: [])
-//    static var cachedEvents: [OmetriaEvent]
+    @UserDefault(key: "com.ometria.networkTimedOutUntilDate", defaultValue: Date(timeIntervalSince1970: 0))
+    static var networkTimedOutUntilDate: Date
 }

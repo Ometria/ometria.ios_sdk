@@ -10,6 +10,9 @@ import Foundation
 
 public struct Constants {
     static let sdkVersion = "1.0"
-    public static let defaultTriggerLimit = 20
+    public static let defaultTriggerLimit = 10
     static let flushMaxBatchSize = 100
+    static let networkCallTimeoutSeconds: TimeInterval = 10
+    static let tooManyRequestsStatusCode: Int = 429
+    
 }

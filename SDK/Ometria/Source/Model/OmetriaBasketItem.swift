@@ -8,12 +8,12 @@
 import Foundation
 
 open class OmetriaBasketItem: Codable {
-    var productId: String
-    var sku: String
-    var quantity: Int
-    var price: Float
+    open var productId: String
+    open var sku: String?
+    open var quantity: Int
+    open var price: Float
     
-    init(productId: String, sku: String, quantity: Int, price: Float) {
+    public init(productId: String, sku: String? = nil, quantity: Int, price: Float) {
         self.productId = productId
         self.sku = sku
         self.quantity = quantity

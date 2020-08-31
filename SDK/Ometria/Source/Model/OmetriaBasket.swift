@@ -8,11 +8,11 @@
 import Foundation
 
 open class OmetriaBasket: Codable {
-    var currency: String
-    var totalPrice: Float
-    var items: [OmetriaBasketItem] = []
+    open var currency: String
+    open var totalPrice: Float
+    open var items: [OmetriaBasketItem] = []
     
-    init(totalPrice: Float, currency: String, items: [OmetriaBasketItem] = []) {
+    public init(totalPrice: Float, currency: String, items: [OmetriaBasketItem] = []) {
         self.currency = currency
         self.totalPrice = totalPrice
         self.items = items

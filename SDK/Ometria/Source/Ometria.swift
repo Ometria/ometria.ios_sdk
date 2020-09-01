@@ -224,6 +224,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .custom, data: data)
     }
     
+    func trackErrorOccuredEvent(error: OmetriaError) {
+        let data = error.errorEventData
+        trackEvent(type: .errorOccurred, data: data)
+    }
+    
     // MARK: - Flush/Clear
     
     open func flush() {

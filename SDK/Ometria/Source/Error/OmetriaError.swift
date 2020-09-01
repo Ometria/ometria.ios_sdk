@@ -34,4 +34,23 @@ extension OmetriaError: LocalizedError {
             return "The notification content has missing fields or is incorrectly formatted.\n\(content)"
         }
     }
+    
+    public var domain: String {
+        return String(describing: Self.self)
+    }
+    
+    public var type: String {
+        return String(describing: self)
+    }
+    
+    public var errorEventData: [String: Any] {
+        var data: [String: Any] = [:]
+        data["class"] = self.domain + "." + self.type
+        data["message"] = self.localizedDescription
+        if case .invalidNotificationContent(let content) = self {
+            data["originalMessage"] = content
+        }
+        
+        return data
+    }
 }

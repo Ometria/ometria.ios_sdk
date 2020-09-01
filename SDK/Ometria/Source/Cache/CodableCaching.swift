@@ -52,7 +52,7 @@ extension CodableCaching where T: Codable {
             decoder.dateDecodingStrategy = .iso8601
             return try decoder.decode(T.self, from: jsonData)
         } catch let error as NSError {
-            Logger.error(message: "Failed to load JSON \(path)\n\(error)", category: .cache)
+            Logger.error(message: "CodableCaching: Failed to load JSON \(path)\n\(error)", category: .cache)
         }
         
         return nil

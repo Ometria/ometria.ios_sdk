@@ -47,6 +47,10 @@ class NotificationHandler {
         do {
             let notificationBody = try OmetriaNotificationBody(dictionary: ometriaContent)
             return notificationBody
+        } catch let error as OmetriaError {
+            Logger.error(message: error.localizedDescription)
+            Ometria.sharedInstance().trackErrorOccuredEvent(error: error)
+            return nil
         } catch {
             Logger.error(message: error.localizedDescription)
             return nil

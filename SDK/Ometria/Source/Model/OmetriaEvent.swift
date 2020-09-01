@@ -39,34 +39,7 @@ public enum OmetriaEventType: String, Codable {
     // MARK: Other event types
     case deepLinkOpened
     case custom
-    
-    var id: String {
-        switch self {
-        case .appInstalled: return "appInstalled"
-        case .appLaunched: return "appLaunched"
-        case .appBackgrounded: return "appBackgrounded"
-        case .appForegrounded: return "appForegrounded"
-        case .screenViewedAutomatic: return "screenViewedAutomatic"
-        case .screenViewedExplicit: return "screenViewedExplicit"
-            
-        case .basketUpdated: return "basketUpdated"
-        case .basketViewed: return "basketViewed"
-        case .orderCompleted: return "orderCompleted"
-        case .productCategoryViewed: return "productCategoryViewed"
-        case .productViewed: return "productViewed"
-        case .wishlistAddedTo: return "wishlistAddedTo"
-        case .wishlistRemovedFrom: return "wishlistRemovedFrom"
-            
-        case .profileIdentified: return "profileIdentified"
-        case .profileDeidentified: return "profileDeidentified"
-        case .pushTokenRefreshed: return "pushTokenRefreshed"
-        case .notificationInteracted: return "notificationInteracted"
-        case .notificationReceived: return "notificationReceived"
-        case .permissionsUpdate: return "permissionsUpdate"
-        case .deepLinkOpened: return "deepLinkOpened"
-        case .custom: return "custom"
-        }
-    }
+    case errorOccurred
 }
 
 class OmetriaEvent: CustomDebugStringConvertible, Codable {
@@ -163,7 +136,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     // MARK: - CustomDebugStringConvertible
     
     var debugDescription: String {
-        return "'\(eventType.id)'\n" +
+        return "'\(eventType.rawValue)'\n" +
         "   data: \(data)\n"
     }
     

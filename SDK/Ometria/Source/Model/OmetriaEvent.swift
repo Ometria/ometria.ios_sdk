@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public enum OmetriaEventType: String, Codable {
+enum OmetriaEventType: String, Codable, CaseIterable {
     
     // MARK: Product related event types
     case basketUpdated

@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		4EC94EEC24BC52D000B8591C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEB24BC52D000B8591C /* AppDelegate.swift */; };
-		4EC94EF024BC52D000B8591C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEF24BC52D000B8591C /* ViewController.swift */; };
+		4EC94EF024BC52D000B8591C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEF24BC52D000B8591C /* HomeViewController.swift */; };
 		4EC94EF324BC52D000B8591C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF124BC52D000B8591C /* Main.storyboard */; };
 		4EC94EF524BC52D300B8591C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF424BC52D300B8591C /* Assets.xcassets */; };
 		4EC94EF824BC52D300B8591C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF624BC52D300B8591C /* LaunchScreen.storyboard */; };
 		4EC94F2C24BCA7C700B8591C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94F2B24BCA7C700B8591C /* GoogleService-Info.plist */; };
 		4EC94F3624BDECC300B8591C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94F3524BDECC300B8591C /* NotificationService.swift */; };
 		4EC94F3A24BDECC300B8591C /* OmetriaSampleNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4EC94F3324BDECC300B8591C /* OmetriaSampleNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4EE2531524FE807100B98DDE /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE2531424FE807100B98DDE /* EventListViewController.swift */; };
 		86AE97430F3F5776E307DE95 /* Pods_OmetriaSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8156DA900A453C8E9553973 /* Pods_OmetriaSample.framework */; };
 		97FA64D2AFDEEB9F716543A6 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A273C25D84FF0521435D41 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */; };
 /* End PBXBuildFile section */
@@ -48,7 +49,7 @@
 		3512A3480B3D488CE9788C07 /* Pods-OmetriaSampleNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSampleNotificationService.release.xcconfig"; path = "Pods/Target Support Files/Pods-OmetriaSampleNotificationService/Pods-OmetriaSampleNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		4EC94EE824BC52D000B8591C /* OmetriaSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmetriaSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EC94EEB24BC52D000B8591C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4EC94EEF24BC52D000B8591C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4EC94EEF24BC52D000B8591C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		4EC94EF224BC52D000B8591C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4EC94EF424BC52D300B8591C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4EC94EF724BC52D300B8591C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +64,7 @@
 		4EC94F4924BDED4000B8591C /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		4EC94F4C24BDED4000B8591C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		4EC94F4E24BDED4000B8591C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4EE2531424FE807100B98DDE /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		81A453EA36FD72D2FBE2E517 /* Pods-OmetriaSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample.release.xcconfig"; sourceTree = "<group>"; };
 		8B14FEF7604FA7FB8CF8CE72 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; path = "Pods/Target Support Files/Pods-OmetriaSample-OmetriaSampleNotificationService/Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		C8156DA900A453C8E9553973 /* Pods_OmetriaSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,7 +120,8 @@
 				4EC94F2E24BDA5BA00B8591C /* OmetriaSample.entitlements */,
 				4EC94F2B24BCA7C700B8591C /* GoogleService-Info.plist */,
 				4EC94EEB24BC52D000B8591C /* AppDelegate.swift */,
-				4EC94EEF24BC52D000B8591C /* ViewController.swift */,
+				4EE2531424FE807100B98DDE /* EventListViewController.swift */,
+				4EC94EEF24BC52D000B8591C /* HomeViewController.swift */,
 				4EC94EF124BC52D000B8591C /* Main.storyboard */,
 				4EC94EF424BC52D300B8591C /* Assets.xcassets */,
 				4EC94EF624BC52D300B8591C /* LaunchScreen.storyboard */,
@@ -335,7 +338,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4EC94EF024BC52D000B8591C /* ViewController.swift in Sources */,
+				4EC94EF024BC52D000B8591C /* HomeViewController.swift in Sources */,
+				4EE2531524FE807100B98DDE /* EventListViewController.swift in Sources */,
 				4EC94EEC24BC52D000B8591C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -73,7 +73,7 @@ extension CodableCaching where T: Codable {
                 encoder.dateEncodingStrategy = .iso8601
                 let jsonData = try encoder.encode(object)
                 try self.saveToFile(data: jsonData)
-            }  catch let error as NSError {
+            } catch let error as NSError {
                 Logger.error(message: "CodableCaching: ERROR saving: \(error)", category: .cache)
             }
         }

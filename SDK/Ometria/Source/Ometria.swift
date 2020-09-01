@@ -166,8 +166,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .productViewed, data: ["productId": productId])
     }
     
-    open func trackProductCategoryViewedEvent(category: String) {
-        trackEvent(type: .productCategoryViewed, data: ["category": category])
+    open func trackProductListingViewedEvent() {
+        trackEvent(type: .productListingViewed)
     }
     
     open func trackWishlistAddedToEvent(productId: String) {
@@ -183,12 +183,23 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     open func trackBasketUpdatedEvent(basket: OmetriaBasket) {
-        trackEvent(type: .basketUpdated, data: ["basket": basket])
+        do {
+            let serializedBasket = try basket.jsonObject()
+            trackEvent(type: .basketUpdated, data: ["basket": serializedBasket])
+        } catch {
+            Logger.error(message: "Failed to track \(OmetriaEventType.basketUpdated.rawValue) event with error: \(error)", category: .events)
+        }
     }
     
     open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket) {
-        trackEvent(type: .orderCompleted, data: ["orderId": orderId,
-                                                 "basket": basket])
+        do {
+            let serializedBasket = try basket.jsonObject()
+            trackEvent(type: .orderCompleted, data: ["orderId": orderId,
+                                                     "basket": serializedBasket])
+        } catch {
+            Logger.error(message: "Failed to track \(OmetriaEventType.orderCompleted.rawValue) event with error: \(error)", category: .events)
+        }
+        
     }
     
     // MARK: Notification Related Events

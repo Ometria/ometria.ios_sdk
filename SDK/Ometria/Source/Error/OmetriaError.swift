@@ -13,6 +13,7 @@ public enum OmetriaError: Error {
     case invalidAPIResponse
     case invalidNotificationContent(content: Any)
     case decodingFailed(underlyingError: Error)
+    case encodingFailed(underlyingError: Error)
     
     case requestMissingURL
 }
@@ -28,6 +29,8 @@ extension OmetriaError: LocalizedError {
             return "Network request failed because it was unable to process the server response."
         case .decodingFailed(let underlyingError):
             return "Decoding failed with error: \(underlyingError.localizedDescription)"
+        case .encodingFailed(let underlyingError):
+            return "Encoding failed with error: \(underlyingError.localizedDescription)"
         case .requestMissingURL:
             return "Network request failed because the url is missing."
         case .invalidNotificationContent(let content):

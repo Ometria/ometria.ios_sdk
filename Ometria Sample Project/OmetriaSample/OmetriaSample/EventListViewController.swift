@@ -15,7 +15,7 @@ enum EventType: String, CaseIterable {
     case basketUpdated
     case basketViewed
     case orderCompleted
-    case productCategoryViewed
+    case productListingViewed
     case productViewed
     case wishlistAddedTo
     case wishlistRemovedFrom
@@ -40,6 +40,7 @@ class EventListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let eventType = EventType.allCases[indexPath.row]
         triggerEvent(eventType)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func triggerEvent(_ eventType: EventType) {
@@ -51,8 +52,8 @@ class EventListViewController: UITableViewController {
             Ometria.sharedInstance().trackBasketViewedEvent()
         case .orderCompleted:
             Ometria.sharedInstance().trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
-        case .productCategoryViewed:
-            Ometria.sharedInstance().trackProductCategoryViewedEvent(category: "sample_category")
+        case .productListingViewed:
+            Ometria.sharedInstance().trackProductListingViewedEvent()
         case .productViewed:
             Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")
         case .wishlistAddedTo:

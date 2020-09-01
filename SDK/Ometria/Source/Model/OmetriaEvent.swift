@@ -15,7 +15,7 @@ enum OmetriaEventType: String, Codable, CaseIterable {
     case basketUpdated
     case basketViewed
     case orderCompleted
-    case productCategoryViewed
+    case productListingViewed
     case productViewed
     case wishlistAddedTo
     case wishlistRemovedFrom
@@ -102,7 +102,8 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        if !data.isEmpty, let jsonData = try? JSONSerialization.data(withJSONObject: data) {
+        if !data.isEmpty {
+            let jsonData = try JSONSerialization.data(withJSONObject: data)
             try container.encode(jsonData, forKey: .data)
         }
         try container.encode(eventId, forKey: .eventId)

@@ -17,5 +17,10 @@ open class OmetriaBasket: Codable {
         self.totalPrice = totalPrice
         self.items = items
     }
-    
+ 
+    func jsonObject() throws -> Any {
+        let basketData = try JSONEncoder().encode(self)
+        let serializedBasket = try JSONSerialization.jsonObject(with: basketData, options: .allowFragments)
+        return serializedBasket
+    }
 }

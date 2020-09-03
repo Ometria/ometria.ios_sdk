@@ -44,11 +44,22 @@ class EventHandler {
     }
     
     private func flushEventsIfNeeded() {
-        let events = retrieveFlushableEvents()
-        
-        Logger.verbose(message: "Flushable events: \(events.count)", category: .events)
-        if events.count >= flushLimit {
-            flushEvents()
+        eventsQueue.async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            let events = self.retrieveFlushableEvents()
+            Logger.verbose(message: "Flushable events: \(events.count)", category: .events)
+            
+            if events.count >= self.flushLimit {
+                guard self.canPerformNetworkCall() else {
+                    Logger.info(message: "Tried to flush events but network is timed out", category: .network)
+                    return
+                }
+                
+                self.flushEvents()
+            }
         }
     }
     
@@ -62,9 +73,8 @@ class EventHandler {
             guard events.count != 0 else {
                 return
             }
-            
+            print(events.map({$0.isBeingFlushed}))
             let batchedEvents = self.batchEvents(events: events)
-            
             for key in batchedEvents.keys {
                 let batch = batchedEvents[key]!
                 let flushSizedChunks = batch.chunked(into: Constants.flushMaxBatchSize)
@@ -76,14 +86,9 @@ class EventHandler {
     }
     
     private func flushEvents(events: [OmetriaEvent]) {
-        guard canPerformNetworkCall() else {
-            Logger.info(message: "Tried to flush events but network is timed out", category: .network)
-            return
-        }
-        
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
-        
+        print(events.map({$0.isBeingFlushed}))
         EventsAPI.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return

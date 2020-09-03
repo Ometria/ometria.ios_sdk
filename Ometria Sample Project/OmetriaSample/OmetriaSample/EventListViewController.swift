@@ -19,6 +19,7 @@ enum EventType: String, CaseIterable {
     case productViewed
     case wishlistAddedTo
     case wishlistRemovedFrom
+    case homeScreenViewed
     case screenViewedExplicit
     case profileIdentified
     case profileDeidentified
@@ -48,24 +49,37 @@ class EventListViewController: UITableViewController {
         
         case .basketUpdated:
             Ometria.sharedInstance().trackBasketUpdatedEvent(basket: createSampleBasket())
+        
         case .basketViewed:
             Ometria.sharedInstance().trackBasketViewedEvent()
+        
         case .orderCompleted:
             Ometria.sharedInstance().trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
+        
         case .productListingViewed:
             Ometria.sharedInstance().trackProductListingViewedEvent()
+        
         case .productViewed:
             Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")
+        
         case .wishlistAddedTo:
             Ometria.sharedInstance().trackWishlistAddedToEvent(productId: "sample_product_id")
+        
         case .wishlistRemovedFrom:
             Ometria.sharedInstance().trackWishlistRemovedFromEvent(productId: "sample_product_id")
+        
+        case .homeScreenViewed:
+            Ometria.sharedInstance().trackHomeScreenViewedEvent()
+        
         case .screenViewedExplicit:
             Ometria.sharedInstance().trackScreenViewedEvent(screenName: "sample_screen_name")
+        
         case .profileIdentified:
             Ometria.sharedInstance().trackProfileIdentifiedEvent(email: "sample@profile.com")
+        
         case .profileDeidentified:
             Ometria.sharedInstance().trackProfileDeidentifiedEvent()
+        
         case .custom:
             Ometria.sharedInstance().trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])
         }

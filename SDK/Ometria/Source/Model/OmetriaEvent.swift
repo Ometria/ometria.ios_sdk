@@ -25,6 +25,7 @@ enum OmetriaEventType: String, Codable, CaseIterable {
     case appLaunched
     case appBackgrounded
     case appForegrounded
+    case homeScreenViewed
     case screenViewedAutomatic
     case screenViewedExplicit
     case profileIdentified

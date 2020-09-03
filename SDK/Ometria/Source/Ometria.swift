@@ -130,6 +130,10 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         eventHandler.flushEvents()
     }
     
+    open func trackHomeScreenViewedEvent() {
+        trackEvent(type: .homeScreenViewed)
+    }
+    
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
         var data = additionalInfo
         data["page"] = screenName

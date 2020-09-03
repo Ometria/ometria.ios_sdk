@@ -24,6 +24,7 @@ enum EventType: String, CaseIterable {
     case profileIdentified
     case profileDeidentified
     case custom
+    case flush
 }
 
 class EventListViewController: UITableViewController {
@@ -82,6 +83,9 @@ class EventListViewController: UITableViewController {
         
         case .custom:
             Ometria.sharedInstance().trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])
+            
+        case .flush:
+            Ometria.sharedInstance().flush()
         }
     }
     

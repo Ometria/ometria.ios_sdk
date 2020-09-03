@@ -284,4 +284,16 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         
     }
     
+    // MARK: Notification Utils
+    
+    public static func isOmetriaNotification(_ content: UNNotificationContent) -> Bool {
+        guard let aps = content.userInfo["aps"] as? [String: Any],
+            let alert = aps["alert"] as? [String: Any],
+            let _ = alert["ometria"] as? [String: Any] else {
+            
+                return false
+        }
+        return true
+    }
+    
 }

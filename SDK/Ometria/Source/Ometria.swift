@@ -46,7 +46,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     /**
     Gets the previously initialized Ometria instance
 
-    - Returns: returns the mixpanel instance
+    - Returns: returns the Ometria instance
     */
     open class func sharedInstance() -> Ometria {
         guard instance != nil else {

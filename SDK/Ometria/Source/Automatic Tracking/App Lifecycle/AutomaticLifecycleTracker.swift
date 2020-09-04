@@ -46,6 +46,7 @@ open class AutomaticLifecycleTracker {
         guard isRunning else {
             return
         }
+        
         isRunning = false
         NotificationCenter.default.removeObserver(self)
     }
@@ -64,17 +65,17 @@ open class AutomaticLifecycleTracker {
     }
     
     @objc func appWillEnterForeground() {
-        Ometria.sharedInstance().trackAppForegroundedEvent()
         Logger.verbose(message: "Application will enter foreground", category: .application)
+        Ometria.sharedInstance().trackAppForegroundedEvent()
     }
     
     @objc func appWillResignActive() {
-        Ometria.sharedInstance().trackAppBackgroundedEvent()
         Logger.verbose(message: "Application will resign active", category: .application)
+        Ometria.sharedInstance().trackAppBackgroundedEvent()
     }
     
     @objc func appDidBecomeActive() {
-        Ometria.sharedInstance().trackAppForegroundedEvent()
         Logger.verbose(message: "Application did become active", category: .application)
+        Ometria.sharedInstance().trackAppBackgroundedEvent()
     }
 }

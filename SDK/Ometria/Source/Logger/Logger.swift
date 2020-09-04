@@ -93,6 +93,7 @@ class Logger {
         concurrencyLock.read {
             enabledLevels = self.enabledLevels
         }
+        
         guard enabledLevels.contains(.verbose) else { return }
         
         showMessageInConsole(message: "\(message())", file: path, function: function, category: category, level: .verbose)
@@ -107,6 +108,7 @@ class Logger {
         concurrencyLock.read {
             enabledLevels = self.enabledLevels
         }
+        
         guard enabledLevels.intersection([.debug, .verbose]).count > 0 else { return }
         
         showMessageInConsole(message: "\(message())", category: category, level: .debug)
@@ -121,6 +123,7 @@ class Logger {
         concurrencyLock.read {
             enabledLevels = self.enabledLevels
         }
+        
         guard enabledLevels.intersection([.debug, .verbose, .info]).count > 0 else { return }
         
         showMessageInConsole(message: "\(message())", category: category, level: .info)
@@ -135,6 +138,7 @@ class Logger {
         concurrencyLock.read {
             enabledLevels = self.enabledLevels
         }
+        
         guard enabledLevels.intersection([.debug, .verbose, .info, .warning]).count > 0 else { return }
         
         showMessageInConsole(message: "\(message())", category: category, level: .warning)
@@ -149,6 +153,7 @@ class Logger {
         concurrencyLock.read {
             enabledLevels = self.enabledLevels
         }
+        
         guard enabledLevels.intersection([.debug, .verbose, .info, .warning, .error]).count > 0 else { return }
         
         showMessageInConsole(message: "\(message())", category: category, level: .error)
@@ -162,10 +167,12 @@ class Logger {
     
     private class func showMessageInConsole(message: String, file: String? = nil, function: String? = nil, category: LogCategory, level: LogLevel) {
         var additionalInfo = ""
+        
         if file != nil || function != nil {
             let elements = [file, function].compactMap({$0})
             additionalInfo = " " + elements.joined(separator: ", ") + ":"
         }
+        
         let finalMessage = "OmetriaSDK -\(additionalInfo) \(message)"
         
         if #available(iOS 12, *) {

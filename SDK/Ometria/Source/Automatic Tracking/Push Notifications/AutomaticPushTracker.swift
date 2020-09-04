@@ -140,6 +140,7 @@ open class AutomaticPushTracker: NSObject {
         if let newClass = newClass {
             let newSelector = #selector(NSObject.om_userNotificationCenter(_:newDidReceive:withCompletionHandler:))
             let originalSelector = #selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:didReceive:withCompletionHandler:))
+            
             Swizzler.swizzleSelector(originalSelector,
                                      withSelector: newSelector,
                                      for: newClass,
@@ -149,6 +150,7 @@ open class AutomaticPushTracker: NSObject {
             
             let newWillPresentSelector = #selector(NSObject.om_userNotificationCenter(_:newWillPresent:withCompletionHandler:))
             let originalWillPresentSelector = #selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:willPresent:withCompletionHandler:))
+            
             Swizzler.swizzleSelector(originalWillPresentSelector,
                                      withSelector: newWillPresentSelector,
                                      for: newClass,
@@ -173,6 +175,7 @@ open class AutomaticPushTracker: NSObject {
         
         let originalSelector = #selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:didReceive:withCompletionHandler:))
         let originalWillPresentSelector = #selector(UNUserNotificationCenterDelegate.userNotificationCenter(_:willPresent:withCompletionHandler:))
+        
         Swizzler.unswizzleSelector(originalSelector, aClass: newClass!)
         Swizzler.unswizzleSelector(originalWillPresentSelector, aClass: newClass!)
     }
@@ -190,6 +193,7 @@ open class AutomaticPushTracker: NSObject {
     
     // MARK: - Observer
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        
         if #available(iOS 10.0, *), keyPath == "delegate" {
             swizzleDidReceiveRemoteNotification()
         }
@@ -209,11 +213,11 @@ extension UIResponder {
         
         var aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
+        
         if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
             aClass = type(of: UNDelegate)
         }
         
-        let method = class_getInstanceMethod(aClass, originalSelector)
         if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UIApplication, Data) -> Void
@@ -231,6 +235,7 @@ extension UIResponder {
     
     @objc func om_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Logger.debug(message: "Did fail to register for remote notifications with error: \(error.localizedDescription)")
+        
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -259,6 +264,7 @@ extension UIResponder {
     
     @objc func om_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Logger.debug(message: "Did receive remote notification with user info: \(userInfo)")
+        
         guard let applicationDelegate = Ometria.sharedUIApplication()?.delegate else {
             return
         }
@@ -294,6 +300,7 @@ extension NSObject {
                                          newDidReceive response: UNNotificationResponse,
                                          withCompletionHandler completionHandler: @escaping () -> Void) {
         let originalSelector = NSSelectorFromString("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
+        
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotificationResponse, @escaping () -> Void) -> Void
@@ -312,6 +319,7 @@ extension NSObject {
                                          newWillPresent notification: UNNotification,
                                          withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let originalSelector = NSSelectorFromString("userNotificationCenter:willPresentNotification:withCompletionHandler:")
+        
         if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
             let swizzle = Swizzler.swizzles[originalMethod] {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotification, @escaping (UNNotificationPresentationOptions) -> Void) -> Void

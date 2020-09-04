@@ -30,6 +30,7 @@ struct CodableCaching<T> {
     
     static func deleteCachingDirectory() {
         let path = CodableCaching.relativePath
+        
         do {
             try FileManager.default.removeItem(atPath: path as String)
         } catch let error as NSError {
@@ -48,8 +49,10 @@ extension CodableCaching where T: Codable {
             guard let jsonData = try loadContentFromFile() else {
                 return nil
             }
+            
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
+            
             return try decoder.decode(T.self, from: jsonData)
         } catch let error as NSError {
             Logger.error(message: "CodableCaching: Failed to load JSON \(path)\n\(error)", category: .cache)
@@ -94,6 +97,7 @@ extension CodableCaching {
         if FileManager.default.fileExists(atPath: filePath) == false {
             return nil
         }
+        
         return try Data(contentsOf: URL(fileURLWithPath: filePath), options: [])
     }
     
@@ -101,6 +105,7 @@ extension CodableCaching {
         // Create directory if necessary
         let fileManager = FileManager.default
         let filePath = self.filePath as NSString
+        
         if fileManager.fileExists(atPath: filePath.deletingLastPathComponent) == false {
             try fileManager.createDirectory(atPath: filePath.deletingLastPathComponent, withIntermediateDirectories: false, attributes: nil)
         }

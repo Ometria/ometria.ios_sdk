@@ -42,6 +42,7 @@ class NetworkService<Config: NetworkServiceConfig> {
         
         // append http headers
         var mutableHeaders : [String : Any] = headers ?? [:]
+        
         for (k, v) in Config.httpHeaders ?? [:] {
             mutableHeaders.updateValue(v, forKey: k)
         }
@@ -58,14 +59,18 @@ class NetworkService<Config: NetworkServiceConfig> {
             }
             
             let validationResult = self.validate(data: data, response: response, error: error)
+            
             switch validationResult {
+                
             case .failure(let error):
                 completion(.failure(error))
+                
             case .success(_):
                 let serializationResult = self.serializeJSONResponse(data: data!, response: response as! HTTPURLResponse)
                 completion(serializationResult)
             }
         }
+        
         dataTask.resume()
         return dataTask
     }
@@ -74,6 +79,7 @@ class NetworkService<Config: NetworkServiceConfig> {
         guard error == nil else {
             return .failure(error!)
         }
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             return .failure(OmetriaError.invalidAPIResponse)
         }
@@ -87,8 +93,8 @@ class NetworkService<Config: NetworkServiceConfig> {
     }
     
     private func serializeErrorResponse(data: Data?, response: HTTPURLResponse) -> Error {
-        
         var apiError: OmetriaError? = nil
+        
         if let data = data {
             do {
                 let error = try JSONDecoder().decode(APIError.self, from: data)
@@ -96,6 +102,7 @@ class NetworkService<Config: NetworkServiceConfig> {
             } catch {
                 apiError = OmetriaError.decodingFailed(underlyingError: error)
             }
+            
         } else {
             let underlyingError = APIError(status: response.statusCode, type: "Unkown", title: "Unknown Error", detail: "Error details were not provided by server.")
             apiError = .apiError(underlyingError: underlyingError)

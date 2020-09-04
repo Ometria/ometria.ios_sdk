@@ -69,9 +69,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if config.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
         }
+        
         if config.automaticallyTrackAppLifecycle {
             automaticLifecycleTracker.startTracking()
         }
+        
         if config.automaticallyTrackScreenListing {
             automaticScreenViewsTracker.startTracking()
         }
@@ -110,9 +112,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     private func handleApplicationLaunch() {
         OmetriaDefaults.lastLaunchDate = Date()
+        
         if OmetriaDefaults.isFirstLaunch {
             handleAppInstall()
         }
+        
         trackAppLaunchedEvent()
     }
     
@@ -208,6 +212,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     private func trackProfileIdentifiedEvent(data: [String: Any]) {
         trackEvent(type: .profileIdentified, data: data)
+        
         if let fcmToken = OmetriaDefaults.fcmToken {
             trackPushTokenRefreshedEvent(pushToken: fcmToken)
         }
@@ -411,6 +416,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             
                 return false
         }
+        
         return true
     }
     

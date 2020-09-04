@@ -50,6 +50,7 @@ extension OmetriaError: LocalizedError {
         var data: [String: Any] = [:]
         data["class"] = self.domain + "." + self.type
         data["message"] = self.localizedDescription
+        
         if case .invalidNotificationContent(let content) = self {
             data["originalMessage"] = content
         }

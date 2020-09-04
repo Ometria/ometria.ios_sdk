@@ -28,6 +28,7 @@ public struct JSONParamEncoder: ParamEncoder {
         guard let parameters = parameters else {
             return urlRequest
         }
+        
         var mutableRequest = urlRequest
 
         let data = try JSONSerialization.data(withJSONObject: parameters, options: writingOptions)
@@ -50,10 +51,10 @@ public struct URLParamEncoder: ParamEncoder, HeaderEncoder {
         }
         
         var mutableRequest = urlRequest
+        
         guard let url = mutableRequest.url, let unwrappedParameters = parameters else {
             throw OmetriaError.requestMissingURL
         }
-        
         
         if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), !unwrappedParameters.isEmpty {
             urlComponents.queryItems = [URLQueryItem]()
@@ -76,6 +77,7 @@ public struct URLParamEncoder: ParamEncoder, HeaderEncoder {
         }
         
         var mutableRequest = urlRequest
+        
         for (key, value) in unwrappedHeaders {
             var finalValue = value as? String
             if value is CustomStringConvertible {

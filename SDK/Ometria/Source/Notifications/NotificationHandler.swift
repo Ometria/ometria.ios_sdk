@@ -30,7 +30,9 @@ class NotificationHandler {
         UNUserNotificationCenter.current().getDeliveredNotifications { [weak self] (notifications) in
             let lastProcessedDate = OmetriaDefaults.notificationProcessDate
             let newNotifications = notifications.filter({$0.date > lastProcessedDate})
+            
             OmetriaDefaults.notificationProcessDate = Date()
+            
             newNotifications.forEach({
                 self?.handleReceivedNotification($0, withCompletionHandler: {_ in })
             })
@@ -39,20 +41,25 @@ class NotificationHandler {
     
     func parseNotificationContent(_ content: UNNotificationContent) -> OmetriaNotificationBody? {
         let info = content.userInfo
+        
         guard let aps = info["aps"] as? [String: Any],
             let alert = aps["alert"] as? [String: Any],
             let ometriaContent = alert["ometria"] as? [String: Any] else {
             return nil
         }
+        
         do {
             let notificationBody = try OmetriaNotificationBody(dictionary: ometriaContent)
+            
             return notificationBody
         } catch let error as OmetriaError {
             Logger.error(message: error.localizedDescription)
             Ometria.sharedInstance().trackErrorOccuredEvent(error: error)
+            
             return nil
         } catch {
             Logger.error(message: error.localizedDescription)
+            
             return nil
         }
     }
@@ -75,11 +82,13 @@ class NotificationHandler {
                     Logger.verbose(message: "Notification authorization status changed to 'denied'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
+                
             case .notDetermined:
                 if lastKnownStatus != .notDetermined {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
+                
             @unknown default:
                 Logger.verbose(message: "Notification authorization status changed to an unknown status.", category: .push)
             }

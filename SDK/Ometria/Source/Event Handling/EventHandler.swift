@@ -70,11 +70,13 @@ class EventHandler {
             }
             
             let events = self.retrieveFlushableEvents()
+            
             guard events.count != 0 else {
                 return
             }
-            print(events.map({$0.isBeingFlushed}))
+            
             let batchedEvents = self.batchEvents(events: events)
+            
             for key in batchedEvents.keys {
                 let batch = batchedEvents[key]!
                 let flushSizedChunks = batch.chunked(into: Constants.flushMaxBatchSize)
@@ -88,7 +90,7 @@ class EventHandler {
     private func flushEvents(events: [OmetriaEvent]) {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
-        print(events.map({$0.isBeingFlushed}))
+        
         EventsAPI.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return

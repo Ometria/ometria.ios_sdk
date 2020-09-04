@@ -68,6 +68,7 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
             let fileURL = tmpSubFolderURL?.appendingPathComponent(imageFileIdentifier)
             try data.write(to: fileURL!, options: [.noFileProtection])
             let imageAttachment = try UNNotificationAttachment.init(identifier: imageFileIdentifier, url: fileURL!, options: options)
+            
             return imageAttachment
         } catch let error {
             print("error \(error)")

@@ -29,11 +29,14 @@ class EventsAPI {
         var parameters = events.first!.baseDictionary
         parameters?["events"] = events.map({$0.dictionary})
         parameters?["timestampSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
+        
         do {
             try networkService.request(.post, path: EventPath.flushValidate.rawValue, parameters: parameters) { (result: Result<Any>) in
                 switch result {
+                
                 case .failure(let error):
                     Logger.error(message: error.localizedDescription, category: .network)
+                
                 case .success(let response):
                     Logger.info(message: response, category: .network)
                 }
@@ -55,12 +58,15 @@ class EventsAPI {
         do {
             try networkService.request(.post, path: EventPath.flush.rawValue, parameters: parameters) { (result: Result<Any>) in
                 switch result {
+                    
                 case .failure(let error):
                     Logger.error(message: error.localizedDescription, category: .network)
+                    
                 case .success(let response):
-//                    Logger.info(message: ""response, category: .network)
+                    Logger.verbose(message: "Server response: \(response)", category: .network)
                     break
                 }
+                
                 DispatchQueue.main.async {
                     completion(result)
                 }

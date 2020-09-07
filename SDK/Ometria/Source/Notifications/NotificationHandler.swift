@@ -9,8 +9,20 @@
 import Foundation
 import UserNotifications
 
+/**
+ A protocol that allows you to control what happens when a user interacts with an Ometria originated push notification
+ */
+public protocol OmetriaNotificationInteractionDelegate: AnyObject {
+    /**
+     Allows you to handle the outcome when a user interacts with an Ometria push notifications that has a valid deeplink url in the payload
+     
+     - Parameter deepLink: the processed url string that was received in the interacted notification payload
+     */
+    func handleDeepLinkInteraction(_ deepLink: URL)
+}
 
 class NotificationHandler {
+    weak var interactionDelegate: OmetriaNotificationInteractionDelegate?
     
     func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         if let notificationBody = parseNotificationContent(notification.request.content) {
@@ -22,8 +34,15 @@ class NotificationHandler {
     func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         if let notificationBody = parseNotificationContent(response.notification.request.content) {
             Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
+            if let urlString = notificationBody.deepLinkActionURL {
+                if let url = URL(string: urlString) {
+                    interactionDelegate?.handleDeepLinkInteraction(url)
+                    completionHandler()
+                } else {
+                    Logger.error(message: "The URL provided in the notification is invalid: \(urlString)", category: .push)
+                }
+            }
         }
-        completionHandler()
     }
     
     func processDeliveredNotifications() {

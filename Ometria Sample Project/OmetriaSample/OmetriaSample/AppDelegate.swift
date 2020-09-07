@@ -12,12 +12,15 @@ import Ometria
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, OmetriaNotificationInteractionDelegate {
     
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Ometria.initialize(apiToken: "pk_test_IY2XfgrRsIlRGBP0rH2ks9dAbG1Ov24BsdggNTqP")
+        Ometria.sharedInstance().isLoggingEnabled = true
+        Ometria.sharedInstance().notificationInteractionDelegate = self
+        
         FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
@@ -56,6 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        print("Reaching continue userActivity")
+        return true
+    }
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("Reaching Did register for remote notifications")
     }
@@ -68,5 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Reaching Will present notification")
         completionHandler([.alert, .sound])
     }
+    
+    func handleDeepLinkInteraction(_ deepLink: URL) {
+        print("url: \(deepLink)")
+    }
+       
 }
 

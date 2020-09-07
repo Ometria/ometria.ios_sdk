@@ -14,6 +14,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     /// string that identifies your project in order to track events to it
     open var apiToken: String
+    open var notificationInteractionDelegate: OmetriaNotificationInteractionDelegate? {
+        get {
+            return notificationHandler.interactionDelegate
+        }
+        set {
+            notificationHandler.interactionDelegate = newValue
+        }
+    }
     
     static var instance: Ometria?
     private var config: OmetriaConfig
@@ -77,6 +85,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if config.automaticallyTrackScreenListing {
             automaticScreenViewsTracker.startTracking()
         }
+        
+        self.notificationHandler.interactionDelegate = self
     }
     
     /**
@@ -372,6 +382,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     // MARK: - Push notifications
     
+    open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+    }
+    
+    open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+    }
+    
     open func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void)
@@ -386,14 +404,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     {
         
         notificationHandler.handleReceivedNotification(notification, withCompletionHandler: completionHandler)
-    }
-    
-    open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-    }
-    
-    open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        
     }
     
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -420,4 +430,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return true
     }
     
+}
+
+// MARK: - Deeplink Interaction
+extension Ometria: OmetriaNotificationInteractionDelegate {
+    public func handleDeepLinkInteraction(_ deepLink: URL) {
+        Logger.debug(message: "Open URL: \(deepLink)", category: .push)
+        if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
+            Ometria.sharedUIApplication()?.open(deepLink)
+        }
+    }
 }

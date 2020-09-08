@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Ometria.initialize(apiToken: "pk_test_IY2XfgrRsIlRGBP0rH2ks9dAbG1Ov24BsdggNTqP")
+        Ometria.initialize(apiToken: "validation-only-test-key")//"pk_test_IY2XfgrRsIlRGBP0rH2ks9dAbG1Ov24BsdggNTqP")
         Ometria.sharedInstance().isLoggingEnabled = true
         Ometria.sharedInstance().notificationInteractionDelegate = self
         
@@ -77,9 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler([.alert, .sound])
     }
     
+    // MARK: - OmetriaNotificationInteractionDelegate
+    
     func handleDeepLinkInteraction(_ deepLink: URL) {
         print("url: \(deepLink)")
     }
-       
 }
-

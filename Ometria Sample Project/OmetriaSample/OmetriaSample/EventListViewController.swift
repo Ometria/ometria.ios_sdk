@@ -21,10 +21,12 @@ enum EventType: String, CaseIterable {
     case wishlistRemovedFrom
     case homeScreenViewed
     case screenViewedExplicit
-    case profileIdentified
+    case profileIdentifiedByEmail
+    case profileIdentifiedById
     case profileDeidentified
     case custom
     case flush
+    case clear
 }
 
 class EventListViewController: UITableViewController {
@@ -75,8 +77,11 @@ class EventListViewController: UITableViewController {
         case .screenViewedExplicit:
             Ometria.sharedInstance().trackScreenViewedEvent(screenName: "sample_screen_name")
         
-        case .profileIdentified:
+        case .profileIdentifiedByEmail:
             Ometria.sharedInstance().trackProfileIdentifiedEvent(email: "sample@profile.com")
+            
+        case .profileIdentifiedById:
+            Ometria.sharedInstance().trackProfileIdentifiedEvent(customerId: "sample_customer_id")
         
         case .profileDeidentified:
             Ometria.sharedInstance().trackProfileDeidentifiedEvent()
@@ -86,6 +91,9 @@ class EventListViewController: UITableViewController {
             
         case .flush:
             Ometria.sharedInstance().flush()
+            
+        case .clear:
+            Ometria.sharedInstance().clear()
         }
     }
     

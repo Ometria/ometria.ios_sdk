@@ -76,6 +76,6 @@ open class AutomaticLifecycleTracker {
     
     @objc func appDidBecomeActive() {
         Logger.verbose(message: "Application did become active", category: .application)
-        Ometria.sharedInstance().trackAppBackgroundedEvent()
+        Ometria.sharedInstance().trackAppForegroundedEvent()
     }
 }

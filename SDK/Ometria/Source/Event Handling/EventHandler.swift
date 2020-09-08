@@ -29,13 +29,11 @@ class EventHandler {
         eventsQueue = DispatchQueue(label: "com.ometria.eventQueue", qos: .utility)
     }
     
-    func processEvent(type: OmetriaEventType, data: [String: Any]) {
+    func processEvent(_ event: OmetriaEvent) {
         eventsQueue.async { [weak self] in
             guard let self = self else {
                 return
             }
-            
-            let event = OmetriaEvent(eventType: type, data: data)
             
             Logger.info(message: "Process Event \(event)", category: .events)
             self.saveEvent(event)
@@ -54,7 +52,7 @@ class EventHandler {
             
             if events.count >= self.flushLimit {
                 guard self.canPerformNetworkCall() else {
-                    Logger.info(message: "Tried to flush events but network is timed out", category: .network)
+                    Logger.debug(message: "Attempted to flush events but not enough time has passed since the last flush.", category: .network)
                     return
                 }
                 
@@ -91,7 +89,7 @@ class EventHandler {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
         
-        EventsAPI.flushEvents(events) { [weak self] result in
+        EventsAPI.validateEvents(events) { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -132,7 +130,7 @@ class EventHandler {
                 return
             }
             
-            Logger.verbose(message: "Clear all Events from local cache.", category: .events)
+            Logger.debug(message: "Clear all Events from local cache.", category: .events)
             self.trackedEvents.removeAll()
             JSONCache.trackedEvents.saveToFile(nil, async: true)
         }

@@ -25,10 +25,10 @@ class EventsAPI {
     
     static let networkService = NetworkService<EventServiceConfig>()
     
-    class func validateEvents(_ events: [OmetriaEvent], completion: @escaping ()->()) {
-        var parameters = events.first!.baseDictionary
-        parameters?["events"] = events.map({$0.dictionary})
-        parameters?["timestampSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
+    class func validateEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) {
+         var parameters = events.first!.baseDictionary ?? [:]
+        parameters["events"] = events.compactMap({$0.dictionary})
+        parameters["dtSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
         
         do {
             try networkService.request(.post, path: EventPath.flushValidate.rawValue, parameters: parameters) { (result: Result<Any>) in
@@ -39,6 +39,10 @@ class EventsAPI {
                 
                 case .success(let response):
                     Logger.info(message: response, category: .network)
+                }
+                
+                DispatchQueue.main.async {
+                    completion(result)
                 }
             }
         }

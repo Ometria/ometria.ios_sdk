@@ -7,6 +7,13 @@
 
 import Foundation
 
+/**
+ An object that describes the contents of a shopping basket.
+ 
+ - Parameter currency: A string representing the currency in ISO currency format. e.g. "USD", "GBP"
+ - Parameter price: A float value representing the pricing.
+ - Parameter items: An array containing the item entries in this basket.
+ */
 open class OmetriaBasket: Codable {
     open var currency: String
     open var totalPrice: Float

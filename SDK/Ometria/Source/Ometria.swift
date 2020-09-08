@@ -133,18 +133,19 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private func handleAppInstall() {
         OmetriaDefaults.isFirstLaunch = false
         resetAppInstallationId()
+        trackAppInstalledEvent()
     }
     
     private func resetAppInstallationId() {
         let installationID = UUID().uuidString
         OmetriaDefaults.installationID = installationID
-        trackAppInstalledEvent()
     }
     
     // MARK: - Event Tracking
     
     private func trackEvent(type: OmetriaEventType, data: [String: Any] = [:]) {
-        eventHandler.processEvent(type: type, data: data)
+        let event = OmetriaEvent(eventType: type, data: data)
+        eventHandler.processEvent(event)
     }
     
     // MARK: Application Related Events
@@ -206,7 +207,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: This event is absolutely pivotal to the functioning of the SDK, so take care to send it as early as possible. It is not mutually exclusive with sending an profile identified by e-mail event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(customerId: String) {
-        trackEvent(type: .profileIdentified, data: ["customerId": customerId])
+        trackProfileIdentifiedEvent(data: ["customerId": customerId])
     }
     
     /**
@@ -217,7 +218,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: Having a customerId makes profile matching more robust. It is not mutually exclusive with sending an profile identified by customerId event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(email: String) {
-        trackEvent(type: .profileIdentified, data: ["email": email])
+        trackProfileIdentifiedEvent(data: ["email": email])
     }
     
     private func trackProfileIdentifiedEvent(data: [String: Any]) {

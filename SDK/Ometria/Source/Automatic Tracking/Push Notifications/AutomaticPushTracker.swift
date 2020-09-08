@@ -145,7 +145,7 @@ open class AutomaticPushTracker: NSObject {
                                      withSelector: newSelector,
                                      for: newClass,
                                      name: "OmetriaDidReceiveRemoteNotification") { (_, _, _, _) in
-                                        Logger.debug(message: "Application didReceiveRemoteNotification")
+                                        Logger.debug(message: "Application didReceiveRemoteNotificationResponse")
             }
             
             let newWillPresentSelector = #selector(NSObject.om_userNotificationCenter(_:newWillPresent:withCompletionHandler:))
@@ -186,6 +186,7 @@ open class AutomaticPushTracker: NSObject {
         let token = Messaging.messaging().fcmToken
         
         if let token = token {
+            OmetriaDefaults.fcmToken = token
             Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
             Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
         }

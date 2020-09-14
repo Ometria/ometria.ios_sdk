@@ -18,13 +18,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Initialize the Ometria SDK here.
+        // Make sure to replace your token in the intialization method
         Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE")
+        
+        // Enable logs in order to see if there are any problems encountered
         Ometria.sharedInstance().isLoggingEnabled = true
+        
+        // Set the notificationInteractionDelegate in order to provide actions for
+        // notifications that contain a deeplink URL.
+        // The default functionality when you don't assign a delegate is opening urls in a browser
         Ometria.sharedInstance().notificationInteractionDelegate = self
         
+        // Configure Firebase. Make sure you replace the GoogleService-Info.plist file
+        // with the one from your project.
         FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
+        
+        
         configurePushNotifications()
         
         window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
@@ -60,11 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        print("Reaching continue userActivity")
-        return true
-    }
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("Reaching Did register for remote notifications")
     }
@@ -80,6 +88,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - OmetriaNotificationInteractionDelegate
     
+    // This method will be called each time the user interacts with a notification from Ometria
+    // which contains a deepLinkURL. Write your own custom code in order to
+    // properly redirect the app to the screen that should be displayed.
     func handleDeepLinkInteraction(_ deepLink: URL) {
         print("url: \(deepLink)")
     }

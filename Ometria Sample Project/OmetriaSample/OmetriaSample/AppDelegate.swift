@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Ometria.initialize(apiToken: "validation-only-test-key")//"pk_test_IY2XfgrRsIlRGBP0rH2ks9dAbG1Ov24BsdggNTqP")
+        Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE")
         Ometria.sharedInstance().isLoggingEnabled = true
         Ometria.sharedInstance().notificationInteractionDelegate = self
         

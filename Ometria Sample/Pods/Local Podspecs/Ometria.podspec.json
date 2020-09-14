@@ -1,0 +1,33 @@
+{
+  "name": "Ometria",
+  "version": "1.0",
+  "module_name": "Ometria",
+  "summary": "Ometria SDK for iOS (Swift)",
+  "source": {
+    "git": "",
+    "tag": ""
+  },
+  "license": {
+    "type": "BSD"
+  },
+  "authors": {
+    "Catalin Demian": "catalin.demian@tapptitude.com"
+  },
+  "homepage": "http://ometria.com/",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "frameworks": [
+    "UIKit",
+    "Foundation"
+  ],
+  "source_files": "Ometria/Source/*.{swift}",
+  "resources": "Ometria/*.{xib}",
+  "header_mappings_dir": "",
+  "static_framework": true,
+  "dependencies": {
+    "FirebaseMessaging": [
+
+    ]
+  }
+}

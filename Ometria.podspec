@@ -8,10 +8,10 @@ Pod::Spec.new do |s|
   s.author              = { 'Ometria Inc' => 'email@ometria.com' }
   s.source              = { :git => 'https://github.com/Ometria/ometria.ios_sdk.git',
                             :tag => 'v#{s.version}' }
+  s.swift_version       = '5.0'
   s.platform            = :ios, '10.0'
   s.frameworks          = 'UIKit', 'Foundation'
   s.source_files        = 'Ometria/**/*.{swift}'
-  s.resources           = 'Ometria/*.{xib}'
   s.static_framework    = true
   s.dependency 'FirebaseMessaging'
 end

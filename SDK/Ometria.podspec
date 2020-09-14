@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage            = 'http://ometria.com/'
   s.platform            = :ios, '10.0'
   s.frameworks          = 'UIKit', 'Foundation'
-  s.source_files        = 'Ometria/Source/*.{swift}', 'Ometria/Source/Configuration/*.{swift}', 'Ometria/Source/Automatic Tracking/', 'Ometria/Source/Automatic Tracking/Push Notifications', 'Ometria/Source/Automatic Tracking/App Lifecycle', 'Ometria/Source/Automatic Tracking/Screen Views', 'Ometria/Source/Logger', 'Ometria/Source/Model', 'Ometria/Source/Cache', 'Ometria/Source/Notifications', 'Ometria/Source/Event Handling', 'Ometria/Source/Error', 'Ometria/Source/Network', 'Ometria/Source/Util'
+  s.source_files        = 'Ometria/Source/*.{swift}'
   s.resources           = 'Ometria/*.{xib}'
   s.header_mappings_dir = ''
   s.static_framework    = true

@@ -1,0 +1,6 @@
+framework module Ometria {
+  umbrella header "Ometria-umbrella.h"
+
+  export *
+  module * { export * }
+}

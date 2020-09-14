@@ -89,7 +89,7 @@ class EventHandler {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
         
-        EventsAPI.validateEvents(events) { [weak self] result in
+        EventsAPI.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return
             }

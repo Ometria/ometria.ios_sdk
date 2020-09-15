@@ -58,7 +58,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     */
     open class func sharedInstance() -> Ometria {
         guard instance != nil else {
-            assert(false, "You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
+            fatalError("You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
         }
         return instance!
     }

@@ -341,11 +341,11 @@ Starting with iOS 12.0, Apple enabled regular applications to receive and displa
 
 To do so you simply have to go to **File** → **New** → **Target**, and select **Notification Service Extension** and select **Next**.
 
-[[images/notification_service_extension.png]]
+![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/notification_service_extension.png)
 
 You will then be able to see a new item in your target list.
 
-[[images/project_targets.png]]
+![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/project_targets.png)
 
 You will then need to make sure that the Ometria SDK is also available to this new target. To accomplish this you will have to update your podfile to include your newly added target and specify Ometria as a dependency just like you did with the app.
 

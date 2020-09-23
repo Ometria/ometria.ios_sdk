@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.swift_version       = '5.0'
   s.platform            = :ios, '10.0'
   s.frameworks          = 'UIKit', 'Foundation'
-  s.source_files        = 'Ometria/**/*.{swift}'
+  s.source_files        = 'Ometria/Sources/**/*.{swift}'
   s.static_framework    = true
   s.dependency 'FirebaseMessaging'
 end

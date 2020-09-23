@@ -22,10 +22,10 @@
 		4EA10CE724ED70AB007FF49D /* ParamEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */; };
 		4EA10CED24ED73B9007FF49D /* OmetriaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */; };
 		4EBDBF8D24C1906600AB8DCE /* Swizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */; };
-		4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */; };
 		4EBDBF9824C5F0AC00AB8DCE /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */; };
 		4EC94EDC24B8B9ED00B8591C /* Ometria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EDB24B8B9ED00B8591C /* Ometria.swift */; };
 		4EC94EDE24B8BCFB00B8591C /* OmetriaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EDD24B8BCFB00B8591C /* OmetriaConfig.swift */; };
+		4ED2E5D5251B7889009BAE2E /* AutomaticPushTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED2E5D4251B7889009BAE2E /* AutomaticPushTracker.swift */; };
 		4EDB190224B5E9D600CFE550 /* Ometria.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EDB18F424B5E9D500CFE550 /* Ometria.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EE7A8C824C81BC600B316A7 /* AutomaticLifecycleTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8C724C81BC600B316A7 /* AutomaticLifecycleTracker.swift */; };
 		4EE7A8CA24C81BDD00B316A7 /* ApplicationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */; };
@@ -42,40 +42,40 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaDefaults.swift; sourceTree = "<group>"; };
-		4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Ometria.swift"; sourceTree = "<group>"; };
-		4E5B2E2724ED4B470063FA50 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		4E5B2E2924ED4C320063FA50 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		4E5B2E2D24ED4CCB0063FA50 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
-		4E88929324ED9A07002593FD /* EventsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsAPI.swift; sourceTree = "<group>"; };
+		4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OmetriaDefaults.swift; path = OmetriaPackage/OmetriaDefaults.swift; sourceTree = "<group>"; };
+		4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "JSONEncoder+Ometria.swift"; path = "OmetriaPackage/JSONEncoder+Ometria.swift"; sourceTree = "<group>"; };
+		4E5B2E2724ED4B470063FA50 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = OmetriaPackage/NetworkService.swift; sourceTree = "<group>"; };
+		4E5B2E2924ED4C320063FA50 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Result.swift; path = OmetriaPackage/Result.swift; sourceTree = "<group>"; };
+		4E5B2E2D24ED4CCB0063FA50 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIError.swift; path = OmetriaPackage/APIError.swift; sourceTree = "<group>"; };
+		4E88929324ED9A07002593FD /* EventsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventsAPI.swift; path = OmetriaPackage/EventsAPI.swift; sourceTree = "<group>"; };
 		4E8961F9250FB1C200EEC9F6 /* Ometria.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Ometria.podspec; sourceTree = "<group>"; };
-		4E96478324E3F90B00274FC3 /* OmetriaBasketItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaBasketItem.swift; sourceTree = "<group>"; };
-		4E96478424E3F90B00274FC3 /* OmetriaBasket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaBasket.swift; sourceTree = "<group>"; };
-		4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticScreenViewsTracker.swift; sourceTree = "<group>"; };
-		4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
-		4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+KeyPath.swift"; sourceTree = "<group>"; };
-		4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParamEncoder.swift; sourceTree = "<group>"; };
-		4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaError.swift; sourceTree = "<group>"; };
+		4E96478324E3F90B00274FC3 /* OmetriaBasketItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OmetriaBasketItem.swift; path = OmetriaPackage/OmetriaBasketItem.swift; sourceTree = "<group>"; };
+		4E96478424E3F90B00274FC3 /* OmetriaBasket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OmetriaBasket.swift; path = OmetriaPackage/OmetriaBasket.swift; sourceTree = "<group>"; };
+		4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AutomaticScreenViewsTracker.swift; path = OmetriaPackage/AutomaticScreenViewsTracker.swift; sourceTree = "<group>"; };
+		4E96AB4E24D4927900623FA6 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationHandler.swift; path = OmetriaPackage/NotificationHandler.swift; sourceTree = "<group>"; };
+		4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "JSONDecoder+KeyPath.swift"; path = "OmetriaPackage/JSONDecoder+KeyPath.swift"; sourceTree = "<group>"; };
+		4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ParamEncoder.swift; path = OmetriaPackage/ParamEncoder.swift; sourceTree = "<group>"; };
+		4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OmetriaError.swift; path = OmetriaPackage/OmetriaError.swift; sourceTree = "<group>"; };
 		4EBDBF8C24C1906600AB8DCE /* Swizzler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swizzler.swift; sourceTree = "<group>"; };
-		4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticPushTracker.swift; sourceTree = "<group>"; };
 		4EBDBF9624C5EFFC00AB8DCE /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
 		4EC94EDB24B8B9ED00B8591C /* Ometria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ometria.swift; sourceTree = "<group>"; };
-		4EC94EDD24B8BCFB00B8591C /* OmetriaConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaConfig.swift; sourceTree = "<group>"; };
+		4EC94EDD24B8BCFB00B8591C /* OmetriaConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OmetriaConfig.swift; path = OmetriaPackage/OmetriaConfig.swift; sourceTree = "<group>"; };
+		4ED2E5D4251B7889009BAE2E /* AutomaticPushTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AutomaticPushTracker.swift; path = OmetriaPackage/AutomaticPushTracker.swift; sourceTree = "<group>"; };
 		4EDB18F124B5E9D500CFE550 /* Ometria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ometria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDB18F424B5E9D500CFE550 /* Ometria.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Ometria.h; sourceTree = "<group>"; };
 		4EDB18F524B5E9D500CFE550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4EE7A8C724C81BC600B316A7 /* AutomaticLifecycleTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomaticLifecycleTracker.swift; sourceTree = "<group>"; };
-		4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationUtils.swift; sourceTree = "<group>"; };
-		4EE7A8CD24C82E3D00B316A7 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteLock.swift; sourceTree = "<group>"; };
-		4EE7A8D224C88F0500B316A7 /* OmetriaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaEvent.swift; sourceTree = "<group>"; };
-		4EF3710924F39C4B00450B52 /* Array+Chunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Chunks.swift"; sourceTree = "<group>"; };
-		4EF3710C24F56D0E00450B52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		4EF3711124F7912C00450B52 /* OmetriaNotificationBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OmetriaNotificationBody.swift; sourceTree = "<group>"; };
-		4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaNotificationServiceExtension.swift; sourceTree = "<group>"; };
-		4EFF18B524EA55690020389A /* JSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONCache.swift; sourceTree = "<group>"; };
-		4EFF18B724EA559A0020389A /* CodableCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableCaching.swift; sourceTree = "<group>"; };
-		4EFF18BA24EA63230020389A /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
+		4EE7A8C724C81BC600B316A7 /* AutomaticLifecycleTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AutomaticLifecycleTracker.swift; path = OmetriaPackage/AutomaticLifecycleTracker.swift; sourceTree = "<group>"; };
+		4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApplicationUtils.swift; path = OmetriaPackage/ApplicationUtils.swift; sourceTree = "<group>"; };
+		4EE7A8CD24C82E3D00B316A7 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = OmetriaPackage/Logger.swift; sourceTree = "<group>"; };
+		4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReadWriteLock.swift; path = OmetriaPackage/ReadWriteLock.swift; sourceTree = "<group>"; };
+		4EE7A8D224C88F0500B316A7 /* OmetriaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OmetriaEvent.swift; path = OmetriaPackage/OmetriaEvent.swift; sourceTree = "<group>"; };
+		4EF3710924F39C4B00450B52 /* Array+Chunks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Array+Chunks.swift"; path = "OmetriaPackage/Array+Chunks.swift"; sourceTree = "<group>"; };
+		4EF3710C24F56D0E00450B52 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = OmetriaPackage/Constants.swift; sourceTree = "<group>"; };
+		4EF3711124F7912C00450B52 /* OmetriaNotificationBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OmetriaNotificationBody.swift; path = OmetriaPackage/OmetriaNotificationBody.swift; sourceTree = "<group>"; };
+		4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OmetriaNotificationServiceExtension.swift; path = OmetriaPackage/OmetriaNotificationServiceExtension.swift; sourceTree = "<group>"; };
+		4EFF18B524EA55690020389A /* JSONCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JSONCache.swift; path = OmetriaPackage/JSONCache.swift; sourceTree = "<group>"; };
+		4EFF18B724EA559A0020389A /* CodableCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CodableCaching.swift; path = OmetriaPackage/CodableCaching.swift; sourceTree = "<group>"; };
+		4EFF18BA24EA63230020389A /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventHandler.swift; path = OmetriaPackage/EventHandler.swift; sourceTree = "<group>"; };
 		7F5D7686F934DEAE653B4617 /* Pods_Ometria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ometria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -101,6 +101,7 @@
 				4EF3710C24F56D0E00450B52 /* Constants.swift */,
 			);
 			name = Util;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CBF250F7AA100D68DEB /* Error */ = {
@@ -109,6 +110,7 @@
 				4EA10CEC24ED73B9007FF49D /* OmetriaError.swift */,
 			);
 			name = Error;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC0250F7AAD00D68DEB /* Network */ = {
@@ -121,6 +123,7 @@
 				4E5B2E2D24ED4CCB0063FA50 /* APIError.swift */,
 			);
 			name = Network;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC1250F7AC100D68DEB /* Event Handling */ = {
@@ -129,6 +132,7 @@
 				4EFF18BA24EA63230020389A /* EventHandler.swift */,
 			);
 			name = "Event Handling";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC2250F7AD200D68DEB /* Notification Handling */ = {
@@ -138,6 +142,7 @@
 				4EF3711324F8468B00450B52 /* OmetriaNotificationServiceExtension.swift */,
 			);
 			name = "Notification Handling";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC4250F7AEB00D68DEB /* Cache */ = {
@@ -148,6 +153,7 @@
 				4EFF18B724EA559A0020389A /* CodableCaching.swift */,
 			);
 			name = Cache;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC6250F7B1800D68DEB /* Model */ = {
@@ -159,6 +165,7 @@
 				4EF3711124F7912C00450B52 /* OmetriaNotificationBody.swift */,
 			);
 			name = Model;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC7250F7B2800D68DEB /* Logger */ = {
@@ -168,6 +175,7 @@
 				4EE7A8CF24C8483600B316A7 /* ReadWriteLock.swift */,
 			);
 			name = Logger;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CC8250F7B3E00D68DEB /* Automatic Tracking */ = {
@@ -187,6 +195,7 @@
 				4E96AB4724D30ADB00623FA6 /* AutomaticScreenViewsTracker.swift */,
 			);
 			name = "Screen Views";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CCA250F7B4F00D68DEB /* App Lifecycle */ = {
@@ -195,14 +204,16 @@
 				4EE7A8C724C81BC600B316A7 /* AutomaticLifecycleTracker.swift */,
 			);
 			name = "App Lifecycle";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CCB250F7B5700D68DEB /* Push Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				4EBDBF9124C1A76D00AB8DCE /* AutomaticPushTracker.swift */,
+				4ED2E5D4251B7889009BAE2E /* AutomaticPushTracker.swift */,
 			);
 			name = "Push Notifications";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4E567CCC250F7B7C00D68DEB /* Configuration */ = {
@@ -211,6 +222,7 @@
 				4EC94EDD24B8BCFB00B8591C /* OmetriaConfig.swift */,
 			);
 			name = Configuration;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		4EBDBF9524C5EFFB00AB8DCE /* Frameworks */ = {
@@ -222,11 +234,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4EC94EDA24B8B94C00B8591C /* Source */ = {
+		4EC94EDA24B8B94C00B8591C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4E567CCC250F7B7C00D68DEB /* Configuration */,
+				4ED2E5D2251B6F6F009BAE2E /* OmetriaPackage */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		4ED2E5D2251B6F6F009BAE2E /* OmetriaPackage */ = {
+			isa = PBXGroup;
+			children = (
+				4EC94EDB24B8B9ED00B8591C /* Ometria.swift */,
 				4E567CC8250F7B3E00D68DEB /* Automatic Tracking */,
+				4E567CCC250F7B7C00D68DEB /* Configuration */,
+				4EDB190B24B62E5100CFE550 /* Supporting Files */,
 				4E567CC7250F7B2800D68DEB /* Logger */,
 				4E567CC6250F7B1800D68DEB /* Model */,
 				4E567CC4250F7AEB00D68DEB /* Cache */,
@@ -235,16 +257,15 @@
 				4E567CC0250F7AAD00D68DEB /* Network */,
 				4E567CBF250F7AA100D68DEB /* Error */,
 				4E567CBE250F7A7A00D68DEB /* Util */,
-				4EC94EDB24B8B9ED00B8591C /* Ometria.swift */,
 			);
-			path = Source;
+			path = OmetriaPackage;
 			sourceTree = "<group>";
 		};
 		4EDB18E724B5E9D500CFE550 = {
 			isa = PBXGroup;
 			children = (
 				4E8961F9250FB1C200EEC9F6 /* Ometria.podspec */,
-				4EDB18F324B5E9D500CFE550 /* Ometria */,
+				4EC94EDA24B8B94C00B8591C /* Sources */,
 				4EDB18F224B5E9D500CFE550 /* Products */,
 				4EBDBF9524C5EFFB00AB8DCE /* Frameworks */,
 			);
@@ -256,15 +277,6 @@
 				4EDB18F124B5E9D500CFE550 /* Ometria.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		4EDB18F324B5E9D500CFE550 /* Ometria */ = {
-			isa = PBXGroup;
-			children = (
-				4EC94EDA24B8B94C00B8591C /* Source */,
-				4EDB190B24B62E5100CFE550 /* Supporting Files */,
-			);
-			path = Ometria;
 			sourceTree = "<group>";
 		};
 		4EDB190B24B62E5100CFE550 /* Supporting Files */ = {
@@ -373,6 +385,7 @@
 				4EA10CED24ED73B9007FF49D /* OmetriaError.swift in Sources */,
 				4EC94EDC24B8B9ED00B8591C /* Ometria.swift in Sources */,
 				4EA10CE524ED5A97007FF49D /* JSONDecoder+KeyPath.swift in Sources */,
+				4ED2E5D5251B7889009BAE2E /* AutomaticPushTracker.swift in Sources */,
 				4E5B2E2A24ED4C320063FA50 /* Result.swift in Sources */,
 				4EF3710A24F39C4B00450B52 /* Array+Chunks.swift in Sources */,
 				4E96478524E3F90B00274FC3 /* OmetriaBasketItem.swift in Sources */,
@@ -383,7 +396,6 @@
 				4EE7A8CE24C82E3D00B316A7 /* Logger.swift in Sources */,
 				4EFF18B624EA55690020389A /* JSONCache.swift in Sources */,
 				4EE7A8C824C81BC600B316A7 /* AutomaticLifecycleTracker.swift in Sources */,
-				4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */,
 				4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */,
 				4EF3711424F8468B00450B52 /* OmetriaNotificationServiceExtension.swift in Sources */,
 				4EF3710D24F56D0E00450B52 /* Constants.swift in Sources */,

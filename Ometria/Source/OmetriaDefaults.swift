@@ -55,4 +55,8 @@ struct OmetriaDefaults {
     static var lastKnownNotificationAuthorizationStatus: Int
     @UserDefault(key: "com.ometria.networkTimedOutUntilDate", defaultValue: Date(timeIntervalSince1970: 0))
     static var networkTimedOutUntilDate: Date
+    @UserDefault(key: "com.ometria.identifiedCustomerEmail", defaultValue: nil)
+    static var identifiedCustomerEmail
+    @UserDefault(key: "com.ometria.identifiedCustomerID", defaultValue: nil)
+    static var identifiedCustomerID
 }

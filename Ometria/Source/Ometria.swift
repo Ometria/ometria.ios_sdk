@@ -207,6 +207,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: This event is absolutely pivotal to the functioning of the SDK, so take care to send it as early as possible. It is not mutually exclusive with sending an profile identified by e-mail event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(customerId: String) {
+        OmetriaDefaults.identifiedCustomerID = customerId
         trackProfileIdentifiedEvent(data: ["customerId": customerId])
     }
     
@@ -218,6 +219,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: Having a customerId makes profile matching more robust. It is not mutually exclusive with sending an profile identified by customerId event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(email: String) {
+        OmetriaDefaults.identifiedCustomerEmail = email
         trackProfileIdentifiedEvent(data: ["email": email])
     }
     
@@ -237,6 +239,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: calling this method will cause the installation ID to be reset, and the SDK will log an event to send the new id.
      */
     open func trackProfileDeidentifiedEvent() {
+        OmetriaDefaults.identifiedCustomerEmail = nil
+        OmetriaDefaults.identifiedCustomerID = nil
         trackEvent(type: .profileDeidentified)
         resetAppInstallationId()
     }
@@ -315,7 +319,17 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     // MARK: Notification Related Events
     
     func trackPushTokenRefreshedEvent(pushToken: String) {
-        trackEvent(type: .pushTokenRefreshed, data: ["pushToken": pushToken])
+        var data = ["pushToken": pushToken]
+        
+        if let customerEmail = OmetriaDefaults.identifiedCustomerEmail {
+            data["email"] = customerEmail
+        }
+        
+        if let customerID = OmetriaDefaults.identifiedCustomerID {
+            data["customerId"] = customerID
+        }
+        
+        trackEvent(type: .pushTokenRefreshed, data: data)
         eventHandler.flushEvents()
     }
     

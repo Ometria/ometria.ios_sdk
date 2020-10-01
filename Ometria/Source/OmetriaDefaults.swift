@@ -56,7 +56,7 @@ struct OmetriaDefaults {
     @UserDefault(key: "com.ometria.networkTimedOutUntilDate", defaultValue: Date(timeIntervalSince1970: 0))
     static var networkTimedOutUntilDate: Date
     @UserDefault(key: "com.ometria.identifiedCustomerEmail", defaultValue: nil)
-    static var identifiedCustomerEmail
+    static var identifiedCustomerEmail: String
     @UserDefault(key: "com.ometria.identifiedCustomerID", defaultValue: nil)
-    static var identifiedCustomerID
+    static var identifiedCustomerID: String
 }

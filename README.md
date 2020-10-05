@@ -335,6 +335,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 The Ometria SDK will automatically source all the required tokens, and provide them to the backend. This way your app will start receiving notifications from Ometria, although handling those notifications while the app is running in foreground is up to you.
 
+### Handling interaction with notifications that contain URLs
+
+Ometria enables you to send relevant URLs alongside your push notifications and allows you to handle them on the device. By default, the Ometria SDK will automatically handle any interaction with push notifications that contain URLs by opening them in a browser. However, it enables developers to customly handle those URLs as they see fit (e.g. take the user to a specific screen in the app).
+
+In order to get access to those interactions and the URLs, you will have to implement the `OmetriaNotificationInteractionDelegate`. There is only one method that is required, and it will be triggered every time the user taps on a notification that has a deepLink action URL. This is what it would look like in code:
+
+```swift
+#import UserNotifications
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate,  OmetriaNotificationInteractionDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Ometria.initialize(apiToken: "OMETRIA_API_TOKEN")
+        Ometria.sharedInstance().notificationInteractionDelegate = self
+
+        return true
+    }
+
+    // This method will be called each time the user interacts with a notification from Ometria
+    // which contains a deepLinkURL. Write your own custom code in order to
+    // properly redirect the app to the screen that should be displayed.
+    func handleDeepLinkInteraction(_ deepLink: URL) {
+        print("url: \(deepLink)")
+    }
+}
+```
+
 ### Enabling rich content notifications
 
 Starting with iOS 12.0, Apple enabled regular applications to receive and display notifications that contain media content such as images. Ometria uses these feature to further enhance your application, but it requires you to add a new target extension that intercepts all push notifications containing `'mutable-content: 1'` in the payload.

@@ -18,7 +18,7 @@ The sending and displaying of push notifications is handled by Ometria behind th
 2\. Prerequisite Steps
 ----------------------
 
-Obtaining API token information
+In order to obtain an API token please follow the instructions [here](https://support.ometria.com/hc/en-gb/articles/360013658478-Setting-up-your-mobile-app-with-Firebase-credentials)
 
 3\. Install the Library
 -----------------------

@@ -453,6 +453,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
         Logger.debug(message: "Open URL: \(deepLink)", category: .push)
         if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
             Ometria.sharedUIApplication()?.open(deepLink)
+            trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
         }
     }
 }

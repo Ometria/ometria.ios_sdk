@@ -96,7 +96,6 @@
 				96A647FA2CD6F1046950F04B /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */,
 				1501BEFE755BBD84612970E9 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -486,7 +485,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OmetriaSample/OmetriaSample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -509,7 +508,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OmetriaSample/OmetriaSample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -530,6 +529,7 @@
 			baseConfigurationReference = 96A647FA2CD6F1046950F04B /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSampleNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
@@ -551,6 +551,7 @@
 			baseConfigurationReference = 1501BEFE755BBD84612970E9 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = G7T599BH7B;
 				INFOPLIST_FILE = OmetriaSampleNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;

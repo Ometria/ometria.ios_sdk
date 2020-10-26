@@ -165,6 +165,12 @@ trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket)
 
 #### Deep Link Opened
 
+Based on the implementation status of interaction with notifications that contain deeplinks, this event can be automatically tracked or not. 
+
+The default implementation will automatically log a deep link opened event every time the user interacts with a notification that has a deep link. This is possible since we know that the default implementation will open the link in a browser. 
+
+However, if you chose to handle deeplinks yourself (using the guide for [Handling interaction with notifications that contain URLs](#handling_interaction_with_notifications_that_contain_urls)), then you should manually track this event when you have enough information regarding the screen (or other destination) that the app will open.
+
 ```swift
 trackDeepLinkOpenedEvent(link: String, screenName: String)
 ```
@@ -259,7 +265,7 @@ You can completely clear all the events that have been tracked and not yet flush
 Ometria.sharedInstance().clear()
 ```
 
-5\. Push Notifications Guide
+6\. Push Notifications Guide
 ----------------------------
 
 Ometria has the potential of providing personalized remote notifications for your mobile application, but in order to do so, it needs to be properly set up. To benefit from its full potential you need to cover the following steps:

@@ -39,7 +39,7 @@ enum OmetriaEventType: String, Codable, CaseIterable {
     
     // MARK: Other event types
     case deepLinkOpened
-    case custom
+    case custom = "customEvent"
     case errorOccurred
 }
 

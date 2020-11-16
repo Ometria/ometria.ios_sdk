@@ -282,7 +282,7 @@ Ometria has the potential of providing personalized remote notifications for you
 If you reached this section, we assume that you have already configured both the Ometria SDK, and Firebase. Once you managed to properly create or modify your application to support push notifications, you can move on to configure everything in your AppDelegate like so:
 
 ```swift
-#import UserNotifications
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -348,7 +348,7 @@ Ometria enables you to send relevant URLs alongside your push notifications and 
 In order to get access to those interactions and the URLs, you will have to implement the `OmetriaNotificationInteractionDelegate`. There is only one method that is required, and it will be triggered every time the user taps on a notification that has a deepLink action URL. This is what it would look like in code:
 
 ```swift
-#import UserNotifications
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate,  OmetriaNotificationInteractionDelegate {

@@ -186,8 +186,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
     */
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
-        var data = additionalInfo
-        data["page"] = screenName
+        
+        var data: [String: Any] = ["page": screenName,
+                                   "extra": additionalInfo]
         trackEvent(type: .screenViewedExplicit, data: data)
     }
     

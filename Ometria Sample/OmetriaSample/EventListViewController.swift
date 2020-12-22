@@ -60,7 +60,7 @@ class EventListViewController: UITableViewController {
             Ometria.sharedInstance().trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
         
         case .productListingViewed:
-            Ometria.sharedInstance().trackProductListingViewedEvent()
+            Ometria.sharedInstance().trackProductListingViewedEvent(listingType: "category", listingAttributes: ["categoryID": "sampleCategoryID"])
         
         case .productViewed:
             Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")

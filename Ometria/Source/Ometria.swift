@@ -257,8 +257,16 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .productViewed, data: ["productId": productId])
     }
     
-    open func trackProductListingViewedEvent() {
-        trackEvent(type: .productListingViewed)
+    open func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
+        var data: [String: Any] = [:]
+        if let listingType = listingType {
+            data["listingType"] = listingType
+        }
+        if let listingAttributes = listingAttributes {
+            data["listingAttributes"] = listingAttributes
+        }
+        
+        trackEvent(type: .productListingViewed, data: data)
     }
     
     /**

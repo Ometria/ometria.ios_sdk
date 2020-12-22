@@ -15,7 +15,7 @@ import Foundation
  - Parameter quantity: The number of items that this entry represents.
  - Parameter price: Float value representing the price for one item. The currency is established by the OmetriaBasket containing this item
  */
-open class OmetriaBasketItem: Codable {
+open class OmetriaBasketItem: Codable, Equatable {
     open var productId: String
     open var sku: String?
     open var quantity: Int

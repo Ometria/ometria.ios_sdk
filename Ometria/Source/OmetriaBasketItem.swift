@@ -16,6 +16,7 @@ import Foundation
  - Parameter price: Float value representing the price for one item. The currency is established by the OmetriaBasket containing this item
  */
 open class OmetriaBasketItem: Codable, Equatable {
+    
     open var productId: String
     open var sku: String?
     open var quantity: Int
@@ -26,5 +27,9 @@ open class OmetriaBasketItem: Codable, Equatable {
         self.sku = sku
         self.quantity = quantity
         self.price = price
+    }
+    
+    public static func == (lhs: OmetriaBasketItem, rhs: OmetriaBasketItem) -> Bool {
+        return lhs.productId == rhs.productId
     }
 }

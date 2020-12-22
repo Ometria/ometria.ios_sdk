@@ -186,8 +186,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
     */
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
-        
-        var data: [String: Any] = ["page": screenName,
+        let data: [String: Any] = ["page": screenName,
                                    "extra": additionalInfo]
         trackEvent(type: .screenViewedExplicit, data: data)
     }
@@ -257,6 +256,13 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .productViewed, data: ["productId": productId])
     }
     
+    
+    /**
+     Track whenever a visitor clicks / taps / views / highlights or otherwise shows interest in a product listing.
+     
+     - Parameter listingType: A string representing the type of the listing. Can be category or search or other.
+     - Parameter listingAttributes: A dictionary containing the parameters associated with the listing. Can contain a category id or a search query for example.
+     */
     open func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
         var data: [String: Any] = [:]
         if let listingType = listingType {
@@ -314,11 +320,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter orderId: The id that your system generated for the completed order
      - Parameter basket: an OmetriaBasket object containing all the items in the order and also the total pricing and currency
      */
-    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket) {
+    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket? = nil) {
         do {
-            let serializedBasket = try basket.jsonObject()
-            trackEvent(type: .orderCompleted, data: ["orderId": orderId,
-                                                     "basket": serializedBasket])
+            var data: [String: Any] = ["orderId": orderId]
+            if let basket = basket {
+                let serializedBasket = try basket.jsonObject()
+                data["basket"] = serializedBasket
+            }
+            trackEvent(type: .orderCompleted, data: data)
         } catch {
             Logger.error(message: "Failed to track \(OmetriaEventType.orderCompleted.rawValue) event with error: \(error)", category: .events)
         }

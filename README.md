@@ -103,6 +103,16 @@ But having a customerId makes profile matching more robust. It is not mutually e
 
 These two events are absolutely pivotal to the functioning of the SDK, so take care to send them as early as possible.
 
+#### Profile Deidentified
+
+Undo a profileIdentified event.
+
+Use this if a user logs out, or otherwise signals that this device is no longer attached to the same person.
+
+```swift
+trackProfileDeidentifiedEvent()
+```
+
 #### Product Viewed
 
 A visitor clicks / taps / views / highlights or otherwise shows interest in a product.
@@ -112,17 +122,6 @@ Think for example searching for a term, and selecting one of the product preview
 ```swift
 trackProductViewedEvent(productId: String)
 ```
-
-#### Product Category Viewed
-A visitor clicks / taps / views / highlights or otherwise shows interest in a product category.
-
-For example, a store sells clothing, and they tap on "Women's Footwear".
-
-```swift
-trackProductCategoryViewedEvent(category: String)
-```
-
-The value is opaque, and is only used to create segments and automation campaigns in the Ometria app. Stick to non-localised, predictable, human readable slugs. E.g. "womens-footwear".
 
 #### Wishlist events
 
@@ -193,6 +192,10 @@ Concretely, this event should at least be triggered on:
 * category lists
 * any similar such screen
 
+```swift
+trackProductListingViewedEvent(listingType: String?, listingAttributes: [String: Any]?)
+```
+
 #### Screen Viewed
 
 Tracking a user's independent screen views helps us track engagement of a user with the app, as well as where they are in a journey. An analogous event on a website would be to track independent page views.
@@ -210,7 +213,7 @@ Your app may have specific flows or pages that are of interest to the marketing 
 Check with the marketing team about the specifics, and what they might need. Especially if they're already using Ometria for e-mail, they will know about automation campaigns and custom events.
 
 ```swift
-trackCustomEvent(customEventType: String, additionalInfo: [String: Any])
+trackCustomEvent(customEventType: String, additionalInfo: [String: Any]?)
 ```
 
 ### `OmetriaBasket`

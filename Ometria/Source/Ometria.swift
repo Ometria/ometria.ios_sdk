@@ -383,9 +383,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter customEventType: a string representing the name of the custom event
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
-    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]) {
-        var data: [String: Any] = ["properties": additionalInfo]
-        data["customEventType"] = customEventType
+    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]? = nil) {
+        var data: [String: Any] = ["customEventType": customEventType]
+        if let additionalInfo = additionalInfo {
+            data["properties"] = additionalInfo
+        }
         trackEvent(type: .custom, data: data)
     }
     

@@ -42,8 +42,8 @@ Ometria uses [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-m
 
 To do this, add ‘Firebase/Messaging’ as a dependency of Ometria. 
 
-⋅⋅* If you installed the library via CocoaPods it is automatically installed. 
-⋅⋅* If you added Ometria manually in your project, you should [install the Firebase SDK](https://firebase.google.com/docs/cloud-messaging/ios/client) separately.
+* If you installed the library via CocoaPods it is automatically installed. 
+* If you added Ometria manually in your project, you should [install the Firebase SDK](https://firebase.google.com/docs/cloud-messaging/ios/client) separately.
 
 After initialising Ometria, do the same for [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging/ios/client). 
 
@@ -193,6 +193,10 @@ trackDeepLinkOpenedEvent(link: String, screenName: String)
 
 The visitor views the ‘home page’ or landing screen of your app.
 
+```swift
+trackHomeScreenViewedEvent()
+```
+
 #### View list of products
 
 The visitor clicks/taps/views/highlights or otherwise shows interest in a product listing. This kind of screen includes search results, listings of products in a group, category, collection or any other screen that presents a list of products.
@@ -201,9 +205,9 @@ E.g., A store sells clothing, and the visitor taps on "Women's Footwear" to see 
 
 This event should be triggered on:
 
-⋅⋅* search results
-⋅⋅* category lists
-⋅⋅* any similar screens
+* search results
+* category lists
+* any similar screens
 
 ```swift
 trackProductListingViewedEvent(listingType: String?, listingAttributes: [String: Any]?)
@@ -322,8 +326,8 @@ Follow these steps:
 
 Before continuing, you must have already configured:
 
-⋅⋅* The Ometria SDK
-⋅⋅* Firebase
+* The Ometria SDK
+* Firebase
 
 Once you managed to properly create or modify your application to support push notifications, you can move on to configure everything in your AppDelegate like so:
 
@@ -484,4 +488,4 @@ class NotificationService: OmetriaNotificationServiceExtension {
 }
 ```
 
-Now you can receive notifications from Ometria and you are also to see the images that are attached to your notifications.
+Now you can receive notifications from Ometria and you are also able to see the images that are attached to your notifications.

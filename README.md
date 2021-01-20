@@ -193,6 +193,10 @@ trackDeepLinkOpenedEvent(link: String, screenName: String)
 
 The visitor views the ‘home page’ or landing screen of your app.
 
+```swift
+trackHomeScreenViewedEvent()
+```
+
 #### View list of products
 
 The visitor clicks/taps/views/highlights or otherwise shows interest in a product listing. This kind of screen includes search results, listings of products in a group, category, collection or any other screen that presents a list of products.

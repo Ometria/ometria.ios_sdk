@@ -4,3 +4,6 @@ Ometria Sample/Pods
 Ometria.xcodeproj/xcuserdata
 Pods
 Ometria.xcworkspace
+Package.resolved
+.build
+.swiftpm

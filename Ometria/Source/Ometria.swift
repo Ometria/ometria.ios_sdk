@@ -242,7 +242,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         OmetriaDefaults.identifiedCustomerEmail = nil
         OmetriaDefaults.identifiedCustomerID = nil
         trackEvent(type: .profileDeidentified)
-        resetAppInstallationId()
     }
     
     // MARK: Product Related Events

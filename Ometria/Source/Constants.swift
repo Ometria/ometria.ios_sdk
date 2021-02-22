@@ -14,5 +14,4 @@ public struct Constants {
     static let flushMaxBatchSize = 100
     static let networkCallTimeoutSeconds: TimeInterval = 10
     static let tooManyRequestsStatusCode: Int = 429
-    
 }

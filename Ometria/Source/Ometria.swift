@@ -314,6 +314,19 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     /**
+     Track when the user has started the checkout process.
+     
+     - Parameter orderId: The id that your system generated for the order that is being checked out
+     */
+    open func trackCheckoutStartedEvent(orderId: String? = nil) {
+        var data: [String: Any] = [:]
+        if let orderId = orderId {
+            data["orderId"] = orderId
+        }
+        trackEvent(type: .checkoutStarted, data: data)
+    }
+    
+    /**
      Track when an order has been completed and paid for.
      
      - Parameter orderId: The id that your system generated for the completed order

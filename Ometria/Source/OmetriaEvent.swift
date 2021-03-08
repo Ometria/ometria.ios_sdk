@@ -14,6 +14,7 @@ enum OmetriaEventType: String, Codable, CaseIterable {
     // MARK: Product related event types
     case basketUpdated
     case basketViewed
+    case checkoutStarted
     case orderCompleted
     case productListingViewed
     case productViewed

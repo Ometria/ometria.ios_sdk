@@ -186,8 +186,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
     */
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
-        var data = additionalInfo
-        data["page"] = screenName
+        let data: [String: Any] = ["page": screenName,
+                                   "extra": additionalInfo]
         trackEvent(type: .screenViewedExplicit, data: data)
     }
     
@@ -207,6 +207,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: This event is absolutely pivotal to the functioning of the SDK, so take care to send it as early as possible. It is not mutually exclusive with sending an profile identified by e-mail event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(customerId: String) {
+        OmetriaDefaults.identifiedCustomerID = customerId
         trackProfileIdentifiedEvent(data: ["customerId": customerId])
     }
     
@@ -218,6 +219,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: Having a customerId makes profile matching more robust. It is not mutually exclusive with sending an profile identified by customerId event: send either event as soon as you have the information, for optimal integration.
      */
     open func trackProfileIdentifiedEvent(email: String) {
+        OmetriaDefaults.identifiedCustomerEmail = email
         trackProfileIdentifiedEvent(data: ["email": email])
     }
     
@@ -237,8 +239,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Important: calling this method will cause the installation ID to be reset, and the SDK will log an event to send the new id.
      */
     open func trackProfileDeidentifiedEvent() {
+        OmetriaDefaults.identifiedCustomerEmail = nil
+        OmetriaDefaults.identifiedCustomerID = nil
         trackEvent(type: .profileDeidentified)
-        resetAppInstallationId()
     }
     
     // MARK: Product Related Events
@@ -252,8 +255,23 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .productViewed, data: ["productId": productId])
     }
     
-    open func trackProductListingViewedEvent() {
-        trackEvent(type: .productListingViewed)
+    
+    /**
+     Track whenever a visitor clicks / taps / views / highlights or otherwise shows interest in a product listing.
+     
+     - Parameter listingType: A string representing the type of the listing. Can be category or search or other.
+     - Parameter listingAttributes: A dictionary containing the parameters associated with the listing. Can contain a category id or a search query for example.
+     */
+    open func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
+        var data: [String: Any] = [:]
+        if let listingType = listingType {
+            data["listingType"] = listingType
+        }
+        if let listingAttributes = listingAttributes {
+            data["listingAttributes"] = listingAttributes
+        }
+        
+        trackEvent(type: .productListingViewed, data: data)
     }
     
     /**
@@ -296,16 +314,32 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     /**
+     Track when the user has started the checkout process.
+     
+     - Parameter orderId: The id that your system generated for the order that is being checked out
+     */
+    open func trackCheckoutStartedEvent(orderId: String? = nil) {
+        var data: [String: Any] = [:]
+        if let orderId = orderId {
+            data["orderId"] = orderId
+        }
+        trackEvent(type: .checkoutStarted, data: data)
+    }
+    
+    /**
      Track when an order has been completed and paid for.
      
      - Parameter orderId: The id that your system generated for the completed order
      - Parameter basket: an OmetriaBasket object containing all the items in the order and also the total pricing and currency
      */
-    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket) {
+    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket? = nil) {
         do {
-            let serializedBasket = try basket.jsonObject()
-            trackEvent(type: .orderCompleted, data: ["orderId": orderId,
-                                                     "basket": serializedBasket])
+            var data: [String: Any] = ["orderId": orderId]
+            if let basket = basket {
+                let serializedBasket = try basket.jsonObject()
+                data["basket"] = serializedBasket
+            }
+            trackEvent(type: .orderCompleted, data: data)
         } catch {
             Logger.error(message: "Failed to track \(OmetriaEventType.orderCompleted.rawValue) event with error: \(error)", category: .events)
         }
@@ -315,7 +349,17 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     // MARK: Notification Related Events
     
     func trackPushTokenRefreshedEvent(pushToken: String) {
-        trackEvent(type: .pushTokenRefreshed, data: ["pushToken": pushToken])
+        var data = ["pushToken": pushToken]
+        
+        if let customerEmail = OmetriaDefaults.identifiedCustomerEmail {
+            data["email"] = customerEmail
+        }
+        
+        if let customerID = OmetriaDefaults.identifiedCustomerID {
+            data["customerId"] = customerID
+        }
+        
+        trackEvent(type: .pushTokenRefreshed, data: data)
         eventHandler.flushEvents()
     }
     
@@ -351,9 +395,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter customEventType: a string representing the name of the custom event
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
-    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]) {
-        var data = additionalInfo
-        data["customEventType"] = customEventType
+    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]? = nil) {
+        var data: [String: Any] = ["customEventType": customEventType]
+        if let additionalInfo = additionalInfo {
+            data["properties"] = additionalInfo
+        }
         trackEvent(type: .custom, data: data)
     }
     
@@ -439,6 +485,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
         Logger.debug(message: "Open URL: \(deepLink)", category: .push)
         if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
             Ometria.sharedUIApplication()?.open(deepLink)
+            trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
         }
     }
 }

@@ -18,7 +18,7 @@ The sending and displaying of push notifications is handled by Ometria behind th
 2\. Prerequisite Steps
 ----------------------
 
-Obtaining API token information
+In order to obtain an API token please follow the instructions [here](https://support.ometria.com/hc/en-gb/articles/360013658478-Setting-up-your-mobile-app-with-Firebase-credentials)
 
 3\. Install the Library
 -----------------------
@@ -103,6 +103,16 @@ But having a customerId makes profile matching more robust. It is not mutually e
 
 These two events are absolutely pivotal to the functioning of the SDK, so take care to send them as early as possible.
 
+#### Profile Deidentified
+
+Undo a profileIdentified event.
+
+Use this if a user logs out, or otherwise signals that this device is no longer attached to the same person.
+
+```swift
+trackProfileDeidentifiedEvent()
+```
+
 #### Product Viewed
 
 A visitor clicks / taps / views / highlights or otherwise shows interest in a product.
@@ -112,17 +122,6 @@ Think for example searching for a term, and selecting one of the product preview
 ```swift
 trackProductViewedEvent(productId: String)
 ```
-
-#### Product Category Viewed
-A visitor clicks / taps / views / highlights or otherwise shows interest in a product category.
-
-For example, a store sells clothing, and they tap on "Women's Footwear".
-
-```swift
-trackProductCategoryViewedEvent(category: String)
-```
-
-The value is opaque, and is only used to create segments and automation campaigns in the Ometria app. Stick to non-localised, predictable, human readable slugs. E.g. "womens-footwear".
 
 #### Wishlist events
 
@@ -165,6 +164,12 @@ trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket)
 
 #### Deep Link Opened
 
+Based on the implementation status of interaction with notifications that contain deeplinks, this event can be automatically tracked or not. 
+
+The default implementation will automatically log a deep link opened event every time the user interacts with a notification that has a deep link. This is possible since we know that the default implementation will open the link in a browser. 
+
+However, if you chose to handle deeplinks yourself (using the guide for [Handling interaction with notifications that contain URLs](#handling_interaction_with_notifications_that_contain_urls)), then you should manually track this event when you have enough information regarding the screen (or other destination) that the app will open.
+
 ```swift
 trackDeepLinkOpenedEvent(link: String, screenName: String)
 ```
@@ -187,6 +192,10 @@ Concretely, this event should at least be triggered on:
 * category lists
 * any similar such screen
 
+```swift
+trackProductListingViewedEvent(listingType: String?, listingAttributes: [String: Any]?)
+```
+
 #### Screen Viewed
 
 Tracking a user's independent screen views helps us track engagement of a user with the app, as well as where they are in a journey. An analogous event on a website would be to track independent page views.
@@ -204,7 +213,7 @@ Your app may have specific flows or pages that are of interest to the marketing 
 Check with the marketing team about the specifics, and what they might need. Especially if they're already using Ometria for e-mail, they will know about automation campaigns and custom events.
 
 ```swift
-trackCustomEvent(customEventType: String, additionalInfo: [String: Any])
+trackCustomEvent(customEventType: String, additionalInfo: [String: Any]?)
 ```
 
 ### `OmetriaBasket`
@@ -259,7 +268,7 @@ You can completely clear all the events that have been tracked and not yet flush
 Ometria.sharedInstance().clear()
 ```
 
-5\. Push Notifications Guide
+6\. Push Notifications Guide
 ----------------------------
 
 Ometria has the potential of providing personalized remote notifications for your mobile application, but in order to do so, it needs to be properly set up. To benefit from its full potential you need to cover the following steps:
@@ -276,7 +285,7 @@ Ometria has the potential of providing personalized remote notifications for you
 If you reached this section, we assume that you have already configured both the Ometria SDK, and Firebase. Once you managed to properly create or modify your application to support push notifications, you can move on to configure everything in your AppDelegate like so:
 
 ```swift
-#import UserNotifications
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -334,6 +343,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 ```
 
 The Ometria SDK will automatically source all the required tokens, and provide them to the backend. This way your app will start receiving notifications from Ometria, although handling those notifications while the app is running in foreground is up to you.
+
+### Handling interaction with notifications that contain URLs
+
+Ometria enables you to send relevant URLs alongside your push notifications and allows you to handle them on the device. By default, the Ometria SDK will automatically handle any interaction with push notifications that contain URLs by opening them in a browser. However, it enables developers to customly handle those URLs as they see fit (e.g. take the user to a specific screen in the app).
+
+In order to get access to those interactions and the URLs, you will have to implement the `OmetriaNotificationInteractionDelegate`. There is only one method that is required, and it will be triggered every time the user taps on a notification that has a deepLink action URL. This is what it would look like in code:
+
+```swift
+import UserNotifications
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate,  OmetriaNotificationInteractionDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        Ometria.initialize(apiToken: "OMETRIA_API_TOKEN")
+        Ometria.sharedInstance().notificationInteractionDelegate = self
+
+        return true
+    }
+
+    // This method will be called each time the user interacts with a notification from Ometria
+    // which contains a deepLinkURL. Write your own custom code in order to
+    // properly redirect the app to the screen that should be displayed.
+    func handleDeepLinkInteraction(_ deepLink: URL) {
+        print("url: \(deepLink)")
+    }
+}
+```
 
 ### Enabling rich content notifications
 

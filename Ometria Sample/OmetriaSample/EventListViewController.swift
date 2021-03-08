@@ -14,6 +14,7 @@ import Ometria
 enum EventType: String, CaseIterable {
     case basketUpdated
     case basketViewed
+    case checkoutStarted
     case orderCompleted
     case productListingViewed
     case productViewed
@@ -55,12 +56,15 @@ class EventListViewController: UITableViewController {
         
         case .basketViewed:
             Ometria.sharedInstance().trackBasketViewedEvent()
+            
+        case .checkoutStarted:
+            Ometria.sharedInstance().trackCheckoutStartedEvent(orderId: "sample_order_id")
         
         case .orderCompleted:
             Ometria.sharedInstance().trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
         
         case .productListingViewed:
-            Ometria.sharedInstance().trackProductListingViewedEvent()
+            Ometria.sharedInstance().trackProductListingViewedEvent(listingType: "category", listingAttributes: ["categoryID": "sampleCategoryID"])
         
         case .productViewed:
             Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")

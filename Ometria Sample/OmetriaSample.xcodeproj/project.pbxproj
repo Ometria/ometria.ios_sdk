@@ -16,8 +16,6 @@
 		4EC94F3624BDECC300B8591C /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94F3524BDECC300B8591C /* NotificationService.swift */; };
 		4EC94F3A24BDECC300B8591C /* OmetriaSampleNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4EC94F3324BDECC300B8591C /* OmetriaSampleNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4EE2531524FE807100B98DDE /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE2531424FE807100B98DDE /* EventListViewController.swift */; };
-		86AE97430F3F5776E307DE95 /* Pods_OmetriaSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8156DA900A453C8E9553973 /* Pods_OmetriaSample.framework */; };
-		97FA64D2AFDEEB9F716543A6 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2A273C25D84FF0521435D41 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,7 +43,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1501BEFE755BBD84612970E9 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSample-OmetriaSampleNotificationService/Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		4EC94EE824BC52D000B8591C /* OmetriaSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmetriaSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EC94EEB24BC52D000B8591C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EC94EEF24BC52D000B8591C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -61,11 +58,6 @@
 		4EC94F4424BDED4000B8591C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		4EC94F4624BDED4000B8591C /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		4EE2531424FE807100B98DDE /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
-		623F5ECD741AACB83A72AABF /* Pods-OmetriaSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample.debug.xcconfig"; sourceTree = "<group>"; };
-		96A647FA2CD6F1046950F04B /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSample-OmetriaSampleNotificationService/Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
-		C8156DA900A453C8E9553973 /* Pods_OmetriaSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF0F08E97772D96033F1583F /* Pods-OmetriaSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample.release.xcconfig"; sourceTree = "<group>"; };
-		E2A273C25D84FF0521435D41 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSample_OmetriaSampleNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86AE97430F3F5776E307DE95 /* Pods_OmetriaSample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,24 +72,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97FA64D2AFDEEB9F716543A6 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2EB11983E27D85E926DB3AA8 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				623F5ECD741AACB83A72AABF /* Pods-OmetriaSample.debug.xcconfig */,
-				CF0F08E97772D96033F1583F /* Pods-OmetriaSample.release.xcconfig */,
-				96A647FA2CD6F1046950F04B /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */,
-				1501BEFE755BBD84612970E9 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		4EC94EDF24BC52D000B8591C = {
 			isa = PBXGroup;
 			children = (
@@ -106,7 +85,6 @@
 				4EC94F3424BDECC300B8591C /* OmetriaSampleNotificationService */,
 				4EC94EE924BC52D000B8591C /* Products */,
 				E6DD2DBB96C0C1501642735C /* Frameworks */,
-				2EB11983E27D85E926DB3AA8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -147,10 +125,8 @@
 		E6DD2DBB96C0C1501642735C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C8156DA900A453C8E9553973 /* Pods_OmetriaSample.framework */,
 				4EC94F4424BDED4000B8591C /* UserNotifications.framework */,
 				4EC94F4624BDED4000B8591C /* UserNotificationsUI.framework */,
-				E2A273C25D84FF0521435D41 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,11 +138,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EC94EFC24BC52D300B8591C /* Build configuration list for PBXNativeTarget "OmetriaSample" */;
 			buildPhases = (
-				A64F34D3FB2D778F0A8BA092 /* [CP] Check Pods Manifest.lock */,
 				4EC94EE424BC52D000B8591C /* Sources */,
 				4EC94EE524BC52D000B8591C /* Frameworks */,
 				4EC94EE624BC52D000B8591C /* Resources */,
-				C116398B684E17D1F852811F /* [CP] Embed Pods Frameworks */,
 				4EC94F3E24BDECC300B8591C /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -183,7 +157,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EC94F3B24BDECC300B8591C /* Build configuration list for PBXNativeTarget "OmetriaSampleNotificationService" */;
 			buildPhases = (
-				C579C48451823512F9390D32 /* [CP] Check Pods Manifest.lock */,
 				4EC94F2F24BDECC300B8591C /* Sources */,
 				4EC94F3024BDECC300B8591C /* Frameworks */,
 				4EC94F3124BDECC300B8591C /* Resources */,
@@ -254,66 +227,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		A64F34D3FB2D778F0A8BA092 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OmetriaSample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C116398B684E17D1F852811F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C579C48451823512F9390D32 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OmetriaSample-OmetriaSampleNotificationService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4EC94EE424BC52D000B8591C /* Sources */ = {
@@ -480,7 +393,6 @@
 		};
 		4EC94EFD24BC52D300B8591C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 623F5ECD741AACB83A72AABF /* Pods-OmetriaSample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OmetriaSample/OmetriaSample.entitlements;
@@ -503,7 +415,6 @@
 		};
 		4EC94EFE24BC52D300B8591C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF0F08E97772D96033F1583F /* Pods-OmetriaSample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = OmetriaSample/OmetriaSample.entitlements;
@@ -526,7 +437,6 @@
 		};
 		4EC94F3C24BDECC300B8591C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96A647FA2CD6F1046950F04B /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
@@ -548,7 +458,6 @@
 		};
 		4EC94F3D24BDECC300B8591C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1501BEFE755BBD84612970E9 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;

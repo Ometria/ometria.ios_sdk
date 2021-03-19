@@ -6,6 +6,8 @@
 //  Copyright © 2020 Cata. All rights reserved.
 //
 
+import Foundation
+
 extension DispatchQueue {
     private static var _onceTracker = [String]()
 

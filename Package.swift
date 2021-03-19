@@ -14,18 +14,13 @@ let package = Package(
     dependencies: [
         .package(name: "Firebase",
                    url: "https://github.com/firebase/firebase-ios-sdk.git",
-                   .branch("6.33-spm-beta"))
+                   .branch("7.0-spm-beta"))
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Ometria",
             dependencies: [
                 .product(name: "FirebaseMessaging", package: "Firebase")
                 ]),
-        .testTarget(
-            name: "OmetriaTests",
-            dependencies: ["Ometria"]),
     ]
 )

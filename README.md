@@ -154,6 +154,14 @@ trackBasketUpdatedEvent(basket: OmetriaBasket)
 
 This event takes the full current basket as a parameter; not just the updated parts. This is laborious, but it helps recover from lost or out of sync basket events: the latest update is always authoritative.
 
+#### Checkout started
+
+The user has started the checkout process.
+
+```swift
+trackCheckoutStartedEvent(orderId: String)
+```
+
 #### Order Completed
 
 The order has been completed and paid for.

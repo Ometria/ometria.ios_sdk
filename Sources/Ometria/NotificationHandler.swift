@@ -107,6 +107,11 @@ class NotificationHandler {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
+            case .ephemeral:
+                if lastKnownStatus != .ephemeral {
+                    Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
+                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                }
                 
             @unknown default:
                 Logger.verbose(message: "Notification authorization status changed to an unknown status.", category: .push)

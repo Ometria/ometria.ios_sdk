@@ -107,14 +107,16 @@ class NotificationHandler {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
-            case .ephemeral:
-                if lastKnownStatus != .ephemeral {
-                    Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
-                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
-                }
                 
             @unknown default:
-                Logger.verbose(message: "Notification authorization status changed to an unknown status.", category: .push)
+                if #available(iOS 14, *), settings.authorizationStatus == .ephemeral {
+                    if lastKnownStatus != .ephemeral {
+                        Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
+                        Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                    }
+                } else {
+                    Logger.verbose(message: "Notification authorization status changed to an unknown status.", category: .push)
+                }
             }
             
             OmetriaDefaults.lastKnownNotificationAuthorizationStatus = settings.authorizationStatus.rawValue
@@ -124,10 +126,16 @@ class NotificationHandler {
     func verifyPushNotificationAuthorizationStatus(completion: (_ hasAuthorization:Bool)->()) {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
             switch settings.authorizationStatus {
-            case .authorized, .provisional, .ephemeral:
+            case .authorized, .provisional:
                 completion(true)
             case .denied, .notDetermined:
                 completion(false)
+            @unknown default:
+                if #available(iOS 14, *), settings.authorizationStatus == .ephemeral {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
             }
         })
     }

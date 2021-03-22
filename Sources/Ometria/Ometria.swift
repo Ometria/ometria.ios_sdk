@@ -359,8 +359,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             data["customerId"] = customerID
         }
         
-        trackEvent(type: .pushTokenRefreshed, data: data)
-        eventHandler.flushEvents()
+        notificationHandler.verifyPushNotificationAuthorizationStatus { (hasAuthorization) in
+            data["notifications"] = hasAuthorization ? "opt-in" : "opt-out"
+            trackEvent(type: .pushTokenRefreshed, data: data)
+            eventHandler.flushEvents()
+        }
     }
     
     func trackNotificationReceivedEvent(context: [String: Any]) {

@@ -120,4 +120,15 @@ class NotificationHandler {
             OmetriaDefaults.lastKnownNotificationAuthorizationStatus = settings.authorizationStatus.rawValue
         })
     }
+    
+    func verifyPushNotificationAuthorizationStatus(completion: (_ hasAuthorization:Bool)->()) {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
+            switch settings.authorizationStatus {
+            case .authorized, .provisional, .ephemeral:
+                completion(true)
+            case .denied, .notDetermined:
+                completion(false)
+            }
+        })
+    }
 }

@@ -102,15 +102,18 @@ class NotificationHandler {
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
                 
+            case .ephemeral:
+                if #available(iOS 14, *) {
+                    if lastKnownStatus != .ephemeral {
+                        Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
+                        Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                    }
+                }
+                
             case .notDetermined:
                 if lastKnownStatus != .notDetermined {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
-                }
-            case .ephemeral:
-                if lastKnownStatus != .ephemeral {
-                    Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
-                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
                 }
                 
             @unknown default:
@@ -121,12 +124,14 @@ class NotificationHandler {
         })
     }
     
-    func verifyPushNotificationAuthorizationStatus(completion: (_ hasAuthorization:Bool)->()) {
+    func verifyPushNotificationAuthorizationStatus(completion: @escaping (_ hasAuthorization:Bool)->()) {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
             switch settings.authorizationStatus {
             case .authorized, .provisional, .ephemeral:
                 completion(true)
             case .denied, .notDetermined:
+                completion(false)
+            @unknown default:
                 completion(false)
             }
         })

@@ -123,7 +123,7 @@ class NotificationHandler {
         })
     }
     
-    func verifyPushNotificationAuthorizationStatus(completion: (_ hasAuthorization:Bool)->()) {
+    func verifyPushNotificationAuthorizationStatus(completion: @escaping (_ hasAuthorization:Bool)->()) {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
             switch settings.authorizationStatus {
             case .authorized, .provisional:

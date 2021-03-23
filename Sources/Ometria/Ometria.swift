@@ -242,7 +242,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         OmetriaDefaults.identifiedCustomerEmail = nil
         OmetriaDefaults.identifiedCustomerID = nil
         trackEvent(type: .profileDeidentified)
-        resetAppInstallationId()
     }
     
     // MARK: Product Related Events
@@ -315,6 +314,19 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     /**
+     Track when the user has started the checkout process.
+     
+     - Parameter orderId: The id that your system generated for the order that is being checked out
+     */
+    open func trackCheckoutStartedEvent(orderId: String? = nil) {
+        var data: [String: Any] = [:]
+        if let orderId = orderId {
+            data["orderId"] = orderId
+        }
+        trackEvent(type: .checkoutStarted, data: data)
+    }
+    
+    /**
      Track when an order has been completed and paid for.
      
      - Parameter orderId: The id that your system generated for the completed order
@@ -347,8 +359,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             data["customerId"] = customerID
         }
         
-        trackEvent(type: .pushTokenRefreshed, data: data)
-        eventHandler.flushEvents()
+        notificationHandler.verifyPushNotificationAuthorizationStatus {[weak self] (hasAuthorization) in
+            data["notifications"] = hasAuthorization ? "opt-in" : "opt-out"
+            self?.trackEvent(type: .pushTokenRefreshed, data: data)
+            self?.eventHandler.flushEvents()
+        }
     }
     
     func trackNotificationReceivedEvent(context: [String: Any]) {

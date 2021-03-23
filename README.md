@@ -169,7 +169,16 @@ This event takes the full current basket as a parameter - not just the updated p
 
 This helps recover from lost or out of sync basket events: the latest update is always authoritative.
 
-#### Order completed
+
+#### Checkout started
+
+The user has started the checkout process.
+
+```swift
+trackCheckoutStartedEvent(orderId: String)
+```
+
+#### Order Completed
 
 The order has been completed and paid for:
 

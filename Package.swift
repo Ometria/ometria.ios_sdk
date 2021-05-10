@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Ometria",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v11)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -14,8 +14,8 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Firebase",
-                   url: "https://github.com/firebase/firebase-ios-sdk.git",
-                   .branch("7.0-spm-beta"))
+                 url: "https://github.com/firebase/firebase-ios-sdk.git",
+                 .branch("master"))
     ],
     targets: [
         .target(

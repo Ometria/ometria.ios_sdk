@@ -49,8 +49,7 @@ extension UIViewController {
     @objc func om_viewDidAppear(_ animated: Bool) {
         let originalSelector = #selector(UIViewController.viewDidAppear(_:))
         
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: type(of: self)) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, Bool) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             curriedImplementation(self, originalSelector, animated)

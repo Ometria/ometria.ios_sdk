@@ -18,11 +18,13 @@ open class OmetriaBasket: Codable {
     open var currency: String
     open var totalPrice: Float
     open var items: [OmetriaBasketItem] = []
+    open var link: String?
     
-    public init(totalPrice: Float, currency: String, items: [OmetriaBasketItem] = []) {
+    public init(totalPrice: Float, currency: String, items: [OmetriaBasketItem] = [], link: String? = nil) {
         self.currency = currency
         self.totalPrice = totalPrice
         self.items = items
+        self.link = link
     }
  
     func jsonObject() throws -> Any {

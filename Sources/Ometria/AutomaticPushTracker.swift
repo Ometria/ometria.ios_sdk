@@ -63,7 +63,7 @@ open class AutomaticPushTracker: NSObject {
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
         Logger.verbose(message: "Swizzle did register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
-        let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
+        var delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         
         Swizzler.swizzleSelector(originalSelector,
@@ -212,15 +212,10 @@ extension UIResponder {
             return
         }
         
-        var aClass: AnyClass! = object_getClass(applicationDelegate)
+        let aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         
-        if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
-            aClass = type(of: UNDelegate)
-        }
-        
-        if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: aClass) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UIApplication, Data) -> Void
             let originalImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             
@@ -244,12 +239,7 @@ extension UIResponder {
         var aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
         
-        if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
-            aClass = type(of: UNDelegate)
-        }
-        
-        if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: aClass) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UIApplication, Error) -> Void
             let originalImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             
@@ -270,15 +260,10 @@ extension UIResponder {
             return
         }
         
-        var aClass: AnyClass! = object_getClass(applicationDelegate)
+        let aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
-       
-        if #available(iOS 10.0, *), let UNDelegate = UNUserNotificationCenter.current().delegate {
-            aClass = type(of: UNDelegate)
-        }
         
-        if let originalMethod: Method = class_getInstanceMethod(aClass, originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: aClass) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UIApplication, [AnyHashable : Any], ((UIBackgroundFetchResult) -> Void)) -> Void
             let originalImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             
@@ -302,8 +287,7 @@ extension NSObject {
                                          withCompletionHandler completionHandler: @escaping () -> Void) {
         let originalSelector = NSSelectorFromString("userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
         
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: type(of: self)) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotificationResponse, @escaping () -> Void) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             curriedImplementation(self, originalSelector, center, response, completionHandler)
@@ -321,8 +305,7 @@ extension NSObject {
                                          withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let originalSelector = NSSelectorFromString("userNotificationCenter:willPresentNotification:withCompletionHandler:")
         
-        if let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzle = Swizzler.swizzles[originalMethod] {
+        if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: type(of: self)) {
             typealias MyCFunction = @convention(c) (AnyObject, Selector, UNUserNotificationCenter, UNNotification, @escaping (UNNotificationPresentationOptions) -> Void) -> Void
             let curriedImplementation = unsafeBitCast(swizzle.originalMethod, to: MyCFunction.self)
             curriedImplementation(self, originalSelector, center, notification, completionHandler)

@@ -7,7 +7,6 @@ let package = Package(
     name: "Ometria",
     platforms: [.iOS(.v11)],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Ometria",
             targets: ["Ometria"]),

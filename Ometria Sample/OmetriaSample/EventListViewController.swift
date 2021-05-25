@@ -107,7 +107,7 @@ class EventListViewController: UITableViewController {
                                        quantity: 1,
                                        price: 12.0)
         let myItems = [myItem]
-        let myBasket = OmetriaBasket(totalPrice: 12.0, currency: "USD", items: myItems)
+        let myBasket = OmetriaBasket(totalPrice: 12.0, currency: "USD", items: myItems, link: "http://sample.link.com")
         
         return myBasket
     }

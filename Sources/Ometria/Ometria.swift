@@ -235,8 +235,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      Track the current app user being deidentified
      
      An app user has deidentified themselves. This basically means: a user has logged out
-     
-     - Important: calling this method will cause the installation ID to be reset, and the SDK will log an event to send the new id.
      */
     open func trackProfileDeidentifiedEvent() {
         OmetriaDefaults.identifiedCustomerEmail = nil

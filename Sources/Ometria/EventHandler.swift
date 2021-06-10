@@ -132,7 +132,7 @@ class EventHandler {
             
             Logger.debug(message: "Clear all Events from local cache.", category: .events)
             self.trackedEvents.removeAll()
-            JSONCache.trackedEvents.saveToFile(nil, async: true)
+            JSONCache.trackedEvents.saveToFile(nil, async: false)
         }
         
     }
@@ -170,7 +170,7 @@ class EventHandler {
     private func saveEvents(_ events: [OmetriaEvent]) {
         Logger.verbose(message: "Save Events to local cache", category: .cache)
         trackedEvents = events
-        JSONCache.trackedEvents.saveToFile(events, async: true)
+        JSONCache.trackedEvents.saveToFile(events, async: false)
     }
     
     private func removeEvents(_ events: [OmetriaEvent]) {

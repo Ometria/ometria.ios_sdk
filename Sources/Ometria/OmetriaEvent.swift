@@ -73,7 +73,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case deviceManufacturer
         case deviceModel
         case dtOccurred
-        case isBeingFlushed
         
         case eventType = "type"
         case data
@@ -92,7 +91,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         deviceManufacturer = try values.decode(String.self, forKey: .deviceManufacturer)
         deviceModel = try values.decode(String.self, forKey: .deviceModel)
         timestampOccurred = try values.decode(Date.self, forKey: .dtOccurred)
-        isBeingFlushed = try values.decode(Bool.self, forKey: .isBeingFlushed)
         eventType = try values.decode(OmetriaEventType.self, forKey: .eventType)
         
         if values.contains(.data), let jsonData = try? values.decode(Data.self, forKey: .data) {
@@ -119,7 +117,6 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(deviceManufacturer, forKey: .deviceManufacturer)
         try container.encode(deviceModel, forKey: .deviceModel)
         try container.encode(timestampOccurred, forKey: .dtOccurred)
-        try container.encode(isBeingFlushed, forKey: .isBeingFlushed)
         try container.encode(eventType, forKey: .eventType)
     }
     

@@ -31,6 +31,10 @@ open class AutomaticPushTracker: NSObject {
             return
         }
         
+        guard !Bundle.main.bundlePath.hasSuffix(".appex") else {
+            return
+        }
+        
         isRunning = true
         swizzleDidRegisterForRemoteNotificationsWithDeviceToken()
         swizzleDidFailToRegisterForRemoteNotificationsWithError()

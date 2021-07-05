@@ -537,7 +537,7 @@ Save it and name it "apple_app_site_association" (notice that no extension has b
 
 Once you are done, you should be able to successfully open your app by selecting a URL received from Ometria.
 
-### Process universal links inside app
+### Process universal links inside the app
 
 The final step is to process the URLs in your app and take the user to the appropriate sections of the app. If you are dealing with known URLs, things are simple, as you can decompose it into different path components and parameters. This will then allow you to source the required information to navigate throught the app.
 However, in the case of Ometria, the URLs are obfuscated, and you cannot break them down. To do so, the SDK provides a method which traces back to your own web domain, and returns a URL that would normally be representative for your website.
@@ -556,6 +556,6 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
     }
 }
 ```
-**Warning**: The method above runs asynchronously. Depending on the internet speed on the device, the processing time can vary in duration. For best results, you could implement a loading state that si displayed while the URL is being processed.
+**Warning**: The method above runs asynchronously. Depending on the internet speed on the device, the processing time can vary in duration. For best results, you could implement a loading state that is displayed while the URL is being processed.
 
 If you have done everything correctly, the app should now be able to open universal links and allow you to handle them inside the app.

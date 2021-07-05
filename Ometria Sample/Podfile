@@ -4,10 +4,10 @@
 target 'OmetriaSample' do
   use_frameworks!
 
-  pod 'Ometria', :path => '../'
+  pod 'Ometria', :git => 'https://github.com/Ometria/ometria.ios_sdk.git'
   
   target 'OmetriaSampleNotificationService' do
-    pod 'Ometria', :path => '../'
+    pod 'Ometria', :git => 'https://github.com/Ometria/ometria.ios_sdk.git'
   end
 
 end

@@ -27,7 +27,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private var config: OmetriaConfig
     private let automaticPushTracker = AutomaticPushTracker()
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
-    private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
     private let notificationHandler = NotificationHandler()
     private let eventHandler: EventHandler
     
@@ -81,11 +80,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if config.automaticallyTrackAppLifecycle {
             automaticLifecycleTracker.startTracking()
         }
-        
-        if config.automaticallyTrackScreenListing {
-            automaticScreenViewsTracker.startTracking()
-        }
-        
+                
         self.notificationHandler.interactionDelegate = self
     }
     
@@ -191,6 +186,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .screenViewedExplicit, data: data)
     }
     
+    @available(*, deprecated, message: "Automatic screen tracking has been removed")
     func trackScreenViewedAutomaticEvent(screenName: String) {
         trackEvent(type: .screenViewedAutomatic, data: ["page": screenName])
     }

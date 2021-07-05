@@ -13,7 +13,6 @@ class OmetriaConfig {
     var flushLimit: Int
     var automaticallyTrackNotifications: Bool = true
     var automaticallyTrackAppLifecycle: Bool = true
-    var automaticallyTrackScreenListing: Bool = true
     var isLoggingEnabled: Bool = false
     var logLevel: LogLevel = .warning
     

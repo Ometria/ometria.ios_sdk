@@ -505,6 +505,10 @@ Now you can receive notifications from Ometria and you are also able to see the 
 
 Ometria sends personalized emails with urls that point back to your website. In order to open these urls inside your application, make sure you follow this guide.  
 
+### Pre-requisites
+
+First, make sure you have an SSL-enabled Ometria tracking domain set up for your account. You may already have this for
+your email campaigns, but if not ask your Ometria contact to set one up, and they should provide you with the domain.
 
 ### Enable the Associated Domains entitlement for your application
 
@@ -512,7 +516,7 @@ To do this, select your project in Xcode, and go to **Targets > Your application
 
 ![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/target_capabilities.png)
 
-Once enabled, input your Ometria tracking domain (used for emails) like below.
+Once enabled, input your Ometria tracking domain like below.
 This will ensure that when your customers click on links in Ometria emails, your app opens instead of the browser.
 (Note that this does not associate your website's domain with the app, only the tracking domain.)
 

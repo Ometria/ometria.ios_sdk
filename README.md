@@ -500,10 +500,10 @@ class NotificationService: OmetriaNotificationServiceExtension {
 Now you can receive notifications from Ometria and you are also able to see the images that are attached to your notifications.
 
 
-7\. Universal Links Guide
+7\. Universal links guide
 ----------------------------
 
-Ometria sends personalized emails with urls that point back to your website. In order to open these urls inside your application, make sure you follow this guide.  
+Ometria sends personalised emails with URLs that point back to your website. In order to open these URLs inside your application, make sure you follow this guide.  
 
 ### Pre-requisites
 
@@ -516,15 +516,17 @@ To do this, select your project in Xcode, and go to **Targets > Your application
 
 ![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/target_capabilities.png)
 
-Once enabled, input your Ometria tracking domain like below.
+Once enabled, input your Ometria tracking domain as below.
+
 This will ensure that when your customers click on links in Ometria emails, your app opens instead of the browser.
-(Note that this does not associate your website's domain with the app, only the tracking domain.)
+
+**Note:** This does not associate your website's domain with the app, only the tracking domain.
 
 ![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/associated_domain.png)
 
 ### Create an apple-app-site-association file and send it to your Ometria contact.
 
-The apple-app-site-association file is used to create a relationship between a domain and your app. You can [find more info about it here](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html) but for the purpose of this guide we will go with the most basic example which should look like this:
+The apple-app-site-association file is used to create a relationship between a domain and your app. You can [find out more about it here](https://developer.apple.com/library/archive/documentation/General/Conceptual/AppSearch/UniversalLinks.html) but for the purpose of this guide we will go with the most basic example which should look like this:
 
 ```javascript
 {
@@ -548,10 +550,13 @@ Once you are done, you should be able to successfully open your app by selecting
 ### Process universal links inside the app
 
 The final step is to process the URLs in your app and take the user to the appropriate sections of the app. Note that
-you need to implement the mapping between your website's URLs and the screens of your app. See also [this document](https://support.ometria.com/hc/en-gb/articles/4402644059793-Linking-push-notifications-to-app-screens).
+you need to implement the mapping between your website's URLs and the screens of your app. 
 
-If you are dealing with normal URLs pointing to your website, you can decompose it into different path components and parameters. This will then allow you to source the required information to navigate through to the correct screen in your app.
-However, Ometria emails contain obfuscated tracking URLs, and these need to be converted back to the original URL, pointing to your website, before you can map the URL to an app screen. To do so, the SDK provides a method called `processUniversalLink`:
+See also [Linking push notifications to app screens](https://support.ometria.com/hc/en-gb/articles/4402644059793-Linking-push-notifications-to-app-screens).
+
+If you are dealing with normal URLs pointing to your website, you can decompose it into different path components and parameters. This will allow you to source the required information to navigate through to the correct screen in your app.
+
+However, Ometria emails contain obfuscated tracking URLs, and these need to be converted back to the original URL, pointing to your website, before you can map the URL to an app screen. To do this, the SDK provides a method called `processUniversalLink`:
 
 ```swift
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
@@ -567,6 +572,6 @@ func application(_ application: UIApplication, continue userActivity: NSUserActi
     }
 }
 ```
-**Warning**: The method above runs asynchronously. Depending on the internet speed on the device, the processing time can vary. For best results, you could implement a loading state that is displayed while the URL is being processed.
+**Warning**: The method above runs asynchronously. Depending on the Internet speed on the device, processing time can vary. For best results, you could implement a loading state that is displayed while the URL is being processed.
 
 If you have done everything correctly, the app should now be able to open universal links and allow you to handle them inside the app.

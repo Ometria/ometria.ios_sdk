@@ -11,7 +11,8 @@ import UIKit
 open class AutomaticLifecycleTracker {
     
     var isRunning = false
-    
+
+    @available(iOSApplicationExtension, unavailable)
     func startTracking() {
         guard !isRunning else {
             return

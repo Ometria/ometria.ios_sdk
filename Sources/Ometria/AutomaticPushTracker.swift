@@ -25,7 +25,8 @@ open class AutomaticPushTracker: NSObject {
     
     open var isRunning = false
     open var isDelegateObserverAdded = false
-    
+
+    @available(iOSApplicationExtension, unavailable)
     open func startTracking() {
         guard !isRunning else {
             return
@@ -39,7 +40,8 @@ open class AutomaticPushTracker: NSObject {
         
         NotificationCenter.default.addObserver(self, selector: #selector(firebaseTokenDidRefresh(notification:)), name: Notification.Name.MessagingRegistrationTokenRefreshed, object: nil)
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     open func stopTracking() {
         guard isRunning else {
             return
@@ -59,7 +61,8 @@ open class AutomaticPushTracker: NSObject {
             UNUserNotificationCenter.current().removeDelegateObserver(observer: self)
         }
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
         Logger.verbose(message: "Swizzle did register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
@@ -73,13 +76,15 @@ open class AutomaticPushTracker: NSObject {
                                     Logger.verbose(message: "Application did register for remote notifications")
         }
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func unswizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func swizzleDidFailToRegisterForRemoteNotificationsWithError() {
         Logger.verbose(message: "Swizzle did fail to register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didFailToRegisterForRemoteNotificationsWithError:))
@@ -93,14 +98,16 @@ open class AutomaticPushTracker: NSObject {
                                     Logger.verbose(message: "Application did fail to register for remote notifications")
         }
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func unswizzleDidFailToRegisterForRemoteNotificationsWithError() {
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
         
         Swizzler.unswizzleSelector(originalSelector, aClass: delegateClass)
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func swizzleDidReceiveSilentNotification() {
         Logger.verbose(message: "Swizzle application:didReceiveRemoteNotification:fetchCompletionHandler:")
         let newSelector = #selector(UIResponder.om_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
@@ -114,7 +121,8 @@ open class AutomaticPushTracker: NSObject {
                                     Logger.debug(message: "Application didReceiveSilentNotification")
         }
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     private func unswizzleDidReceiveSilentNotification() {
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))

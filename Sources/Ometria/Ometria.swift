@@ -27,7 +27,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private var config: OmetriaConfig
     private let automaticPushTracker = AutomaticPushTracker()
     private let automaticLifecycleTracker = AutomaticLifecycleTracker()
-    private let automaticScreenViewsTracker = AutomaticScreenViewsTracker()
     private let notificationHandler = NotificationHandler()
     private let eventHandler: EventHandler
     
@@ -81,11 +80,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if config.automaticallyTrackAppLifecycle {
             automaticLifecycleTracker.startTracking()
         }
-        
-        if config.automaticallyTrackScreenListing {
-            automaticScreenViewsTracker.startTracking()
-        }
-        
+                
         self.notificationHandler.interactionDelegate = self
     }
     
@@ -191,6 +186,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .screenViewedExplicit, data: data)
     }
     
+    @available(*, deprecated, message: "Automatic screen tracking has been removed")
     func trackScreenViewedAutomaticEvent(screenName: String) {
         trackEvent(type: .screenViewedAutomatic, data: ["page": screenName])
     }
@@ -461,7 +457,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     // MARK: Notification Utils
     
     /**
-     validates if a notification comes from ometria by checking its content
+     Validates if a notification comes from ometria by checking its content
      
      - Parameter content: The content taken from a UNNotification that has been received
      
@@ -478,6 +474,20 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return true
     }
     
+    
+    // MARK: Universal Links
+    
+    /**
+     Retrieves the redirect url for the url that you provide
+     
+     - Parameter url: The url that will be processed
+     - Parameter callback: The callback that provides the final redirect url if retreived, or an error if something went wrong.
+     
+     - Note: If no redirect url is found, the initial url will be provided in the callback
+     */
+    open func processUniversalLink(_ url: URL, callback: @escaping (URL?, Error?)->()) {
+        RedirectService().getRedirect(url: url, callback: callback) 
+    }
 }
 
 // MARK: - Deeplink Interaction

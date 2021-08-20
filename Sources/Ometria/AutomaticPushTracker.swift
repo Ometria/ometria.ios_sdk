@@ -31,6 +31,10 @@ open class AutomaticPushTracker: NSObject {
             return
         }
         
+        guard !Bundle.main.bundlePath.hasSuffix(".appex") else {
+            return
+        }
+        
         isRunning = true
         swizzleDidRegisterForRemoteNotificationsWithDeviceToken()
         swizzleDidFailToRegisterForRemoteNotificationsWithError()
@@ -63,7 +67,7 @@ open class AutomaticPushTracker: NSObject {
     private func swizzleDidRegisterForRemoteNotificationsWithDeviceToken() {
         Logger.verbose(message: "Swizzle did register for remote notifications")
         let newSelector = #selector(UIResponder.om_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
-        var delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
+        let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didRegisterForRemoteNotificationsWithDeviceToken:))
         
         Swizzler.swizzleSelector(originalSelector,
@@ -236,7 +240,7 @@ extension UIResponder {
             return
         }
         
-        var aClass: AnyClass! = object_getClass(applicationDelegate)
+        let aClass: AnyClass! = object_getClass(applicationDelegate)
         let originalSelector = #selector(UIApplicationDelegate.application(_:didFailToRegisterForRemoteNotificationsWithError:))
         
         if let swizzle = Swizzler.getSwizzle(for: originalSelector, in: aClass) {

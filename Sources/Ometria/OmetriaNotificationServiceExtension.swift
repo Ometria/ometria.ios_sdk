@@ -18,13 +18,6 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
-        if let content = NotificationHandler().parseNotificationContent(request.content) {
-            Ometria.initialize(apiToken: "")
-            Ometria.sharedInstance().setLoggerEnabled(true)
-            Ometria.sharedInstance().trackNotificationReceivedEvent(context: content.context)
-            Ometria.sharedInstance().flush()
-        }
-        
         guard let notificationBody = NotificationHandler().parseNotificationContent(request.content) else {
             if let bestAttemptContent = bestAttemptContent {
                 contentHandler(bestAttemptContent)

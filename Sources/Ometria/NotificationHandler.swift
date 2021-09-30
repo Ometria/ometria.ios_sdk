@@ -18,7 +18,18 @@ public protocol OmetriaNotificationInteractionDelegate: AnyObject {
      
      - Parameter deepLink: the processed url string that was received in the interacted notification payload
      */
+    
+    @available(*, deprecated, message: "Deprecated in version 1.2.1. Use getOmetriaNotification instead")
     func handleDeepLinkInteraction(_ deepLink: URL)
+    
+    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification)
+}
+
+extension OmetriaNotificationInteractionDelegate {
+    
+    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+    
+    }
 }
 
 class NotificationHandler {
@@ -43,6 +54,10 @@ class NotificationHandler {
                 }
             }
         }
+        
+        if let ometriaNotification = parseOmetriaNotification(response.notification.request.content) {
+            interactionDelegate?.handleOmetriaNotificationInteraction(ometriaNotification)
+        }
     }
     
     func processDeliveredNotifications() {
@@ -58,14 +73,33 @@ class NotificationHandler {
         }
     }
     
+    func parseOmetriaNotification(_ content: UNNotificationContent) -> OmetriaNotification? {
+        guard let aps = content.userInfo["aps"] as? [String: Any],
+              let alert = aps["alert"] as? [String: Any],
+              let ometriaContent = alert["ometria"] as? [String: Any] else {
+                  return nil
+              }
+        do {
+            let ometriaNotification = try OmetriaNotification(from: ometriaContent)
+            return ometriaNotification
+        } catch let error as OmetriaError {
+            Logger.error(message: error.localizedDescription)
+            Ometria.sharedInstance().trackErrorOccuredEvent(error: error)
+            return nil
+        } catch {
+            Logger.error(message: error.localizedDescription)
+            return nil
+        }
+    }
+    
     func parseNotificationContent(_ content: UNNotificationContent) -> OmetriaNotificationBody? {
         let info = content.userInfo
         
         guard let aps = info["aps"] as? [String: Any],
-            let alert = aps["alert"] as? [String: Any],
-            let ometriaContent = alert["ometria"] as? [String: Any] else {
-            return nil
-        }
+              let alert = aps["alert"] as? [String: Any],
+              let ometriaContent = alert["ometria"] as? [String: Any] else {
+                  return nil
+              }
         
         do {
             let notificationBody = try OmetriaNotificationBody(dictionary: ometriaContent)
@@ -91,7 +125,7 @@ class NotificationHandler {
             switch settings.authorizationStatus {
             case .authorized, .provisional:
                 if lastKnownStatus != .authorized,
-                    #available(iOS 12.0, *), lastKnownStatus != .provisional {
+                   #available(iOS 12.0, *), lastKnownStatus != .provisional {
                     Logger.verbose(message: "Notification authorization status changed to 'authorized'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
                 }

@@ -101,6 +101,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
+    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+        
+    }
+    
     
     // MARK: - Universal Link Handling
     

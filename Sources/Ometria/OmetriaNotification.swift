@@ -19,77 +19,46 @@ import Foundation
  - Parameter tracking: An object that contains all tracking fields specified in the account and campaign settings (can be changed in the Ometria app, uses some defaults if not specified). It has the same values that we add to the deeplink url.
  */
 
-open class OmetriaNotification: Decodable {
+public struct OmetriaNotification: Decodable {
     
-    open var deepLinkActionUrl: String
-    open var imageUrl: String
-    open var context: Context
+    public var deepLink: String?
+    public var imageUrl: String?
+    public var externalCustomerId: String
+    public var context: OmetriaNotificationContext
     
     enum CodingKeys: String, CodingKey {
-        case deepLinkActionUrl
+        case externalCustomerId = "ext_customer_id"
+        case deepLink = "deepLinkActionUrl"
         case imageUrl
         case context
     }
-    
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        deepLinkActionUrl = try values.decode(String.self, forKey: .deepLinkActionUrl)
-        imageUrl = try values.decode(String.self, forKey: .imageUrl)
-        context = try values.decode(Context.self, forKey: .context)
-    }
-    
-    
-    public struct Context: Decodable {
-        
-        var campaign_type: String
-        var ext_customer_id: String
-        var app_install_id: String
-        var campaign_hash: String
-        var campaing_id: String
-        var mobile_app_id: String
-        var om_customer_id: String
-        var account_id: String
-        var campaign_version: String
-        var node_id: String
-        var send_id: String
-        var tracking: [String:Any]
-        
-        enum CodingKeys: String, CodingKey, CaseIterable {
-            case campaign_type
-            case ext_customer_id
-            case tracking
-            case app_install_id
-            case campaign_hash
-            case campaing_id
-            case mobile_app_id
-            case om_customer_id
-            case account_id
-            case campaign_version
-            case node_id
-            case send_id
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            campaign_type = try values.decode(String.self, forKey: .campaign_type)
-            ext_customer_id = try values.decode(String.self, forKey: .ext_customer_id)
-            app_install_id = try values.decode(String.self, forKey: .app_install_id)
-            campaign_hash = try values.decode(String.self, forKey: .campaign_hash)
-            campaing_id = try values.decode(String.self, forKey: .campaing_id)
-            campaign_version = try values.decode(String.self, forKey: .campaign_version)
-            mobile_app_id = try values.decode(String.self, forKey: .mobile_app_id)
-            om_customer_id = try values.decode(String.self, forKey: .om_customer_id)
-            node_id = try values.decode(String.self, forKey: .node_id)
-            send_id = try values.decode(String.self, forKey: .send_id)
-            account_id = try values.decode(String.self, forKey: .account_id)
+}
 
-            guard values.contains(.tracking),
-                  let jsonData = try? values.decode(Data.self, forKey: .tracking) else {
-                      tracking = [:]
-                      return
-            }
-            tracking = (try? JSONSerialization.jsonObject(with: jsonData) as? [String : Any]) ?? [String:Any]()
-        }
+
+public struct OmetriaNotificationContext: Decodable {
+    
+    public var campaignType: String?
+    public var sendId: String?
+    public var tracking: [String:Any]?
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case campaignType = "campaign_type"
+        case sendId = "send_id"
+        case tracking
     }
     
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        campaignType = try? values.decode(String.self, forKey: .campaignType)
+        sendId = try? values.decode(String.self, forKey: .sendId)
+
+        guard values.contains(.tracking),
+              let jsonData = try? values.decode(Data.self, forKey: .tracking) else {
+                  tracking = [:]
+                  return
+        }
+        tracking = (try? JSONSerialization.jsonObject(with: jsonData) as? [String : Any]) ?? [String:Any]()
+
+    }
 }

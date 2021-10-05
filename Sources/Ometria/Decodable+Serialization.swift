@@ -1,5 +1,5 @@
 //
-//  Decodable.swift
+//  Decodable+Serialization.swift
 //  Ometria
 //
 //  Created by Sergiu Corbu on 29.09.2021.

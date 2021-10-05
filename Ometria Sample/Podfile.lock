@@ -53,7 +53,7 @@ PODS:
   - PromisesObjC (2.0.0)
 
 DEPENDENCIES:
-  - Ometria (from `https://github.com/Ometria/ometria.ios_sdk.git`)
+  - Ometria (from `../`)
 
 SPEC REPOS:
   trunk:
@@ -68,12 +68,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Ometria:
-    :git: https://github.com/Ometria/ometria.ios_sdk.git
-
-CHECKOUT OPTIONS:
-  Ometria:
-    :commit: eb89038304cd8e01461fcd10aeea51086d431186
-    :git: https://github.com/Ometria/ometria.ios_sdk.git
+    :path: "../"
 
 SPEC CHECKSUMS:
   FirebaseCore: f4804c1d3f4bbbefc88904d15653038f2c99ddf7
@@ -86,6 +81,6 @@ SPEC CHECKSUMS:
   Ometria: 6477d0bcaefbdba4effbdaff0e76707dd472ec5b
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
-PODFILE CHECKSUM: 67fb874528c489a0ad0238479b9dc2a899a739c9
+PODFILE CHECKSUM: 971be00875f337bfd598cb9bcd32e1c6b5cbc944
 
 COCOAPODS: 1.10.1

@@ -11,55 +11,42 @@ import Foundation
 /**
  An object representing a notification.
  
- - Parameter deepLink: The URL that was sent in the notification. We append tracking parameters to the URL specified in the account and campaign settings (these can be changed in the Ometria app)
+ - Parameter deepLinkActionUrl: The URL that was sent in the notification. We append tracking parameters to the URL specified in the account and campaign settings (these can be changed in the Ometria app)
  - Parameter imageUrl: The image URL that was sent in the notification.
- - Parameter campaign_type: Can be trigger, mass, transactional (currently only trigger is used).
+ - Parameter campaignType: Can be trigger, mass, transactional (currently only trigger is used).
  - Parameter externalCustomerId: The id of the contact that was specified at customer creation (in the mobile app) or ingesting to Ometria.
  - Parameter sendId: Unique id of the message
  - Parameter tracking: An object that contains all tracking fields specified in the account and campaign settings (can be changed in the Ometria app, uses some defaults if not specified). It has the same values that we add to the deeplink url.
  */
 
-public struct OmetriaNotification: Decodable {
+public struct OmetriaNotification {
     
-    public var deepLink: String?
-    public var imageUrl: String?
-    public var externalCustomerId: String?
-    public var campaignType: String?
-    public var sendId: String?
-    public var tracking: [String:Any]?
+    var deepLinkActionUrl: String?
+    var imageUrl: String?
+    var externalCustomerId: String?
+    var campaignType: String
+    var sendId: String
+    var tracking: [String:Any]
     
-    enum CodingKeys: String, CodingKey {
-        case externalCustomerId = "ext_customer_id"
-        case deepLink = "deepLinkActionUrl"
-        case imageUrl
-        case context
-    }
-    
-    enum TrackingKeys: CodingKey {
-        case tracking
-    }
-    
-    enum ContextKeys: String, CodingKey {
-        case campaignType = "campaign_type"
-        case sendId = "send_id"
-        case tracking
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let valuesContainer = try decoder.container(keyedBy: CodingKeys.self)
-        deepLink = try? valuesContainer.decode(String.self, forKey: .deepLink)
-        imageUrl = try? valuesContainer.decode(String.self, forKey: .imageUrl)
-        externalCustomerId = try? valuesContainer.decode(String.self, forKey: .externalCustomerId)
+    public init(from dictionary: [String: Any]) throws {
+        imageUrl = dictionary["imageUrl"] as? String
+        deepLinkActionUrl = dictionary["deepLinkActionUrl"] as? String
         
-        let contextContainer = try valuesContainer.nestedContainer(keyedBy: ContextKeys.self, forKey: .context)
-        campaignType = try? contextContainer.decode(String.self, forKey: .campaignType)
-        sendId = try? contextContainer.decode(String.self, forKey: .sendId)
-        
-        guard contextContainer.contains(.tracking),
-              let jsonData = try? contextContainer.decode(Data.self, forKey: .tracking) else {
-                  tracking = [:]
-                  return
+        guard let context = dictionary["context"] as? [String: Any],
+              let campaignType = context["campaign_type"] as? String,
+              let sendId = context["send_id"] as? String
+        else {
+            throw OmetriaError.invalidNotificationContent(content: dictionary)
         }
-        tracking = (try? JSONSerialization.jsonObject(with: jsonData) as? [String : Any]) ?? [String:Any]()
+        
+        externalCustomerId = context["ext_customer_id"] as? String
+        self.campaignType = campaignType
+        self.sendId = sendId
+        
+        guard let tracking = context["tracking"] as? [String: Any] else {
+            throw OmetriaError.invalidNotificationContent(content: dictionary)
+        }
+        
+        self.tracking = tracking
     }
 }

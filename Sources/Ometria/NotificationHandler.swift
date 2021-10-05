@@ -16,20 +16,24 @@ public protocol OmetriaNotificationInteractionDelegate: AnyObject {
     /**
      Allows you to handle the outcome when a user interacts with an Ometria push notifications that has a valid deeplink url in the payload
      
-     - Parameter deepLink: the processed url string that was received in the interacted notification payload
+     - Parameter deepLink: the processed url string that was received in the interacted notification payload.
      */
-    
-    @available(*, deprecated, message: "handleDeepLinkInteraction is deprecated and will be removed in a future version. Please use handleOmetriaNotificationInteraction instead")
+    @available(*, deprecated, message: "will be removed in a future version. Please use 'handleOmetriaNotificationInteraction' instead.")
     func handleDeepLinkInteraction(_ deepLink: URL)
     
+    /**
+     Allows you to handle the outcome when a user interacts with an Ometria push notifications
+     
+     - Parameter notification: a representation of the notification payload.
+     */
     func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification)
 }
 
 extension OmetriaNotificationInteractionDelegate {
     
-    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+    func handleDeepLinkInteraction(_ deepLink: URL) {}
     
-    }
+    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {}
 }
 
 class NotificationHandler {
@@ -102,7 +106,7 @@ class NotificationHandler {
               }
         
         do {
-            let notificationBody = try OmetriaNotificationBody(dictionary: ometriaContent)
+            let notificationBody = try OmetriaNotificationBody(from: ometriaContent)
             
             return notificationBody
         } catch let error as OmetriaError {

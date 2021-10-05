@@ -477,7 +477,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     /**
      Validates if a notification comes from ometria by checking its content and retrieves an OmetriaNotification object
      
-     - Parameter content: The content taken from a UNUnotification that has been received
+     - Parameter content: The content of a push notification that has been received.
      
      - Returns: An optional OmetriaNotification object
      */

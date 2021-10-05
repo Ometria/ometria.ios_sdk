@@ -19,7 +19,7 @@ public protocol OmetriaNotificationInteractionDelegate: AnyObject {
      - Parameter deepLink: the processed url string that was received in the interacted notification payload
      */
     
-    @available(*, deprecated, message: "Deprecated in version 1.2.1. Use getOmetriaNotification instead")
+    @available(*, deprecated, message: "handleDeepLinkInteraction is deprecated and will be removed in a future version. Please use handleOmetriaNotificationInteraction instead")
     func handleDeepLinkInteraction(_ deepLink: URL)
     
     func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification)

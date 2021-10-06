@@ -508,12 +508,12 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
 extension Ometria: OmetriaNotificationInteractionDelegate {
     
     public func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+        guard let urlString = notification.deepLinkActionUrl, let url = URL(string: urlString) else {
+            return
+        }
         
-    }
-    
-    public func handleDeepLinkInteraction(_ deepLink: URL) {
-        Logger.debug(message: "Open URL: \(deepLink)", category: .push)
         if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
+            Logger.debug(message: "Open URL: \(notification.deepLinkActionUrl)", category: .push)
             Ometria.sharedUIApplication()?.open(deepLink)
             trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
         }

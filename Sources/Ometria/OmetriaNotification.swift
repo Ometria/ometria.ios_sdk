@@ -21,12 +21,12 @@ import Foundation
 
 public struct OmetriaNotification {
     
-    var deepLinkActionUrl: String?
-    var imageUrl: String?
-    var externalCustomerId: String?
-    var campaignType: String
-    var sendId: String
-    var tracking: [String:Any]
+    public var deepLinkActionUrl: String?
+    public var imageUrl: String?
+    public var externalCustomerId: String?
+    public var campaignType: String
+    public var sendId: String
+    public var tracking: [String:Any]
     
     public init(from dictionary: [String: Any]) throws {
         imageUrl = dictionary["imageUrl"] as? String

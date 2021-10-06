@@ -88,16 +88,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - OmetriaNotificationInteractionDelegate
     
-    // This method will be called each time the user interacts with a notification from Ometria
-    // which contains a deepLinkURL. Write your own custom code in order to
-    // properly redirect the app to the screen that should be displayed.
-    // If you do not implement this method at all, the default behaviour is to open the browser and log a DeepLinkOpened Event as you can see below.
+    // Note, this is now deprecated and will be removed in a future version. Use 'handleOmetriaNotificationInteraction' instead.
     func handleDeepLinkInteraction(_ deepLink: URL) {
-        if UIApplication.shared.canOpenURL(deepLink) == true {
-            UIApplication.shared.open(deepLink)
-            Ometria.sharedInstance().trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
-        } else {
-            print("The provided deeplink URL (\(deepLink.absoluteString) cannot be processed.")
+    }
+    
+    // This method will be called each time the user interacts with a notification from Ometria.
+    // Write your own custom code in order to
+    // properly redirect the app to the screen that should be displayed.
+    // If you do not implement this interface at all, the default behaviour is to open the browser and log a DeepLinkOpened Event as you can see below.
+    func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+        if let urlString = notification.deepLinkActionUrl, let url = URL(string: urlString) {
+            if UIApplication.shared.canOpenURL(url) == true {
+                UIApplication.shared.open(url)
+                Ometria.sharedInstance().trackDeepLinkOpenedEvent(link: urlString, screenName: "Safari")
+            } else {
+                print("The provided deeplink URL (\(urlString) cannot be processed.")
+            }
         }
     }
     

@@ -51,10 +51,10 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     /**
-    Gets the previously initialized Ometria instance
-
-    - Returns: returns the Ometria instance
-    */
+     Gets the previously initialized Ometria instance
+     
+     - Returns: returns the Ometria instance
+     */
     open class func sharedInstance() -> Ometria {
         guard instance != nil else {
             fatalError("You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
@@ -72,7 +72,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
         setLoggerEnabled(isLoggingEnabled)
         
-      
+        
         if config.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
         }
@@ -80,15 +80,15 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         if config.automaticallyTrackAppLifecycle {
             automaticLifecycleTracker.startTracking()
         }
-                
+        
         self.notificationHandler.interactionDelegate = self
     }
     
     /**
-    This allows enabling or disabling runtime logs
-    - Note: All logging is disabled by default. This is only required
-            when you encounter issues with the SDK and you want to debug it.
-    */
+     This allows enabling or disabling runtime logs
+     - Note: All logging is disabled by default. This is only required
+     when you encounter issues with the SDK and you want to debug it.
+     */
     open var isLoggingEnabled: Bool = false {
         didSet {
             setLoggerEnabled(isLoggingEnabled)
@@ -101,11 +101,11 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
             Logger.enableLevel(.info)
             Logger.enableLevel(.warning)
             Logger.enableLevel(.error)
-
+            
             Logger.debug(message: "Logger Enabled")
         } else {
             Logger.debug(message: "Logger Disabled")
-
+            
             Logger.disableLevel(.debug)
             Logger.disableLevel(.info)
             Logger.disableLevel(.warning)
@@ -179,7 +179,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter screenName: the name of the screen
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
-    */
+     */
     open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
         let data: [String: Any] = ["page": screenName,
                                    "extra": additionalInfo]
@@ -278,10 +278,10 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     /**
-    Track when a user has removed a product to their wishlist
-    
-    - Parameter productId: the unique identifier of the product that has been removed from the wishlist
-    */
+     Track when a user has removed a product to their wishlist
+     
+     - Parameter productId: the unique identifier of the product that has been removed from the wishlist
+     */
     open func trackWishlistRemovedFromEvent(productId: String) {
         trackEvent(type: .wishlistRemovedFrom, data: ["productId": productId])
     }
@@ -409,7 +409,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     /**
      Uploads tracked events data to the Ometria server.
-
+     
      By default, tracked events are flushed to the Ometria servers every time it reaches a limit of 10 events, but no earlier than 10 seconds from the last flush operation. You only need to call this
      method manually if you want to force a flush at a particular moment.
      */
@@ -435,8 +435,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     open func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                didReceive response: UNNotificationResponse,
-                                withCompletionHandler completionHandler: @escaping () -> Void)
+                                     didReceive response: UNNotificationResponse,
+                                     withCompletionHandler completionHandler: @escaping () -> Void)
     {
         
         notificationHandler.handleNotificationResponse(response, withCompletionHandler: completionHandler)
@@ -465,15 +465,29 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     public static func isOmetriaNotification(_ content: UNNotificationContent) -> Bool {
         guard let aps = content.userInfo["aps"] as? [String: Any],
-            let alert = aps["alert"] as? [String: Any],
-            let _ = alert["ometria"] as? [String: Any] else {
-            
-                return false
-        }
+              let alert = aps["alert"] as? [String: Any],
+              let _ = alert["ometria"] as? [String: Any] else {
+                  
+                  return false
+              }
         
         return true
     }
     
+    /**
+     Validates if a notification comes from ometria by checking its content and retrieves an OmetriaNotification object
+     
+     - Parameter content: The content of a push notification that has been received.
+     
+     - Returns: An optional OmetriaNotification object
+     */
+    public func parseNotification(_ content: UNNotificationContent) -> OmetriaNotification? {
+        guard Ometria.isOmetriaNotification(content) else {
+            return nil
+        }
+        
+        return notificationHandler.parseOmetriaNotification(content)
+    }
     
     // MARK: Universal Links
     
@@ -486,17 +500,22 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Note: If no redirect url is found, the initial url will be provided in the callback
      */
     open func processUniversalLink(_ url: URL, callback: @escaping (URL?, Error?)->()) {
-        RedirectService().getRedirect(url: url, callback: callback) 
+        RedirectService().getRedirect(url: url, callback: callback)
     }
 }
 
 // MARK: - Deeplink Interaction
 extension Ometria: OmetriaNotificationInteractionDelegate {
-    public func handleDeepLinkInteraction(_ deepLink: URL) {
-        Logger.debug(message: "Open URL: \(deepLink)", category: .push)
-        if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
-            Ometria.sharedUIApplication()?.open(deepLink)
-            trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
+    
+    public func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
+        guard let urlString = notification.deepLinkActionUrl, let url = URL(string: urlString) else {
+            return
+        }
+        
+        if Ometria.sharedUIApplication()?.canOpenURL(url) == true {
+            Logger.debug(message: "Open URL: \(notification.deepLinkActionUrl)", category: .push)
+            Ometria.sharedUIApplication()?.open(url)
+            trackDeepLinkOpenedEvent(link: url.absoluteString, screenName: "Safari")
         }
     }
 }

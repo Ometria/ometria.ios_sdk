@@ -31,7 +31,7 @@ public protocol OmetriaNotificationInteractionDelegate: AnyObject {
 
 extension OmetriaNotificationInteractionDelegate {
     
-    func handleDeepLinkInteraction(_ deepLink: URL) {}
+    public func handleDeepLinkInteraction(_ deepLink: URL) {}
     
     func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {}
 }

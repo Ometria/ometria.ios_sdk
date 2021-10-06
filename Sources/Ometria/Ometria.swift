@@ -512,10 +512,10 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
             return
         }
         
-        if Ometria.sharedUIApplication()?.canOpenURL(deepLink) == true {
+        if Ometria.sharedUIApplication()?.canOpenURL(url) == true {
             Logger.debug(message: "Open URL: \(notification.deepLinkActionUrl)", category: .push)
-            Ometria.sharedUIApplication()?.open(deepLink)
-            trackDeepLinkOpenedEvent(link: deepLink.absoluteString, screenName: "Safari")
+            Ometria.sharedUIApplication()?.open(url)
+            trackDeepLinkOpenedEvent(link: url.absoluteString, screenName: "Safari")
         }
     }
 }

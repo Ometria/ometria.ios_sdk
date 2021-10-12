@@ -21,7 +21,8 @@ extension Ometria {
         }
         return sharedApplication
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     static func doesAppUseScenes() -> Bool {
         let delegateClass: AnyClass! = object_getClass(UIApplication.shared.delegate)
         

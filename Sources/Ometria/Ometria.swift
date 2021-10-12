@@ -43,6 +43,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Returns: returns an initialized Ometria instance object if needed to use or keep throughout the project. You can always get the initialized instance by calling sharedInstance()
      */
     @discardableResult
+    @available(iOSApplicationExtension, unavailable)
     open class func initialize(apiToken: String) -> Ometria {
         let ometria = Ometria(apiToken: apiToken, config: OmetriaConfig())
         instance = ometria
@@ -61,7 +62,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         }
         return instance!
     }
-    
+
+    @available(iOSApplicationExtension, unavailable)
     init(apiToken: String, config: OmetriaConfig) {
         self.config = config
         self.apiToken = apiToken
@@ -505,6 +507,8 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
 }
 
 // MARK: - Deeplink Interaction
+
+@available(iOSApplicationExtension, unavailable)
 extension Ometria: OmetriaNotificationInteractionDelegate {
     
     public func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
@@ -513,7 +517,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
         }
         
         if Ometria.sharedUIApplication()?.canOpenURL(url) == true {
-            Logger.debug(message: "Open URL: \(notification.deepLinkActionUrl)", category: .push)
+            Logger.debug(message: "Open URL: \(urlString)", category: .push)
             Ometria.sharedUIApplication()?.open(url)
             trackDeepLinkOpenedEvent(link: url.absoluteString, screenName: "Safari")
         }

@@ -17,6 +17,6 @@ public struct Constants {
     
     struct UserDefaultsKeys {
         
-        static let sdkVersionRN: String = "com.ometria.sdkVersionRN"
+        static let sdkVersionRN: String = "sdkVersionRN"
     }
 }

@@ -69,6 +69,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case appVersion
         case appBuildNumber
         case sdkVersion
+        case sdkVersionRN
         case platform
         case osVersion
         case deviceManufacturer
@@ -113,6 +114,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(appVersion, forKey: .appVersion)
         try container.encode(appBuildNumber, forKey: .appBuildNumber)
         try container.encode(sdkVersion, forKey: .sdkVersion)
+        try container.encode(sdkVersionRN, forKey: .sdkVersionRN)
         try container.encode(platform, forKey: .platform)
         try container.encode(osVersion, forKey: .osVersion)
         try container.encode(deviceManufacturer, forKey: .deviceManufacturer)

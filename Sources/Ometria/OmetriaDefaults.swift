@@ -59,4 +59,7 @@ struct OmetriaDefaults {
     static var identifiedCustomerEmail: String?
     @UserDefault(key: "com.ometria.identifiedCustomerID", defaultValue: nil)
     static var identifiedCustomerID: String?
+    
+    @UserDefault(key: Constants.UserDefaultsKeys.sdkVersionRN, defaultValue: nil)
+    internal static var sdkVersionRN: String?
 }

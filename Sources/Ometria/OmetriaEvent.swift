@@ -51,6 +51,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var appVersion: String?
     var appBuildNumber: String?
     var sdkVersion: String
+    var sdkVersionRN: String?
     var platform = UIDevice.current.systemName
     var osVersion = UIDevice.current.systemVersion
     var deviceManufacturer = "Apple"
@@ -131,6 +132,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
             appVersion = infoDict["CFBundleShortVersionString"] as? String
         }
         sdkVersion = Constants.sdkVersion
+        sdkVersionRN = OmetriaDefaults.sdkVersionRN
     }
     
     // MARK: - CustomDebugStringConvertible

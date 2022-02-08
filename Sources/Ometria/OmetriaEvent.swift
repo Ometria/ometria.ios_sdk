@@ -51,6 +51,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
     var appVersion: String?
     var appBuildNumber: String?
     var sdkVersion: String
+    var sdkVersionRN: String?
     var platform = UIDevice.current.systemName
     var osVersion = UIDevice.current.systemVersion
     var deviceManufacturer = "Apple"
@@ -68,6 +69,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         case appVersion
         case appBuildNumber
         case sdkVersion
+        case sdkVersionRN
         case platform
         case osVersion
         case deviceManufacturer
@@ -86,6 +88,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         appVersion = try values.decode(String.self, forKey: .appVersion)
         appBuildNumber = try values.decode(String.self, forKey: .appBuildNumber)
         sdkVersion = try values.decode(String.self, forKey: .sdkVersion)
+        sdkVersionRN = try values.decode(String.self, forKey: .sdkVersionRN)
         platform = try values.decode(String.self, forKey: .platform)
         osVersion = try values.decode(String.self, forKey: .osVersion)
         deviceManufacturer = try values.decode(String.self, forKey: .deviceManufacturer)
@@ -112,6 +115,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         try container.encode(appVersion, forKey: .appVersion)
         try container.encode(appBuildNumber, forKey: .appBuildNumber)
         try container.encode(sdkVersion, forKey: .sdkVersion)
+        try container.encode(sdkVersionRN, forKey: .sdkVersionRN)
         try container.encode(platform, forKey: .platform)
         try container.encode(osVersion, forKey: .osVersion)
         try container.encode(deviceManufacturer, forKey: .deviceManufacturer)
@@ -131,6 +135,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
             appVersion = infoDict["CFBundleShortVersionString"] as? String
         }
         sdkVersion = Constants.sdkVersion
+        sdkVersionRN = OmetriaDefaults.sdkVersionRN
     }
     
     // MARK: - CustomDebugStringConvertible

@@ -193,15 +193,27 @@ open class AutomaticPushTracker: NSObject {
     }
     
     // MARK: - Firebase Token
-    
     @objc private func firebaseTokenDidRefresh(notification: Notification) {
-        let token = Messaging.messaging().fcmToken
-        
-        if let token = token {
-            OmetriaDefaults.fcmToken = token
-            Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
-            Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
+        if let token = Messaging.messaging().fcmToken { // implemented like this to support Firebase v7.x
+            processFirebaseToken(token)
+        } else { // this code works for Firebase > v8.x
+            Messaging.messaging().token { [weak self] token, error in
+                if let error = error {
+                    Logger.error(message: error.localizedDescription)
+                }
+                if let token = token {
+                    self?.processFirebaseToken(token)
+                } else {
+                    Logger.error(message: "Invalid push token retrieved from Firebase")
+                }
+            }
         }
+    }
+    
+    private func processFirebaseToken(_ token: String) {
+        OmetriaDefaults.fcmToken = token
+        Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
+        Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
     }
     
     // MARK: - Observer

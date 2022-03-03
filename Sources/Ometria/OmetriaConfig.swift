@@ -16,7 +16,7 @@ open class OmetriaConfig {
     open var isLoggingEnabled: Bool
     open var logLevel: LogLevel
 
-    open init(flushLimit: Int = Constants.defaultTriggerLimit, automaticallyTrackNotifications: Bool = true, automaticallyTrackAppLifecycle: Bool = true, isLoggingEnabled: Bool = false, logLevel: LogLevel = .warning) {
+    public init(flushLimit: Int = Constants.defaultTriggerLimit, automaticallyTrackNotifications: Bool = true, automaticallyTrackAppLifecycle: Bool = true, isLoggingEnabled: Bool = false, logLevel: LogLevel = .warning) {
         self.flushLimit = flushLimit
         self.automaticallyTrackNotifications = automaticallyTrackAppLifecycle
         self.automaticallyTrackAppLifecycle = automaticallyTrackAppLifecycle

@@ -8,15 +8,19 @@
 
 import Foundation
 
-class OmetriaConfig {
+open class OmetriaConfig {
     
-    var flushLimit: Int
-    var automaticallyTrackNotifications: Bool = true
-    var automaticallyTrackAppLifecycle: Bool = true
-    var isLoggingEnabled: Bool = false
-    var logLevel: LogLevel = .warning
-    
-    init(flushLimit: Int = Constants.defaultTriggerLimit) {
+    open var flushLimit: Int
+    open var automaticallyTrackNotifications: Bool
+    open var automaticallyTrackAppLifecycle: Bool
+    open var isLoggingEnabled: Bool
+    open var logLevel: LogLevel
+
+    init(flushLimit: Int = Constants.defaultTriggerLimit, automaticallyTrackNotifications: Bool = true, automaticallyTrackAppLifecycle: Bool = true, isLoggingEnabled: Bool = false, logLevel: LogLevel = .warning) {
         self.flushLimit = flushLimit
+        self.automaticallyTrackNotifications = automaticallyTrackAppLifecycle
+        self.automaticallyTrackAppLifecycle = automaticallyTrackAppLifecycle
+        self.isLoggingEnabled = isLoggingEnabled
+        self.logLevel = logLevel
     }
 }

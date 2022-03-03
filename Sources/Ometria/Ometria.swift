@@ -37,15 +37,16 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      Returns the initialized Ometria instance object.
      
      - Parameter apiToken: the api token that has been attributed to your project.
-     
+     - Parameter config: the ometria sdk configuration object
+
      - Important: Not calling this method before any other will cause an assertion failure.
      
      - Returns: returns an initialized Ometria instance object if needed to use or keep throughout the project. You can always get the initialized instance by calling sharedInstance()
      */
     @discardableResult
     @available(iOSApplicationExtension, unavailable)
-    open class func initialize(apiToken: String) -> Ometria {
-        let ometria = Ometria(apiToken: apiToken, config: OmetriaConfig())
+    open class func initialize(apiToken: String, config: OmetriaConfig = OmetriaConfig()) -> Ometria {
+        let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
         ometria.handleApplicationLaunch()
         return ometria

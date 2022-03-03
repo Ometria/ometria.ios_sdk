@@ -44,7 +44,7 @@ enum LogCategory: String {
     }
 }
 
-open enum LogLevel: String {
+public enum LogLevel: String {
     case verbose
     case debug
     case info

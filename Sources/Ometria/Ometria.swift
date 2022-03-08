@@ -512,7 +512,13 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
 extension Ometria: OmetriaNotificationInteractionDelegate {
     
     public func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
-        guard let urlString = notification.deepLinkActionUrl, let url = URL(string: urlString) else {
+        guard let urlString = notification.deepLinkActionUrl?.trimmingCharacters(in: .init(charactersIn: " ")),
+              let urlEncodingString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+                  return
+              }
+        
+        guard let url = URL(string: urlEncodingString) else {
+            Logger.error(message: "The provided deeplink URL \(urlEncodingString) is invalid")
             return
         }
         

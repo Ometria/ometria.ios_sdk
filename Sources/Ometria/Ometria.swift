@@ -527,7 +527,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
             Ometria.sharedUIApplication()?.open(url)
             trackDeepLinkOpenedEvent(link: url.absoluteString, screenName: "Safari")
         } else {
-            Logger.error(message: "Can not open \(url)")
+            Logger.error(message: "Can not open \(url.absoluteString)")
         }
     }
 }

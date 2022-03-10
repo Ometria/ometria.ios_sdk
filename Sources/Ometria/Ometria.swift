@@ -518,7 +518,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
               }
         
         guard let url = URL(string: urlEncodingString) else {
-            Logger.error(message: "The provided deeplink URL \(urlString) is invalid")
+            Logger.error(message: "The provided deeplink URL \(urlString) is invalid", category: .push)
             return
         }
         
@@ -527,7 +527,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
             Ometria.sharedUIApplication()?.open(url)
             trackDeepLinkOpenedEvent(link: url.absoluteString, screenName: "Safari")
         } else {
-            Logger.error(message: "Can not open \(url.absoluteString)")
+            Logger.error(message: "Can not open \(url.absoluteString)", category: .push)
         }
     }
 }

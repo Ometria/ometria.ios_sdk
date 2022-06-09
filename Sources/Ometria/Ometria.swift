@@ -13,8 +13,8 @@ import UIKit
 open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     /// string that identifies your project in order to track events to it
-    open var apiToken: String
-    open var notificationInteractionDelegate: OmetriaNotificationInteractionDelegate? {
+    public var apiToken: String
+    public var notificationInteractionDelegate: OmetriaNotificationInteractionDelegate? {
         get {
             return notificationHandler.interactionDelegate
         }
@@ -44,8 +44,10 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     @discardableResult
     @available(iOSApplicationExtension, unavailable)
-    open class func initialize(apiToken: String) -> Ometria {
-        let ometria = Ometria(apiToken: apiToken, config: OmetriaConfig())
+    public class func initialize(apiToken: String, enableSwizzling: Bool = true) -> Ometria {
+        let config = OmetriaConfig()
+        config.automaticallyTrackNotifications = enableSwizzling
+        let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
         ometria.handleApplicationLaunch()
         return ometria
@@ -56,7 +58,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Returns: returns the Ometria instance
      */
-    open class func sharedInstance() -> Ometria {
+    public class func sharedInstance() -> Ometria {
         guard instance != nil else {
             fatalError("You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
         }
@@ -91,7 +93,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Note: All logging is disabled by default. This is only required
      when you encounter issues with the SDK and you want to debug it.
      */
-    open var isLoggingEnabled: Bool = false {
+    public var isLoggingEnabled: Bool = false {
         didSet {
             setLoggerEnabled(isLoggingEnabled)
         }
@@ -170,7 +172,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     /**
      Track when the user has viewed the "home page" or landing screen of your app.
      */
-    open func trackHomeScreenViewedEvent() {
+    public func trackHomeScreenViewedEvent() {
         trackEvent(type: .homeScreenViewed)
     }
     
@@ -182,7 +184,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter screenName: the name of the screen
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
-    open func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
+    public func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
         let data: [String: Any] = ["page": screenName,
                                    "extra": additionalInfo]
         trackEvent(type: .screenViewedExplicit, data: data)
@@ -204,7 +206,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Important: This event is absolutely pivotal to the functioning of the SDK, so take care to send it as early as possible. It is not mutually exclusive with sending an profile identified by e-mail event: send either event as soon as you have the information, for optimal integration.
      */
-    open func trackProfileIdentifiedEvent(customerId: String) {
+    public func trackProfileIdentifiedEvent(customerId: String) {
         OmetriaDefaults.identifiedCustomerID = customerId
         trackProfileIdentifiedEvent(data: ["customerId": customerId])
     }
@@ -216,7 +218,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Important: Having a customerId makes profile matching more robust. It is not mutually exclusive with sending an profile identified by customerId event: send either event as soon as you have the information, for optimal integration.
      */
-    open func trackProfileIdentifiedEvent(email: String) {
+    public func trackProfileIdentifiedEvent(email: String) {
         OmetriaDefaults.identifiedCustomerEmail = email
         trackProfileIdentifiedEvent(data: ["email": email])
     }
@@ -234,7 +236,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      An app user has deidentified themselves. This basically means: a user has logged out
      */
-    open func trackProfileDeidentifiedEvent() {
+    public func trackProfileDeidentifiedEvent() {
         OmetriaDefaults.identifiedCustomerEmail = nil
         OmetriaDefaults.identifiedCustomerID = nil
         trackEvent(type: .profileDeidentified)
@@ -247,7 +249,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter productId: the unique identifier for the product that has been interacted with.
      */
-    open func trackProductViewedEvent(productId: String) {
+    public func trackProductViewedEvent(productId: String) {
         trackEvent(type: .productViewed, data: ["productId": productId])
     }
     
@@ -258,7 +260,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter listingType: A string representing the type of the listing. Can be category or search or other.
      - Parameter listingAttributes: A dictionary containing the parameters associated with the listing. Can contain a category id or a search query for example.
      */
-    open func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
+    public func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
         var data: [String: Any] = [:]
         if let listingType = listingType {
             data["listingType"] = listingType
@@ -275,7 +277,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter productId: the unique identifier of the product that has been added to the wishlist
      */
-    open func trackWishlistAddedToEvent(productId: String) {
+    public func trackWishlistAddedToEvent(productId: String) {
         trackEvent(type: .wishlistAddedTo, data: ["productId": productId])
     }
     
@@ -284,14 +286,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter productId: the unique identifier of the product that has been removed from the wishlist
      */
-    open func trackWishlistRemovedFromEvent(productId: String) {
+    public func trackWishlistRemovedFromEvent(productId: String) {
         trackEvent(type: .wishlistRemovedFrom, data: ["productId": productId])
     }
     
     /**
      Track when the user has viewed a dedicated page, screen or modal with the contents of the shopping basket.
      */
-    open func trackBasketViewedEvent() {
+    public func trackBasketViewedEvent() {
         trackEvent(type: .basketViewed)
     }
     
@@ -300,7 +302,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameters basket: an OmetriaBasket object with all the available details of the current basket contents
      */
-    open func trackBasketUpdatedEvent(basket: OmetriaBasket) {
+    public func trackBasketUpdatedEvent(basket: OmetriaBasket) {
         do {
             let serializedBasket = try basket.jsonObject()
             trackEvent(type: .basketUpdated, data: ["basket": serializedBasket])
@@ -314,7 +316,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter orderId: The id that your system generated for the order that is being checked out
      */
-    open func trackCheckoutStartedEvent(orderId: String? = nil) {
+    public func trackCheckoutStartedEvent(orderId: String? = nil) {
         var data: [String: Any] = [:]
         if let orderId = orderId {
             data["orderId"] = orderId
@@ -328,7 +330,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter orderId: The id that your system generated for the completed order
      - Parameter basket: an OmetriaBasket object containing all the items in the order and also the total pricing and currency
      */
-    open func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket? = nil) {
+    public func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket? = nil) {
         do {
             var data: [String: Any] = ["orderId": orderId]
             if let basket = basket {
@@ -339,7 +341,6 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
         } catch {
             Logger.error(message: "Failed to track \(OmetriaEventType.orderCompleted.rawValue) event with error: \(error)", category: .events)
         }
-        
     }
     
     // MARK: Notification Related Events
@@ -383,7 +384,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameters link: a string representing the URL that has been opened
      - Parameters screenName: a string representing the name of the screen that has been opened as a result of decomposing the URL
      */
-    open func trackDeepLinkOpenedEvent(link: String, screenName: String) {
+    public func trackDeepLinkOpenedEvent(link: String, screenName: String) {
         trackEvent(type: .deepLinkOpened, data: ["link": link,
                                                  "page": screenName])
     }
@@ -394,7 +395,7 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter customEventType: a string representing the name of the custom event
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
-    open func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]? = nil) {
+    public func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]? = nil) {
         var data: [String: Any] = ["customEventType": customEventType]
         if let additionalInfo = additionalInfo {
             data["properties"] = additionalInfo
@@ -415,14 +416,14 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      By default, tracked events are flushed to the Ometria servers every time it reaches a limit of 10 events, but no earlier than 10 seconds from the last flush operation. You only need to call this
      method manually if you want to force a flush at a particular moment.
      */
-    open func flush() {
+    public func flush() {
         eventHandler.flushEvents()
     }
     
     /**
      Clears all the events from local cache
      */
-    open func clear() {
+    public func clear() {
         eventHandler.clearEvents()
     }
     
@@ -454,6 +455,19 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
+    }
+    
+    // MARK: Manual Notification Tracking
+    public func handleFirebaseTokenChanged(token: String) {
+        automaticPushTracker.processFirebaseToken(token)
+    }
+    
+    public func handleNotificationResponse(_ response: UNNotificationResponse) {
+        notificationHandler.handleNotificationResponse(response, withCompletionHandler: nil)
+    }
+    
+    public func handleReceivedNotification(_ notification: UNNotification) {
+        notificationHandler.handleReceivedNotification(notification, withCompletionHandler: nil)
     }
     
     // MARK: Notification Utils

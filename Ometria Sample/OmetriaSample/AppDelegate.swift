@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Initialize the Ometria SDK here.
         // Make sure to replace your token in the intialization method
-        Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE")
+        Ometria.initialize(apiToken: "pk_8fe9f6aa-4fe7-42c7-8966-b8cbd6c0fb0c", enableSwizzling: false)
         
         // Enable logs in order to see if there are any problems encountered
         Ometria.sharedInstance().isLoggingEnabled = true
@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FirebaseConfiguration.shared.setLoggerLevel(FirebaseLoggerLevel.min)
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
-        
         
         configurePushNotifications()
         
@@ -73,16 +72,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        if let fcmToken = fcmToken {
+            Ometria.sharedInstance().handleFirebaseTokenChanged(token: fcmToken)
+        }
+    }
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("Reaching Did register for remote notifications")
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        Ometria.sharedInstance().handleNotificationResponse(response)
         print("Reaching Did receive notification response")
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("Reaching Will present notification")
+        Ometria.sharedInstance().handleReceivedNotification(notification)
         completionHandler([.alert, .sound])
     }
     

@@ -65,6 +65,42 @@ You can enable advanced logging if you want more information on what’s happeni
 ```swift
 Ometria.sharedInstance().isLoggingEnabled = true
 ```
+:::info
+By default, Ometria uses swizzling in order to gain access to push notification information. However, if you are not comfortable with it, we have provided a set of methods that need to be called in order to provide Ometria with the required Push Notification information it requires. 
+
+:::
+
+First of all you will have to update your initializer so that it doesn't use swizzling.
+
+```swift
+Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE", enableSwizzling: false)
+```
+
+Next you will need to provide the Firebase push token every time it is updated. You can do this in the delegate method from Messaging:
+
+```swift
+func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    if let token = fcmToken {
+        Ometria.sharedInstance().handleFirebaseTokenChanged(token: token)
+    }
+}
+```
+
+Finally Ometria needs to know when users receive and interact with push notifications. The information for those events can be provided in the following methods:
+
+```swift
+func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    Ometria.sharedInstance().handleNotificationResponse(response)
+}
+
+func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    Ometria.sharedInstance().handleReceivedNotification(notification)
+    completionHandler([.alert, .sound])
+}
+```
+
+With all these timely provided, Ometria should have the information it requires in order to be able to deliver and gather information on relevant push notifications, and the way users interact with them.
+
 5\. Event tracking guide
 ------------------------
 You need to be aware of your users’ behaviour on your platforms in order to understand them. Some behaviour is automatically detectable, other events need work from the app developer to track.

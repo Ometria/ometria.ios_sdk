@@ -16,7 +16,6 @@ public struct Constants {
     static let tooManyRequestsStatusCode: Int = 429
     
     struct UserDefaultsKeys {
-        
         static let sdkVersionRN: String = "sdkVersionRN"
     }
 }

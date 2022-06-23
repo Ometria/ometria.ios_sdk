@@ -88,7 +88,7 @@ class OmetriaEvent: CustomDebugStringConvertible, Codable {
         appVersion = try values.decode(String.self, forKey: .appVersion)
         appBuildNumber = try values.decode(String.self, forKey: .appBuildNumber)
         sdkVersion = try values.decode(String.self, forKey: .sdkVersion)
-        sdkVersionRN = try values.decode(String.self, forKey: .sdkVersionRN)
+        sdkVersionRN = try? values.decode(String.self, forKey: .sdkVersionRN)
         platform = try values.decode(String.self, forKey: .platform)
         osVersion = try values.decode(String.self, forKey: .osVersion)
         deviceManufacturer = try values.decode(String.self, forKey: .deviceManufacturer)

@@ -210,7 +210,7 @@ open class AutomaticPushTracker: NSObject {
         }
     }
     
-    private func processFirebaseToken(_ token: String) {
+    func processFirebaseToken(_ token: String) {
         OmetriaDefaults.fcmToken = token
         Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
         Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)

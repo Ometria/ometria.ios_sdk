@@ -65,10 +65,9 @@ You can enable advanced logging if you want more information on what’s happeni
 ```swift
 Ometria.sharedInstance().isLoggingEnabled = true
 ```
-:::info
-By default, Ometria uses swizzling in order to gain access to push notification information. However, if you are not comfortable with it, we have provided a set of methods that need to be called in order to provide Ometria with the required Push Notification information it requires. 
 
-:::
+> :information_source: **Remove Swizzling**
+> By default, Ometria uses swizzling in order to gain access to push notification information. However, if you are not comfortable with it, we have provided a set of methods that need to be called in order to provide Ometria with the required Push Notification information it requires. 
 
 First of all you will have to update your initializer so that it doesn't use swizzling.
 

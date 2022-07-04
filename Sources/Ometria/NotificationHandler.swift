@@ -39,20 +39,20 @@ extension OmetriaNotificationInteractionDelegate {
 class NotificationHandler {
     weak var interactionDelegate: OmetriaNotificationInteractionDelegate?
     
-    func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: ((UNNotificationPresentationOptions) -> Void)?) {
         if let notificationBody = parseNotificationContent(notification.request.content) {
             Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         }
-        completionHandler([])
+        completionHandler?([])
     }
     
-    func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: (() -> Void)?) {
         if let notificationBody = parseNotificationContent(response.notification.request.content) {
             Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
             if let urlString = notificationBody.deepLinkActionURL {
                 if let url = URL(string: urlString) {
                     interactionDelegate?.handleDeepLinkInteraction(url)
-                    completionHandler()
+                    completionHandler?()
                 } else {
                     Logger.error(message: "The URL provided in the notification is invalid: \(urlString)", category: .push)
                 }

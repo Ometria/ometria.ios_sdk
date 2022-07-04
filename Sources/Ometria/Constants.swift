@@ -9,14 +9,13 @@
 import Foundation
 
 public struct Constants {
-    static let sdkVersion = "1.2.2"
+    static let sdkVersion = "1.2.3"
     public static let defaultTriggerLimit = 10
     static let flushMaxBatchSize = 100
     static let networkCallTimeoutSeconds: TimeInterval = 10
     static let tooManyRequestsStatusCode: Int = 429
     
     struct UserDefaultsKeys {
-        
         static let sdkVersionRN: String = "sdkVersionRN"
     }
 }

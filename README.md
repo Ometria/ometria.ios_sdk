@@ -66,17 +66,19 @@ You can enable advanced logging if you want more information on what’s happeni
 Ometria.sharedInstance().isLoggingEnabled = true
 ```
 
-### Remove Swizzling
+### Disabling Swizzling
 
-> :information_source: By default, Ometria uses swizzling in order to gain access to push notification information. However, if you are not comfortable with it, we have provided a set of methods that need to be called in order to provide Ometria with the required Push Notification information it requires. 
+Method Swizzling is the ability to change the functionality of an existing selector/method at runtime.
 
-First of all you will have to update your initializer so that it doesn't use swizzling.
+> :information_source: By default, the Ometria SDK uses Swizzling in order to gain access to data arriving in push messages. We have chosen this method so implementers have to do less work to integrate with the SDK. However, if you are not comfortable with using Swizzling, we have provided a set of methods that need to be called in order to provide the Ometria SDK with the required information to show Push Notifications to the user.
+
+First of all, you will have to update your initializer so that it doesn't use Swizzling.
 
 ```swift
 Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE", enableSwizzling: false)
 ```
 
-Next you will need to provide the Firebase push token every time it is updated. You can do this in the delegate method from Messaging:
+Next, you will need to provide the Firebase push token every time Firebase updates it. You can do this in the delegate method from Messaging:
 
 ```swift
 func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
@@ -86,7 +88,7 @@ func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: Str
 }
 ```
 
-Finally Ometria needs to know when users receive and interact with push notifications. The information for those events can be provided in the following methods:
+Finally the Ometria SDK needs to know when users receive and interact with push notifications. The information for those events can be provided in the following methods:
 
 ```swift
 func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -99,7 +101,7 @@ func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent noti
 }
 ```
 
-With all these timely provided, Ometria should have the information it requires in order to be able to deliver and gather information on relevant push notifications, and the way users interact with them.
+With all these timely provided, the Ometria SDK should have the information it needs to deliver push notifications to users and gather information on interacting with them.
 
 5\. Event tracking guide
 ------------------------

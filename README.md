@@ -32,6 +32,8 @@ The easiest way to get Ometria into your iOS project is by using [CocoaPods](htt
 --------------------------
 To initialise Ometria, you need to enter the API key from **2. Before you begin**.
 
+> :information_source: Although on Android you are allowed to change what icon is displayed on push notifications, Apple is being more restrictive in this sense. Therefore, push notifications on iOS and ipadOS always use the application icon, and the only changes in layout can be done by user controlled preferences. To find out more about this, see [Notifications Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/components/system-experiences/notifications)
+
 The best place to do this is in [application(_:didFinishLaunchingWithOptions:)](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/#//apple_ref/occ/intfm/UIApplicationDelegate/application:didFinishLaunchingWithOptions:).
 
 Initialise the library by adding **import Ometria** and then calling **Ometria.initialize(apiToken:)** with your API key as its argument.

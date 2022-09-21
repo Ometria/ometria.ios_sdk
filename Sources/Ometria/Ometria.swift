@@ -277,8 +277,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter productId: the unique identifier of the product that has been added to the wishlist
      */
+    @available(*, deprecated, message: "the event is no longer sent to the Ometria backend. It will be removed in a future version.")
     public func trackWishlistAddedToEvent(productId: String) {
-        trackEvent(type: .wishlistAddedTo, data: ["productId": productId])
+        Logger.warning(message: "The WishlistAddedTo event is no longer processed by Ometria. It will not produce any result.")
     }
     
     /**
@@ -286,8 +287,9 @@ open class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Parameter productId: the unique identifier of the product that has been removed from the wishlist
      */
+    @available(*, deprecated, message: "the event is no longer sent to the Ometria backend. It will be removed in a future version.")
     public func trackWishlistRemovedFromEvent(productId: String) {
-        trackEvent(type: .wishlistRemovedFrom, data: ["productId": productId])
+        Logger.warning(message: "The WishlistRemovedFrom event is no longer processed by Ometria. It will not produce any result.")
     }
     
     /**

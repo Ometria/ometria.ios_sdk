@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// The primary class that allows instantiating and integrating Ometria in your application
-open class Ometria: NSObject, UNUserNotificationCenterDelegate {
+public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     /// string that identifies your project in order to track events to it
     public var apiToken: String

@@ -21,13 +21,13 @@ extension UNUserNotificationCenter {
     }
 }
 
-open class AutomaticPushTracker: NSObject {
+public class AutomaticPushTracker: NSObject {
     
-    open var isRunning = false
-    open var isDelegateObserverAdded = false
+    public var isRunning = false
+    public var isDelegateObserverAdded = false
 
     @available(iOSApplicationExtension, unavailable)
-    open func startTracking() {
+    public func startTracking() {
         guard !isRunning else {
             return
         }
@@ -46,7 +46,7 @@ open class AutomaticPushTracker: NSObject {
     }
 
     @available(iOSApplicationExtension, unavailable)
-    open func stopTracking() {
+    public func stopTracking() {
         guard isRunning else {
             return
         }
@@ -217,7 +217,7 @@ open class AutomaticPushTracker: NSObject {
     }
     
     // MARK: - Observer
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if #available(iOS 10.0, *), keyPath == "delegate" {
             swizzleDidReceiveRemoteNotification()

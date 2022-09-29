@@ -18,8 +18,6 @@ enum EventType: String, CaseIterable {
     case orderCompleted
     case productListingViewed
     case productViewed
-    case wishlistAddedTo
-    case wishlistRemovedFrom
     case homeScreenViewed
     case screenViewedExplicit
     case profileIdentifiedByEmail
@@ -69,12 +67,6 @@ class EventListViewController: UITableViewController {
         case .productViewed:
             Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")
         
-        case .wishlistAddedTo:
-            Ometria.sharedInstance().trackWishlistAddedToEvent(productId: "sample_product_id")
-        
-        case .wishlistRemovedFrom:
-            Ometria.sharedInstance().trackWishlistRemovedFromEvent(productId: "sample_product_id")
-        
         case .homeScreenViewed:
             Ometria.sharedInstance().trackHomeScreenViewedEvent()
         
@@ -103,11 +95,12 @@ class EventListViewController: UITableViewController {
     
     func createSampleBasket() -> OmetriaBasket {
         let myItem = OmetriaBasketItem(productId: "product-1",
+                                       variantId: "variant-product-1",
                                        sku: "sku-product-1",
                                        quantity: 1,
                                        price: 12.0)
         let myItems = [myItem]
-        let myBasket = OmetriaBasket(totalPrice: 12.0, currency: "USD", items: myItems, link: "http://sample.link.com")
+        let myBasket = OmetriaBasket(id: "basket-id", totalPrice: 12.0, currency: "USD", items: myItems, link: "http://sample.link.com")
         
         return myBasket
     }

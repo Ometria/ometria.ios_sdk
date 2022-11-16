@@ -124,11 +124,12 @@ Once the SDK is initialised, you can track an event by calling its dedicated met
 ```swift
 let myItem = OmetriaBasketItem(
         productId: "product-1",
+        variantId: "variant-product-1"
         sku: "sku-product-1",
         quantity: 1,
         price: 12.0)
 let myItems = [myItem]
-let myBasket = OmetriaBasket(totalPrice: 12.0, currency: "USD", items: myItems)
+let myBasket = OmetriaBasket(id: "basket-id", totalPrice: 12.0, currency: "USD", items: myItems, link: "http://sample.link.com")
 
 Ometria.sharedInstance().trackBasketUpdatedEvent(basket: myBasket)
 ```
@@ -174,20 +175,6 @@ This event is about capturing interest from the visitor for this product.
 
 ```swift
 trackProductViewedEvent(productId: String)
-```
-
-#### Wishlist events
-
-The visitor has added this product to their wishlist:
-
-```swift
-trackWishlistAddedToEvent(productId: String)
-```
-
-... or removed it:
-
-```swift
-trackWishlistRemovedFromEvent(productId: String)
 ```
 
 #### Basket viewed

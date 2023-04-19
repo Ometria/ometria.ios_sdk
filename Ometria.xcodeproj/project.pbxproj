@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */; };
+		4E3E5E4129E5446700073538 /* EventService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3E5E4029E5446700073538 /* EventService.swift */; };
+		4E3E5E4329E5466C00073538 /* EventCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3E5E4229E5466C00073538 /* EventCache.swift */; };
+		4E3E5E5829E549B100073538 /* Decodable+Serialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3E5E5729E549B000073538 /* Decodable+Serialization.swift */; };
 		4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */; };
 		4E5B2E2824ED4B470063FA50 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B2E2724ED4B470063FA50 /* NetworkService.swift */; };
 		4E5B2E2A24ED4C320063FA50 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5B2E2924ED4C320063FA50 /* Result.swift */; };
@@ -38,12 +41,14 @@
 		4EFF18B624EA55690020389A /* JSONCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B524EA55690020389A /* JSONCache.swift */; };
 		4EFF18B824EA559A0020389A /* CodableCaching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18B724EA559A0020389A /* CodableCaching.swift */; };
 		4EFF18BB24EA63230020389A /* EventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EFF18BA24EA63230020389A /* EventHandler.swift */; };
-		EC56B60127048E17009D808A /* Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC56B60027048E17009D808A /* Decodable.swift */; };
 		EC56B60327048E23009D808A /* OmetriaNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC56B60227048E23009D808A /* OmetriaNotification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaDefaults.swift; sourceTree = "<group>"; };
+		4E3E5E4029E5446700073538 /* EventService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventService.swift; sourceTree = "<group>"; };
+		4E3E5E4229E5466C00073538 /* EventCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCache.swift; sourceTree = "<group>"; };
+		4E3E5E5729E549B000073538 /* Decodable+Serialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decodable+Serialization.swift"; sourceTree = "<group>"; };
 		4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+Ometria.swift"; sourceTree = "<group>"; };
 		4E5B2E2724ED4B470063FA50 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		4E5B2E2924ED4C320063FA50 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -77,7 +82,6 @@
 		4EFF18B724EA559A0020389A /* CodableCaching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableCaching.swift; sourceTree = "<group>"; };
 		4EFF18BA24EA63230020389A /* EventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandler.swift; sourceTree = "<group>"; };
 		7F5D7686F934DEAE653B4617 /* Pods_Ometria.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ometria.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC56B60027048E17009D808A /* Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decodable.swift; sourceTree = "<group>"; };
 		EC56B60227048E23009D808A /* OmetriaNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaNotification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,7 +102,7 @@
 			children = (
 				4EA10CE424ED5A97007FF49D /* JSONDecoder+KeyPath.swift */,
 				4E47423724EE6590005F1F68 /* JSONEncoder+Ometria.swift */,
-				EC56B60027048E17009D808A /* Decodable.swift */,
+				4E3E5E5729E549B000073538 /* Decodable+Serialization.swift */,
 				4EE7A8C924C81BDD00B316A7 /* ApplicationUtils.swift */,
 				4EF3710924F39C4B00450B52 /* Array+Chunks.swift */,
 				4EF3710C24F56D0E00450B52 /* Constants.swift */,
@@ -117,6 +121,7 @@
 		4E567CC0250F7AAD00D68DEB /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				4E3E5E4029E5446700073538 /* EventService.swift */,
 				4E88929324ED9A07002593FD /* EventsAPI.swift */,
 				4E5B2E2724ED4B470063FA50 /* NetworkService.swift */,
 				4EA10CE624ED70AB007FF49D /* ParamEncoder.swift */,
@@ -146,6 +151,7 @@
 		4E567CC4250F7AEB00D68DEB /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				4E3E5E4229E5466C00073538 /* EventCache.swift */,
 				4E0DB1EC24CABE9200EA2859 /* OmetriaDefaults.swift */,
 				4EFF18B524EA55690020389A /* JSONCache.swift */,
 				4EFF18B724EA559A0020389A /* CodableCaching.swift */,
@@ -310,7 +316,7 @@
 		4EDB18E824B5E9D500CFE550 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1120;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1120;
 				ORGANIZATIONNAME = Cata;
 				TargetAttributes = {
@@ -355,13 +361,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EE7A8D024C8483600B316A7 /* ReadWriteLock.swift in Sources */,
+				4E3E5E4329E5466C00073538 /* EventCache.swift in Sources */,
 				4E88929424ED9A07002593FD /* EventsAPI.swift in Sources */,
 				4E96AB4F24D4927900623FA6 /* NotificationHandler.swift in Sources */,
-				EC56B60127048E17009D808A /* Decodable.swift in Sources */,
 				4E0DB1ED24CABE9200EA2859 /* OmetriaDefaults.swift in Sources */,
 				EC56B60327048E23009D808A /* OmetriaNotification.swift in Sources */,
 				4EE7A8D324C88F0500B316A7 /* OmetriaEvent.swift in Sources */,
 				4E5B2E2824ED4B470063FA50 /* NetworkService.swift in Sources */,
+				4E3E5E5829E549B100073538 /* Decodable+Serialization.swift in Sources */,
 				4EC94EDE24B8BCFB00B8591C /* OmetriaConfig.swift in Sources */,
 				4E96478624E3F90B00274FC3 /* OmetriaBasket.swift in Sources */,
 				4EFF18B824EA559A0020389A /* CodableCaching.swift in Sources */,
@@ -379,6 +386,7 @@
 				4EFF18BB24EA63230020389A /* EventHandler.swift in Sources */,
 				4EE7A8CE24C82E3D00B316A7 /* Logger.swift in Sources */,
 				4EFF18B624EA55690020389A /* JSONCache.swift in Sources */,
+				4E3E5E4129E5446700073538 /* EventService.swift in Sources */,
 				4EE7A8C824C81BC600B316A7 /* AutomaticLifecycleTracker.swift in Sources */,
 				4EBDBF9224C1A76D00AB8DCE /* AutomaticPushTracker.swift in Sources */,
 				4E47423824EE6590005F1F68 /* JSONEncoder+Ometria.swift in Sources */,

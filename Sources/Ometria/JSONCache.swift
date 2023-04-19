@@ -13,8 +13,8 @@ import Foundation
 /// - saving -- `JSONCache.creditCards.saveToFile(cards)`
 enum JSONCache {
     
-    static var trackedEvents: CodableCaching<[OmetriaEvent]> {
-        return cachedResource()
+    static func trackedEvents(relativePath: String) -> CodableCaching<[OmetriaEvent]> {
+        return cachedResource(relativePath: relativePath)
     }
     
     static func clearAllSavedResource() {
@@ -23,8 +23,8 @@ enum JSONCache {
 }
 
 extension JSONCache {
-    fileprivate static func cachedResource<T>(name: String = #function) -> CodableCaching<T> {
-        return CodableCaching(resourceID: name)
+    fileprivate static func cachedResource<T>(name: String = #function, relativePath: String) -> CodableCaching<T> {
+        return CodableCaching(resourceID: name, uniquePathComponent: relativePath)
     }
 }
 

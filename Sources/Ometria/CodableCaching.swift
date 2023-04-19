@@ -18,8 +18,13 @@ struct CodableCaching<T> {
         return dirPath.appendingPathComponent(CodableCaching.rootDirectory) as NSString
     }
     
-    init(resourceID: String) {
-        self.filePath = CodableCaching.relativePath.appendingPathComponent(resourceID).addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
+    init(resourceID: String, uniquePathComponent: String?) {
+        let relativePath = CodableCaching.relativePath
+        var uniquePath: NSString = relativePath
+        if let uniquePathComponent {
+            uniquePath = relativePath.appendingPathComponent(uniquePathComponent) as NSString
+        }
+        self.filePath = uniquePath.appendingPathComponent(resourceID).addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)
     }
     
     var filePath: String!
@@ -106,8 +111,8 @@ extension CodableCaching {
         let fileManager = FileManager.default
         let filePath = self.filePath as NSString
         
-        if fileManager.fileExists(atPath: filePath.deletingLastPathComponent) == false {
-            try fileManager.createDirectory(atPath: filePath.deletingLastPathComponent, withIntermediateDirectories: false, attributes: nil)
+        if !fileManager.fileExists(atPath: filePath.deletingLastPathComponent) {
+            try fileManager.createDirectory(atPath: filePath.deletingLastPathComponent, withIntermediateDirectories: true, attributes: nil)
         }
         
         // write data

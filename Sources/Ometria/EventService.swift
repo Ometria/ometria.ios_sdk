@@ -9,11 +9,13 @@
 import Foundation
 
 struct EventServiceConfig: NetworkServiceConfig {
-    static var serverUrl = "https://mobile-events.ometria.com"
-    static var httpHeaders: HTTPHeaders {
-        ["X-Ometria-Auth": Ometria.sharedInstance().apiToken]
+    var serverUrl = "https://mobile-events.ometria.com"
+    var httpHeaders: HTTPHeaders
+    var timeoutInterval: TimeInterval = 30
+    
+    init(apiToken: String) {
+        httpHeaders = ["X-Ometria-Auth": apiToken]
     }
-    static var timeoutInterval: TimeInterval = 30
 }
 
 protocol EventServiceProtocol {
@@ -27,9 +29,9 @@ struct EventService: EventServiceProtocol {
         case flushValidate = "/v1/mobile-events/validate"
     }
     
-    var networkService: NetworkService = NetworkService<EventServiceConfig>()
+    var networkService: NetworkService
     
-    init(networkService: NetworkService<EventServiceConfig> = NetworkService<EventServiceConfig>()) {
+    init(networkService: NetworkService) {
         self.networkService = networkService
     }
     

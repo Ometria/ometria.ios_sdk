@@ -20,16 +20,21 @@ public enum HTTPMethod: String{
 }
 
 protocol NetworkServiceConfig {
-    static var serverUrl: String { get }
-    static var httpHeaders: HTTPHeaders { get }
-    static var timeoutInterval: TimeInterval { get }
+    var serverUrl: String { get }
+    var httpHeaders: HTTPHeaders { get }
+    var timeoutInterval: TimeInterval { get }
 }
 
-class NetworkService<Config: NetworkServiceConfig> {
+class NetworkService {
     
+    private var config: NetworkServiceConfig
     fileprivate var acceptableStatusCodes: [Int] { return Array(200..<300) }
     fileprivate var acceptableContentTypes: [String] { return ["*/*"] }
     private let urlSession = URLSession(configuration: .default)
+    
+    init(config: NetworkServiceConfig) {
+        self.config = config
+    }
     
     @discardableResult
     func request(_ method: HTTPMethod,
@@ -38,12 +43,12 @@ class NetworkService<Config: NetworkServiceConfig> {
                  headers: HTTPHeaders = nil,
                  completion: @escaping (_ result: Result<Any>) -> ()) throws -> URLSessionTask
     {
-        let url = URL(string: Config.serverUrl)!.appendingPathComponent(path)
+        let url = URL(string: config.serverUrl)!.appendingPathComponent(path)
         
         // append http headers
         var mutableHeaders : [String : Any] = headers ?? [:]
         
-        for (k, v) in Config.httpHeaders ?? [:] {
+        for (k, v) in config.httpHeaders ?? [:] {
             mutableHeaders.updateValue(v, forKey: k)
         }
         
@@ -51,7 +56,7 @@ class NetworkService<Config: NetworkServiceConfig> {
         request.httpMethod = method.rawValue
         request = try URLParamEncoder().encodeHeaders(request, with: mutableHeaders)
         request = try JSONParamEncoder(writingOptions: .fragmentsAllowed).encode(request, with: parameters)
-        request.timeoutInterval = Config.timeoutInterval
+        request.timeoutInterval = config.timeoutInterval
         
         let dataTask = urlSession.dataTask(with: request) { [weak self] (data, response, error) in
             guard let self = self else {

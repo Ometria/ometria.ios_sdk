@@ -45,12 +45,15 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     @available(iOSApplicationExtension, unavailable)
     public class func initialize(apiToken: String, enableSwizzling: Bool = true) -> Ometria {
         clearOldInstanceIfNeeded()
+        let shouldHandleApplicationLaunch = instance == nil
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling
         let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
-        ometria.handleApplicationLaunch()
+        if shouldHandleApplicationLaunch {
+            ometria.handleApplicationLaunch()
+        }
         return ometria
     }
     
@@ -60,12 +63,15 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     @available(iOSApplicationExtension, unavailable)
     class func initialize(apiToken: String, eventCache: EventCaching, eventService: EventServiceProtocol, enableSwizzling: Bool = true) -> Ometria {
         clearOldInstanceIfNeeded()
+        let shouldHandleApplicationLaunch = instance == nil
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling
         let ometria = Ometria(apiToken: apiToken, config: config, eventService: eventService, eventCache: eventCache)
         instance = ometria
-        ometria.handleApplicationLaunch()
+        if shouldHandleApplicationLaunch {
+            ometria.handleApplicationLaunch()
+        }
         return ometria
     }
     
@@ -110,8 +116,11 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     init(apiToken: String, config: OmetriaConfig) {
         self.config = config
         self.apiToken = apiToken
+        let eventServiceConfig = EventServiceConfig(apiToken: apiToken)
+        let networkService = NetworkService(config: eventServiceConfig)
+        let eventService = EventService(networkService: networkService)
         self.eventHandler = EventHandler(
-            eventService: EventService(),
+            eventService: eventService,
             eventCache: EventCache(relativePathComponent: OmetriaDefaults.cacheUniquePathComponent),
             flushLimit: config.flushLimit
         )

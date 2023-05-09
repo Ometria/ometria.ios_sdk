@@ -10,9 +10,9 @@ import Foundation
 
 struct EventServiceConfig: NetworkServiceConfig {
     static var serverUrl = "https://mobile-events.ometria.com"
-    static var httpHeaders: HTTPHeaders = [
-        "X-Ometria-Auth": Ometria.sharedInstance().apiToken
-    ]
+    static var httpHeaders: HTTPHeaders {
+        ["X-Ometria-Auth": Ometria.sharedInstance().apiToken]
+    }
     static var timeoutInterval: TimeInterval = 30
 }
 

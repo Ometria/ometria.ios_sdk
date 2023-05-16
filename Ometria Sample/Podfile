@@ -1,15 +1,23 @@
 # Uncomment the next line to define a global platform for your project
  platform :ios, '10.0'
 
+def shared_pods
+  pod 'Ometria', :path => '../'#'https://github.com/Ometria/ometria.ios_sdk.git'
+end
+
 target 'OmetriaSample' do
   use_frameworks!
+  shared_pods
+end
 
-  pod 'Ometria', :git => 'https://github.com/Ometria/ometria.ios_sdk.git'
-  
-  target 'OmetriaSampleNotificationService' do
-    pod 'Ometria', :git => 'https://github.com/Ometria/ometria.ios_sdk.git'
-  end
+target 'OmetriaSampleNotificationService' do
+  use_frameworks!
+  shared_pods
+end
 
+target 'OmetriaSampleTests' do
+  use_frameworks!
+  shared_pods
 end
 
 post_install do |installer|

@@ -11,6 +11,8 @@ import Foundation
 
 class EventHandler {
     
+    private var eventService: EventServiceProtocol
+    private var eventCache: EventCaching
     private var eventsQueue: DispatchQueue
 //    private var memoryCacheLock: ReadWriteLock = ReadWriteLock(label: "com.ometria.eventsMemoryCacheLock")
     private var trackedEvents: [OmetriaEvent] = []
@@ -24,7 +26,9 @@ class EventHandler {
     }()
     var flushLimit: Int
     
-    init(flushLimit: Int) {
+    init(eventService: EventServiceProtocol, eventCache: EventCaching, flushLimit: Int) {
+        self.eventService = eventService
+        self.eventCache = eventCache
         self.flushLimit = flushLimit
         eventsQueue = DispatchQueue(label: "com.ometria.eventQueue", qos: .utility)
     }
@@ -61,7 +65,9 @@ class EventHandler {
         }
     }
     
-    func flushEvents() {
+    func flushEvents(saveFailedForRetry: Bool = true, completion: (() -> Void)? = nil) {
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
         eventsQueue.async { [weak self] in
             guard let self = self else {
                 return
@@ -79,27 +85,35 @@ class EventHandler {
                 let batch = batchedEvents[key]!
                 let flushSizedChunks = batch.chunked(into: Constants.flushMaxBatchSize)
                 for chunk in flushSizedChunks {
-                    self.flushEvents(events: chunk)
+                    dispatchGroup.enter()
+                    self.flushEvents(events: chunk, saveFailedForRetry: saveFailedForRetry) { success in
+                        dispatchGroup.leave()
+                    }
                 }
             }
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion?()
         }
     }
     
-    private func flushEvents(events: [OmetriaEvent]) {
+    private func flushEvents(events: [OmetriaEvent], saveFailedForRetry: Bool, completion: ((_ success: Bool) -> Void)? = nil ) {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
         
-        EventsAPI.flushEvents(events) { [weak self] result in
+        eventService.flushEvents(events) { [weak self] result in
             guard let self = self else {
                 return
             }
             
             self.eventsQueue.async {
-                
                 switch result {
                 case .success(_):
                     Logger.debug(message: "Successfully flushed \(events.count) events.", category: .events)
                     self.removeEvents(events)
+                    completion?(true)
                     
                 case .failure(let error):
                     Logger.debug(message: "Failed to flush \(events.count) events.", category: .events)
@@ -110,11 +124,16 @@ class EventHandler {
                         self.removeEvents(events)
                     
                     } else {
-                        Logger.debug(message: "Events will be saved for retry.", category: .events)
-                        
-                        events.forEach({$0.isBeingFlushed = false})
-                        self.saveMemoryCachedEvents()
+                        if saveFailedForRetry {
+                            Logger.debug(message: "Events will be saved for retry.", category: .events)
+                            
+                            events.forEach({$0.isBeingFlushed = false})
+                            self.saveMemoryCachedEvents()
+                        } else {
+                            self.removeEvents(events)
+                        }
                     }
+                    completion?(false)
                 }
             }
         }
@@ -132,7 +151,7 @@ class EventHandler {
             
             Logger.debug(message: "Clear all Events from local cache.", category: .events)
             self.trackedEvents.removeAll()
-            JSONCache.trackedEvents.saveToFile(nil, async: false)
+            self.eventCache.saveToFile(nil, async: false)
         }
         
     }
@@ -141,7 +160,7 @@ class EventHandler {
         if !hasLoadedEvents {
             Logger.verbose(message: "Load Events from local cache", category: .cache)
             
-            if let cachedEvents = JSONCache.trackedEvents.loadFromFile() {
+            if let cachedEvents = eventCache.loadFromFile() {
                 hasLoadedEvents = true
                 trackedEvents = cachedEvents
             }
@@ -170,7 +189,7 @@ class EventHandler {
     private func saveEvents(_ events: [OmetriaEvent]) {
         Logger.verbose(message: "Save Events to local cache", category: .cache)
         trackedEvents = events
-        JSONCache.trackedEvents.saveToFile(events, async: false)
+        eventCache.saveToFile(events, async: false)
     }
     
     private func removeEvents(_ events: [OmetriaEvent]) {

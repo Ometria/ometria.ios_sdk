@@ -43,58 +43,60 @@ class Swizzler {
         swizzles[key] = swizzle
     }
     
-    class func swizzleSelector(_ originalSelector: Selector,
-                               withSelector newSelector: Selector,
-                               for aClass: AnyClass,
-                               name: String,
-                               block: @escaping ((_ view: AnyObject?,
-                                                  _ command: Selector,
-                                                  _ param1: AnyObject?,
-                                                  _ param2: AnyObject?) -> Void)) {
-        
-        if let swizzledMethod = class_getInstanceMethod(aClass, newSelector) {
-            
-            let swizzledMethodImplementation = method_getImplementation(swizzledMethod)
-            
-            if let originalMethod = class_getInstanceMethod(aClass, originalSelector) {
-                let originalMethodImplementation = method_getImplementation(originalMethod)
+    class func swizzleSelector(
+        _ originalSelector: Selector,
+        withSelector newSelector: Selector,
+        for aClass: AnyClass,
+        name: String,
+        block: @escaping ((
+            _ view: AnyObject?,
+            _ command: Selector,
+            _ param1: AnyObject?,
+            _ param2: AnyObject?
+        ) -> Void)) {
+            if let swizzledMethod = class_getInstanceMethod(aClass, newSelector) {
                 
-                var swizzle = getSwizzle(for: originalSelector, in: aClass)
-                if swizzle == nil {
-                    swizzle = Swizzle(block: block,
-                                      name: name,
-                                      aClass: aClass,
-                                      selector: originalSelector,
-                                      originalMethod: originalMethodImplementation)
-                    setSwizzle(swizzle!, for: originalSelector, in: aClass)
-                } else {
-                    swizzle?.blocks[name] = block
-                }
+                let swizzledMethodImplementation = method_getImplementation(swizzledMethod)
                 
-                let didAddMethod = class_addMethod(aClass,
-                                                   originalSelector,
-                                                   swizzledMethodImplementation,
-                                                   method_getTypeEncoding(swizzledMethod))
-                if didAddMethod {
-                    setSwizzle(swizzle!, for: originalSelector, in: aClass)
+                if let originalMethod = class_getInstanceMethod(aClass, originalSelector) {
+                    let originalMethodImplementation = method_getImplementation(originalMethod)
+                    
+                    var swizzle = getSwizzle(for: originalSelector, in: aClass)
+                    if swizzle == nil {
+                        swizzle = Swizzle(block: block,
+                                          name: name,
+                                          aClass: aClass,
+                                          selector: originalSelector,
+                                          originalMethod: originalMethodImplementation)
+                        setSwizzle(swizzle!, for: originalSelector, in: aClass)
+                    } else {
+                        swizzle?.blocks[name] = block
+                    }
+                    
+                    let didAddMethod = class_addMethod(aClass,
+                                                       originalSelector,
+                                                       swizzledMethodImplementation,
+                                                       method_getTypeEncoding(swizzledMethod))
+                    if didAddMethod {
+                        setSwizzle(swizzle!, for: originalSelector, in: aClass)
+                    } else {
+                        method_setImplementation(originalMethod, swizzledMethodImplementation)
+                    }
                 } else {
-                    method_setImplementation(originalMethod, swizzledMethodImplementation)
+                    let didAddMethod = class_addMethod(aClass,
+                                                       originalSelector,
+                                                       swizzledMethodImplementation,
+                                                       method_getTypeEncoding(swizzledMethod))
+                    if !didAddMethod {
+                        Logger.verbose(message: "Swizzling error: Could not implement method "
+                                       + "\(NSStringFromSelector(originalSelector)) on \(NSStringFromClass(aClass))")
+                    }
                 }
             } else {
-                let didAddMethod = class_addMethod(aClass,
-                                                   originalSelector,
-                                                   swizzledMethodImplementation,
-                                                   method_getTypeEncoding(swizzledMethod))
-                if !didAddMethod {
-                    Logger.verbose(message: "Swizzling error: Could not implement method "
-                                    + "\(NSStringFromSelector(originalSelector)) on \(NSStringFromClass(aClass))")
-                }
+                Logger.verbose(message: "Swizzling error: Cannot find method for "
+                               + "\(NSStringFromSelector(newSelector)) on \(NSStringFromClass(aClass))")
             }
-        } else {
-            Logger.verbose(message: "Swizzling error: Cannot find method for "
-                            + "\(NSStringFromSelector(newSelector)) on \(NSStringFromClass(aClass))")
         }
-    }
     
     class func unswizzleSelector(_ selector: Selector, aClass: AnyClass, name: String? = nil) {
         if let method = class_getInstanceMethod(aClass, selector),

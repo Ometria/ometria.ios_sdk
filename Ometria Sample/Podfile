@@ -2,7 +2,7 @@
  platform :ios, '10.0'
 
 def shared_pods
-  pod 'Ometria', :path => '../'#'https://github.com/Ometria/ometria.ios_sdk.git'
+  pod 'Ometria', :path => 'https://github.com/Ometria/ometria.ios_sdk.git'
 end
 
 target 'OmetriaSample' do

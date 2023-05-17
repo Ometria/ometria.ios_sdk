@@ -21,3 +21,4 @@ Utilities/Docker/*.tar.gz
 Package.resolved
 /build
 *.pyc
+Ometria.xcodeproj/project.xcworkspace/xcuserdata/cata.xcuserdatad/UserInterfaceState.xcuserstate

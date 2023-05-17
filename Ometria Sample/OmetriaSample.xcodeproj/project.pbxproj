@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		020868D86FD72C3C0C27C192 /* Pods_OmetriaSampleNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 471C81B39735161ADEF1FFC7 /* Pods_OmetriaSampleNotificationService.framework */; };
+		4E31A1CA29EEA2650014D6F9 /* EventCache+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E31A1C929EEA2650014D6F9 /* EventCache+Mock.swift */; };
+		4E46F65A29EE9E5E009E384E /* OmetriaSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E46F65929EE9E5E009E384E /* OmetriaSampleTests.swift */; };
+		4E46F66129EE9EE9009E384E /* EventService+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E46F66029EE9EE9009E384E /* EventService+Mock.swift */; };
 		4EC94EEC24BC52D000B8591C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEB24BC52D000B8591C /* AppDelegate.swift */; };
 		4EC94EF024BC52D000B8591C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC94EEF24BC52D000B8591C /* HomeViewController.swift */; };
 		4EC94EF324BC52D000B8591C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EC94EF124BC52D000B8591C /* Main.storyboard */; };
@@ -17,10 +21,17 @@
 		4EC94F3A24BDECC300B8591C /* OmetriaSampleNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4EC94F3324BDECC300B8591C /* OmetriaSampleNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4EE2531524FE807100B98DDE /* EventListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE2531424FE807100B98DDE /* EventListViewController.swift */; };
 		6D667F589C2725650408A02D /* Pods_OmetriaSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D4906280FA8E13AE5E6DB8 /* Pods_OmetriaSample.framework */; };
-		CA955DF757E77A86F4C87E5B /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2382AAB2C5A7E8CAD42008E4 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */; };
+		C36433231B8046FC583E0B32 /* Pods_OmetriaSampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F35FE105A2A02C667F184417 /* Pods_OmetriaSampleTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4E46F65B29EE9E5E009E384E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4EC94EE024BC52D000B8591C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4EC94EE724BC52D000B8591C;
+			remoteInfo = OmetriaSample;
+		};
 		4EC94F3824BDECC300B8591C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4EC94EE024BC52D000B8591C /* Project object */;
@@ -45,7 +56,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2382AAB2C5A7E8CAD42008E4 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSample_OmetriaSampleNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		471C81B39735161ADEF1FFC7 /* Pods_OmetriaSampleNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSampleNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E31A1C929EEA2650014D6F9 /* EventCache+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventCache+Mock.swift"; sourceTree = "<group>"; };
+		4E46F65729EE9E5E009E384E /* OmetriaSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OmetriaSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E46F65929EE9E5E009E384E /* OmetriaSampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OmetriaSampleTests.swift; sourceTree = "<group>"; };
+		4E46F66029EE9EE9009E384E /* EventService+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventService+Mock.swift"; sourceTree = "<group>"; };
 		4EC94EE824BC52D000B8591C /* OmetriaSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OmetriaSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EC94EEB24BC52D000B8591C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EC94EEF24BC52D000B8591C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -62,13 +77,26 @@
 		4EC94F4624BDED4000B8591C /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		4EE2531424FE807100B98DDE /* EventListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListViewController.swift; sourceTree = "<group>"; };
 		51939A9520AB8C3F8E3B1E8E /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSample-OmetriaSampleNotificationService/Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		65C4160A4CE1A966EE01189A /* Pods-OmetriaSampleNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSampleNotificationService.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSampleNotificationService/Pods-OmetriaSampleNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		95B9F42B872E9D580220526B /* Pods-OmetriaSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample.release.xcconfig"; sourceTree = "<group>"; };
+		9B9BC3CBF680AFC0397E66A0 /* Pods-OmetriaSampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSampleTests.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSampleTests/Pods-OmetriaSampleTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B3AD9A2D83DC98A8528F2D95 /* Pods-OmetriaSampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSampleTests.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSampleTests/Pods-OmetriaSampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		BEFDDCDCBB1BA26BF84A5718 /* Pods-OmetriaSampleNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSampleNotificationService.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSampleNotificationService/Pods-OmetriaSampleNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
 		D0FC8651715C9791DFB0FBF5 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; path = "Target Support Files/Pods-OmetriaSample-OmetriaSampleNotificationService/Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		E0D4906280FA8E13AE5E6DB8 /* Pods_OmetriaSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFEA9CB497FB8EE604F804DB /* Pods-OmetriaSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OmetriaSample.debug.xcconfig"; path = "Target Support Files/Pods-OmetriaSample/Pods-OmetriaSample.debug.xcconfig"; sourceTree = "<group>"; };
+		F35FE105A2A02C667F184417 /* Pods_OmetriaSampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OmetriaSampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4E46F65429EE9E5E009E384E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C36433231B8046FC583E0B32 /* Pods_OmetriaSampleTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4EC94EE524BC52D000B8591C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -81,18 +109,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA955DF757E77A86F4C87E5B /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework in Frameworks */,
+				020868D86FD72C3C0C27C192 /* Pods_OmetriaSampleNotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E46F65829EE9E5E009E384E /* OmetriaSampleTests */ = {
+			isa = PBXGroup;
+			children = (
+				4E46F65929EE9E5E009E384E /* OmetriaSampleTests.swift */,
+				4E46F66029EE9EE9009E384E /* EventService+Mock.swift */,
+				4E31A1C929EEA2650014D6F9 /* EventCache+Mock.swift */,
+			);
+			path = OmetriaSampleTests;
+			sourceTree = "<group>";
+		};
 		4EC94EDF24BC52D000B8591C = {
 			isa = PBXGroup;
 			children = (
 				4EC94EEA24BC52D000B8591C /* OmetriaSample */,
 				4EC94F3424BDECC300B8591C /* OmetriaSampleNotificationService */,
+				4E46F65829EE9E5E009E384E /* OmetriaSampleTests */,
 				4EC94EE924BC52D000B8591C /* Products */,
 				E6DD2DBB96C0C1501642735C /* Frameworks */,
 				61211B914E226934264F3383 /* Pods */,
@@ -104,6 +143,7 @@
 			children = (
 				4EC94EE824BC52D000B8591C /* OmetriaSample.app */,
 				4EC94F3324BDECC300B8591C /* OmetriaSampleNotificationService.appex */,
+				4E46F65729EE9E5E009E384E /* OmetriaSampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,6 +180,10 @@
 				95B9F42B872E9D580220526B /* Pods-OmetriaSample.release.xcconfig */,
 				51939A9520AB8C3F8E3B1E8E /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */,
 				D0FC8651715C9791DFB0FBF5 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */,
+				BEFDDCDCBB1BA26BF84A5718 /* Pods-OmetriaSampleNotificationService.debug.xcconfig */,
+				65C4160A4CE1A966EE01189A /* Pods-OmetriaSampleNotificationService.release.xcconfig */,
+				9B9BC3CBF680AFC0397E66A0 /* Pods-OmetriaSampleTests.debug.xcconfig */,
+				B3AD9A2D83DC98A8528F2D95 /* Pods-OmetriaSampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -150,7 +194,8 @@
 				4EC94F4424BDED4000B8591C /* UserNotifications.framework */,
 				4EC94F4624BDED4000B8591C /* UserNotificationsUI.framework */,
 				E0D4906280FA8E13AE5E6DB8 /* Pods_OmetriaSample.framework */,
-				2382AAB2C5A7E8CAD42008E4 /* Pods_OmetriaSample_OmetriaSampleNotificationService.framework */,
+				471C81B39735161ADEF1FFC7 /* Pods_OmetriaSampleNotificationService.framework */,
+				F35FE105A2A02C667F184417 /* Pods_OmetriaSampleTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,6 +203,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4E46F65629EE9E5E009E384E /* OmetriaSampleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4E46F65F29EE9E5E009E384E /* Build configuration list for PBXNativeTarget "OmetriaSampleTests" */;
+			buildPhases = (
+				31454B166D533CEB1B678BC0 /* [CP] Check Pods Manifest.lock */,
+				4E46F65329EE9E5E009E384E /* Sources */,
+				4E46F65429EE9E5E009E384E /* Frameworks */,
+				4E46F65529EE9E5E009E384E /* Resources */,
+				7EFFA15F4F95643DA4EE77C2 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4E46F65C29EE9E5E009E384E /* PBXTargetDependency */,
+			);
+			name = OmetriaSampleTests;
+			productName = OmetriaSampleTests;
+			productReference = 4E46F65729EE9E5E009E384E /* OmetriaSampleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4EC94EE724BC52D000B8591C /* OmetriaSample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EC94EFC24BC52D300B8591C /* Build configuration list for PBXNativeTarget "OmetriaSample" */;
@@ -203,10 +268,14 @@
 		4EC94EE024BC52D000B8591C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1120;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Ometria;
 				TargetAttributes = {
+					4E46F65629EE9E5E009E384E = {
+						CreatedOnToolsVersion = 14.1;
+						TestTargetID = 4EC94EE724BC52D000B8591C;
+					};
 					4EC94EE724BC52D000B8591C = {
 						CreatedOnToolsVersion = 11.2.1;
 					};
@@ -230,11 +299,19 @@
 			targets = (
 				4EC94EE724BC52D000B8591C /* OmetriaSample */,
 				4EC94F3224BDECC300B8591C /* OmetriaSampleNotificationService */,
+				4E46F65629EE9E5E009E384E /* OmetriaSampleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4E46F65529EE9E5E009E384E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4EC94EE624BC52D000B8591C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +333,45 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		31454B166D533CEB1B678BC0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OmetriaSampleTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7EFFA15F4F95643DA4EE77C2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmetriaSampleTests/Pods-OmetriaSampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OmetriaSampleTests/Pods-OmetriaSampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OmetriaSampleTests/Pods-OmetriaSampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9F86A631D8CE1FB48B4E2419 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -310,7 +426,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OmetriaSample-OmetriaSampleNotificationService-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-OmetriaSampleNotificationService-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -320,6 +436,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4E46F65329EE9E5E009E384E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E46F66129EE9EE9009E384E /* EventService+Mock.swift in Sources */,
+				4E31A1CA29EEA2650014D6F9 /* EventCache+Mock.swift in Sources */,
+				4E46F65A29EE9E5E009E384E /* OmetriaSampleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4EC94EE424BC52D000B8591C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -341,6 +467,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4E46F65C29EE9E5E009E384E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4EC94EE724BC52D000B8591C /* OmetriaSample */;
+			targetProxy = 4E46F65B29EE9E5E009E384E /* PBXContainerItemProxy */;
+		};
 		4EC94F3924BDECC300B8591C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4EC94F3224BDECC300B8591C /* OmetriaSampleNotificationService */;
@@ -368,6 +499,54 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4E46F65D29EE9E5E009E384E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B9BC3CBF680AFC0397E66A0 /* Pods-OmetriaSampleTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NF6484JE8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.OmetriaSampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OmetriaSample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OmetriaSample";
+			};
+			name = Debug;
+		};
+		4E46F65E29EE9E5E009E384E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3AD9A2D83DC98A8528F2D95 /* Pods-OmetriaSampleTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NF6484JE8F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.OmetriaSampleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OmetriaSample.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OmetriaSample";
+			};
+			name = Release;
+		};
 		4EC94EFA24BC52D300B8591C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -515,7 +694,7 @@
 				CODE_SIGN_ENTITLEMENTS = OmetriaSample/OmetriaSample.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = G7T599BH7B;
+				DEVELOPMENT_TEAM = NF6484JE8F;
 				INFOPLIST_FILE = OmetriaSample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -532,7 +711,7 @@
 		};
 		4EC94F3C24BDECC300B8591C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 51939A9520AB8C3F8E3B1E8E /* Pods-OmetriaSample-OmetriaSampleNotificationService.debug.xcconfig */;
+			baseConfigurationReference = BEFDDCDCBB1BA26BF84A5718 /* Pods-OmetriaSampleNotificationService.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
@@ -554,7 +733,7 @@
 		};
 		4EC94F3D24BDECC300B8591C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0FC8651715C9791DFB0FBF5 /* Pods-OmetriaSample-OmetriaSampleNotificationService.release.xcconfig */;
+			baseConfigurationReference = 65C4160A4CE1A966EE01189A /* Pods-OmetriaSampleNotificationService.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
@@ -577,6 +756,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4E46F65F29EE9E5E009E384E /* Build configuration list for PBXNativeTarget "OmetriaSampleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E46F65D29EE9E5E009E384E /* Debug */,
+				4E46F65E29EE9E5E009E384E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4EC94EE324BC52D000B8591C /* Build configuration list for PBXProject "OmetriaSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

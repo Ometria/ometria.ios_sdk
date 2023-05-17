@@ -20,6 +20,7 @@ struct UserDefault<T> {
         case Optional<Any>.some(let containedValue):
             return containedValue as! T
         case Optional<Any>.none:
+            UserDefaults.standard.set(defaultValue, forKey: key)
             return defaultValue
         default:
             return value ?? defaultValue
@@ -39,6 +40,8 @@ struct UserDefault<T> {
 }
 
 struct OmetriaDefaults {
+    @UserDefault(key: "com.ometria.cacheUniquePathComponent", defaultValue: UUID().uuidString)
+    static var cacheUniquePathComponent: String
     @UserDefault(key: "com.ometria.is_first_launch", defaultValue: true)
     static var isFirstLaunch: Bool
     @UserDefault(key: "com.ometria.apple_push_token", defaultValue: nil)

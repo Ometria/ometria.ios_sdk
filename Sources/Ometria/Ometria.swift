@@ -30,7 +30,6 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     private let notificationHandler = NotificationHandler()
     private let eventHandler: EventHandler
     
-    
     /**
      Initializes the singleton instance of Ometria with the given api token.
      
@@ -45,11 +44,34 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     @discardableResult
     @available(iOSApplicationExtension, unavailable)
     public class func initialize(apiToken: String, enableSwizzling: Bool = true) -> Ometria {
+        clearOldInstanceIfNeeded()
+        let shouldHandleApplicationLaunch = instance == nil
+        
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling
         let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
-        ometria.handleApplicationLaunch()
+        if shouldHandleApplicationLaunch {
+            ometria.handleApplicationLaunch()
+        }
+        return ometria
+    }
+    
+    
+    /// internal initializer, only used for testing
+    @discardableResult
+    @available(iOSApplicationExtension, unavailable)
+    class func initialize(apiToken: String, eventCache: EventCaching, eventService: EventServiceProtocol, enableSwizzling: Bool = true) -> Ometria {
+        clearOldInstanceIfNeeded()
+        let shouldHandleApplicationLaunch = instance == nil
+        
+        let config = OmetriaConfig()
+        config.automaticallyTrackNotifications = enableSwizzling
+        let ometria = Ometria(apiToken: apiToken, config: config, eventService: eventService, eventCache: eventCache)
+        instance = ometria
+        if shouldHandleApplicationLaunch {
+            ometria.handleApplicationLaunch()
+        }
         return ometria
     }
     
@@ -64,18 +86,75 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         }
         return instance!
     }
+    
+    
+    private static var oldInstances = [Ometria]()
+    private class func clearOldInstanceIfNeeded() {
+        guard let instance else {
+            return
+        }
+        
+        instance.eventHandler.flushEvents(saveFailedForRetry: false) {
+            instance.clear()
+        }
+        instance.clear()
+        
+        let swizzles = Swizzler.swizzles
+        swizzles.values.forEach { swizzle in
+            Swizzler.unswizzleSelector(swizzle.selector, aClass: swizzle.aClass)
+        }
+        
+        resetCacheRelativePath()
+    }
+    
+    /// This will cause the next instance of Ometria that is instantiated to cache events in a new folder. Basically this is making sure that we don't have anything
+    private class func resetCacheRelativePath() {
+        OmetriaDefaults.cacheUniquePathComponent = UUID().uuidString
+    }
 
     @available(iOSApplicationExtension, unavailable)
     init(apiToken: String, config: OmetriaConfig) {
         self.config = config
         self.apiToken = apiToken
-        self.eventHandler = EventHandler(flushLimit: config.flushLimit)
+        let eventServiceConfig = EventServiceConfig(apiToken: apiToken)
+        let networkService = NetworkService(config: eventServiceConfig)
+        let eventService = EventService(networkService: networkService)
+        self.eventHandler = EventHandler(
+            eventService: eventService,
+            eventCache: EventCache(relativePathComponent: OmetriaDefaults.cacheUniquePathComponent),
+            flushLimit: config.flushLimit
+        )
         super.init()
         
         isLoggingEnabled = config.isLoggingEnabled
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
         setLoggerEnabled(isLoggingEnabled)
         
+        if config.automaticallyTrackNotifications {
+            automaticPushTracker.startTracking()
+        }
+        
+        if config.automaticallyTrackAppLifecycle {
+            automaticLifecycleTracker.startTracking()
+        }
+        
+        self.notificationHandler.interactionDelegate = self
+    }
+    
+    /// only used for testing purposes, not public
+    init(apiToken: String, config: OmetriaConfig, eventService: EventServiceProtocol, eventCache: EventCaching) {
+        self.config = config
+        self.apiToken = apiToken
+        self.eventHandler = EventHandler(
+            eventService: eventService,
+            eventCache: eventCache,
+            flushLimit: config.flushLimit
+        )
+        super.init()
+        
+        isLoggingEnabled = config.isLoggingEnabled
+        // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
+        setLoggerEnabled(isLoggingEnabled)
         
         if config.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()

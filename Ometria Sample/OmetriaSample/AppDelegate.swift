@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Initialize the Ometria SDK here.
         // Make sure to replace your token in the intialization method
-        Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE", enableSwizzling: false)
+        Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE", enableSwizzling: false, appGroupIdentifier: "APP_GROUP_IDENTIFIER")
         
         // Enable logs in order to see if there are any problems encountered
         Ometria.sharedInstance().isLoggingEnabled = true

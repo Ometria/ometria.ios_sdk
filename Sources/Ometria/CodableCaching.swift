@@ -14,7 +14,13 @@ struct CodableCaching<T> {
     }
     
     static var relativePath: NSString {
-        let dirPath = NSSearchPathForDirectoriesInDomains( .documentDirectory, .userDomainMask, true)[0] as NSString
+        var dirPath: NSString
+        if let appGroupId = OmetriaDefaults.appGroupIdentifier,
+           let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupId) {
+            dirPath = url.relativePath as NSString
+        } else {
+            dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+        }
         return dirPath.appendingPathComponent(CodableCaching.rootDirectory) as NSString
     }
     

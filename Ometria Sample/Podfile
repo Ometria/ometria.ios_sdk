@@ -1,8 +1,8 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '10.0'
+ platform :ios, '11.0'
 
 def shared_pods
-  pod 'Ometria', :path => 'https://github.com/Ometria/ometria.ios_sdk.git'
+  pod 'Ometria', :path => '../'
 end
 
 target 'OmetriaSample' do
@@ -26,6 +26,9 @@ post_install do |installer|
       target.build_configurations.each do |config|
         config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
       end
+    end
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.2'
     end
   end
 end

@@ -13,8 +13,13 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
 
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
+    
+    open func instantiateOmetria() {
+        fatalError("This function needs to be overriden")
+    }
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        instantiateOmetria()
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
@@ -24,6 +29,8 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
             }
             return
         }
+        
+        Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         
         func failEarly() {
             contentHandler(request.content)
@@ -66,7 +73,7 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
         do {
             try fileManager.createDirectory(at: tmpSubFolderURL!, withIntermediateDirectories: true, attributes: nil)
             let fileURL = tmpSubFolderURL?.appendingPathComponent(imageFileIdentifier)
-            try data.write(to: fileURL!, options: [.noFileProtection])
+            try data.write(to: fileURL!)
             let imageAttachment = try UNNotificationAttachment.init(identifier: imageFileIdentifier, url: fileURL!, options: options)
             
             return imageAttachment

@@ -43,12 +43,14 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     @discardableResult
     @available(iOSApplicationExtension, unavailable)
-    public class func initialize(apiToken: String, enableSwizzling: Bool = true) -> Ometria {
+    public class func initialize(apiToken: String, enableSwizzling: Bool = true, appGroupIdentifier: String? = nil) -> Ometria {
         clearOldInstanceIfNeeded()
+        OmetriaDefaults.appGroupIdentifier = appGroupIdentifier
         let shouldHandleApplicationLaunch = instance == nil
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling
+        
         let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
         if shouldHandleApplicationLaunch {
@@ -57,11 +59,21 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return ometria
     }
     
+    @discardableResult
+    public class func initializeForExtension(apiToken: String, appGroupIdentifier: String? = nil) -> Ometria {
+        OmetriaDefaults.appGroupIdentifier = appGroupIdentifier
+        
+        let config = OmetriaConfig()
+        config.automaticallyTrackNotifications = false
+        let ometria = Ometria(apiToken: apiToken, config: config)
+        instance = ometria
+        return ometria
+    }
     
     /// internal initializer, only used for testing
     @discardableResult
     @available(iOSApplicationExtension, unavailable)
-    class func initialize(apiToken: String, eventCache: EventCaching, eventService: EventServiceProtocol, enableSwizzling: Bool = true) -> Ometria {
+    class func initialize(apiToken: String, eventCache: EventCaching, eventService: EventServiceProtocol, enableSwizzling: Bool = true, appGroupIdentifier: String? = nil) -> Ometria {
         clearOldInstanceIfNeeded()
         let shouldHandleApplicationLaunch = instance == nil
         

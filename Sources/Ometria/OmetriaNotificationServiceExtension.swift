@@ -31,6 +31,7 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
         }
         
         Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
+        Ometria.sharedInstance().flush()
         
         func failEarly() {
             contentHandler(request.content)

@@ -14,12 +14,13 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
     
-    open func instantiateOmetria() {
+    /// override this function in subclass
+    open func instantiateOmetria() -> Ometria? {
         fatalError("This function needs to be overriden")
     }
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        instantiateOmetria()
+        let ometria = instantiateOmetria()
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
@@ -30,8 +31,8 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
             return
         }
         
-        Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
-        Ometria.sharedInstance().flush()
+        ometria?.trackNotificationReceivedEvent(context: notificationBody.context)
+        ometria?.flush()
         
         func failEarly() {
             contentHandler(request.content)

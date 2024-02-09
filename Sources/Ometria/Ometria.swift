@@ -60,12 +60,12 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     @discardableResult
-    public class func initializeForExtension(apiToken: String, appGroupIdentifier: String? = nil) -> Ometria {
+    public class func initializeForExtension(apiToken: String, appGroupIdentifier: String) -> Ometria {
         OmetriaDefaults.appGroupIdentifier = appGroupIdentifier
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = false
-        let ometria = Ometria(apiToken: apiToken, config: config)
+        let ometria = Ometria(config: config)
         instance = ometria
         return ometria
     }
@@ -99,31 +99,6 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         return instance!
     }
     
-    
-    private static var oldInstances = [Ometria]()
-    private class func clearOldInstanceIfNeeded() {
-        guard let instance else {
-            return
-        }
-        
-        instance.eventHandler.flushEvents(saveFailedForRetry: false) {
-            instance.clear()
-        }
-        instance.clear()
-        
-        let swizzles = Swizzler.swizzles
-        swizzles.values.forEach { swizzle in
-            Swizzler.unswizzleSelector(swizzle.selector, aClass: swizzle.aClass)
-        }
-        
-        resetCacheRelativePath()
-    }
-    
-    /// This will cause the next instance of Ometria that is instantiated to cache events in a new folder. Basically this is making sure that we don't have anything
-    private class func resetCacheRelativePath() {
-        OmetriaDefaults.cacheUniquePathComponent = UUID().uuidString
-    }
-
     @available(iOSApplicationExtension, unavailable)
     init(apiToken: String, config: OmetriaConfig) {
         self.config = config
@@ -153,7 +128,22 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         self.notificationHandler.interactionDelegate = self
     }
     
+    init(config: OmetriaConfig) {
+        self.config = config
+        self.apiToken = OmetriaDefaults.lastUsedAPIToken
+        let eventServiceConfig = EventServiceConfig(apiToken: apiToken)
+        let networkService = NetworkService(config: eventServiceConfig)
+        let eventService = EventService(networkService: networkService)
+        self.eventHandler = EventHandler(
+            eventService: eventService,
+            eventCache: EventCache(relativePathComponent: OmetriaDefaults.cacheUniquePathComponent),
+            flushLimit: config.flushLimit
+        )
+        super.init()
+    }
+    
     /// only used for testing purposes, not public
+    @available(iOSApplicationExtension, unavailable)
     init(apiToken: String, config: OmetriaConfig, eventService: EventServiceProtocol, eventCache: EventCaching) {
         self.config = config
         self.apiToken = apiToken
@@ -178,6 +168,34 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         
         self.notificationHandler.interactionDelegate = self
     }
+    
+    // MARK: - Reinitialization Helpers
+    
+    private static var oldInstances = [Ometria]()
+    private class func clearOldInstanceIfNeeded() {
+        guard let instance else {
+            return
+        }
+        
+        instance.eventHandler.flushEvents(saveFailedForRetry: false) {
+            instance.clear()
+        }
+        instance.clear()
+        
+        let swizzles = Swizzler.swizzles
+        swizzles.values.forEach { swizzle in
+            Swizzler.unswizzleSelector(swizzle.selector, aClass: swizzle.aClass)
+        }
+        
+        resetCacheRelativePath()
+    }
+    
+    /// This will cause the next instance of Ometria that is instantiated to cache events in a new folder. Basically this is making sure that we don't have anything
+    private class func resetCacheRelativePath() {
+        OmetriaDefaults.cacheUniquePathComponent = UUID().uuidString
+    }
+    
+    // MARK: - Logging
     
     /**
      This allows enabling or disabling runtime logs

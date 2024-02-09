@@ -17,5 +17,6 @@ public struct Constants {
     
     struct UserDefaultsKeys {
         static let sdkVersionRN: String = "sdkVersionRN"
+        static let lastUsedAPIToken: String = "com.ometria.lastUsedAPIToken"
     }
 }

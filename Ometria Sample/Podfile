@@ -22,11 +22,11 @@ end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    if target.name == 'Ometria'
-      target.build_configurations.each do |config|
-        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
-      end
-    end
+#    if target.name == 'Ometria'
+#      target.build_configurations.each do |config|
+#        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
+#      end
+#    end
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.2'
     end

@@ -50,7 +50,7 @@ struct UserDefault<T> {
     }
 }
 
-struct OmetriaDefaults {
+enum OmetriaDefaults {
     @UserDefault(key: "com.ometria.cacheUniquePathComponent", defaultValue: UUID().uuidString)
     private static var __cacheUniquePathComponent: String
     @UserDefault(key: "com.ometria.is_first_launch", defaultValue: true)
@@ -103,4 +103,6 @@ struct OmetriaDefaults {
     static var identifiedCustomerID: String?
     @UserDefault(suite: appGroupIdentifier, key: Constants.UserDefaultsKeys.sdkVersionRN, defaultValue: __sdkVersionRN)
     internal static var sdkVersionRN: String?
+    @UserDefault(suite: appGroupIdentifier, key: Constants.UserDefaultsKeys.lastUsedAPIToken, defaultValue: "")
+    internal static var lastUsedAPIToken: String
 }

@@ -60,7 +60,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     @discardableResult
-    public class func initializeForExtension(apiToken: String, appGroupIdentifier: String) -> Ometria {
+    public class func initializeForExtension(appGroupIdentifier: String) -> Ometria {
         OmetriaDefaults.appGroupIdentifier = appGroupIdentifier
         
         let config = OmetriaConfig()
@@ -116,7 +116,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         isLoggingEnabled = config.isLoggingEnabled
         // didSet not called from initializer. setLoggingEnabled is force called to remedy that.
         setLoggerEnabled(isLoggingEnabled)
-        
+
         if config.automaticallyTrackNotifications {
             automaticPushTracker.startTracking()
         }
@@ -167,6 +167,16 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         }
         
         self.notificationHandler.interactionDelegate = self
+        
+        DispatchQueue.main.async { [weak self] in
+            if config.automaticallyTrackNotifications {
+                self?.automaticPushTracker.startTracking()
+            }
+            
+            if config.automaticallyTrackAppLifecycle {
+                self?.automaticLifecycleTracker.startTracking()
+            }
+        }
     }
     
     // MARK: - Reinitialization Helpers

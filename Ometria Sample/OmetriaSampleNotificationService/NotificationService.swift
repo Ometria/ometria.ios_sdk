@@ -11,6 +11,6 @@ import Ometria
 
 class NotificationService: OmetriaNotificationServiceExtension {
     override func instantiateOmetria() -> Ometria? {
-        Ometria.initializeForExtension(apiToken: "YOUR_API_TOKEN_HERE", appGroupIdentifier: "APP_GROUP_IDENTIFIER")
+        return Ometria.initializeForExtension(appGroupIdentifier: "group.com.tapptitude.ometria.Sample")
     }
 }

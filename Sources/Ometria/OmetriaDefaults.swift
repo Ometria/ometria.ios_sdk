@@ -12,16 +12,17 @@ import Foundation
 struct UserDefault<T> {
     let key: String
     let defaultValue: T
-    private let userDefaults: UserDefaults
+    let suiteClosure: ()->String?
     
-    init(suite: String? = nil, key: String, defaultValue: T) {
+    init(suite: @autoclosure @escaping ()->String? = {nil}(), key: String, defaultValue: T) {
         self.key = key
+        self.suiteClosure = suite
         self.defaultValue = defaultValue
-        if let suite {
-            self.userDefaults = UserDefaults(suiteName: suite) ?? .standard
-        } else {
-            self.userDefaults = UserDefaults.standard
-        }
+    }
+    
+    private var userDefaults: UserDefaults {
+        let suite = suiteClosure()
+        return suite.flatMap({ UserDefaults(suiteName: $0) }) ?? .standard
     }
     
     var wrappedValue: T {

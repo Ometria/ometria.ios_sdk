@@ -39,15 +39,15 @@ extension OmetriaNotificationInteractionDelegate {
 class NotificationHandler {
     weak var interactionDelegate: OmetriaNotificationInteractionDelegate?
     
-    func handleReceivedNotification(_ notification: UNNotification, withCompletionHandler completionHandler: ((UNNotificationPresentationOptions) -> Void)?) {
-        if let notificationBody = parseNotificationContent(notification.request.content) {
+    func handleReceivedNotification(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: ((UNNotificationPresentationOptions) -> Void)?) {
+        if let notificationBody = parseNotificationContent(userInfo) {
             Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         }
         completionHandler?([])
     }
     
-    func handleNotificationResponse(_ response: UNNotificationResponse, withCompletionHandler completionHandler: (() -> Void)?) {
-        if let notificationBody = parseNotificationContent(response.notification.request.content) {
+    func handleNotificationResponse(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: (() -> Void)?) {
+        if let notificationBody = parseNotificationContent(userInfo) {
             Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
             if let urlString = notificationBody.deepLinkActionURL {
                 if let url = URL(string: urlString) {
@@ -59,7 +59,7 @@ class NotificationHandler {
             }
         }
         
-        if let ometriaNotification = parseOmetriaNotification(response.notification.request.content) {
+        if let ometriaNotification = parseOmetriaNotification(userInfo) {
             interactionDelegate?.handleOmetriaNotificationInteraction(ometriaNotification)
         }
     }
@@ -72,13 +72,13 @@ class NotificationHandler {
             OmetriaDefaults.notificationProcessDate = Date()
             
             newNotifications.forEach({
-                self?.handleReceivedNotification($0, withCompletionHandler: {_ in })
+                self?.handleReceivedNotification($0.request.content.userInfo, withCompletionHandler: {_ in })
             })
         }
     }
     
-    func parseOmetriaNotification(_ content: UNNotificationContent) -> OmetriaNotification? {
-        guard let aps = content.userInfo["aps"] as? [String: Any],
+    func parseOmetriaNotification(_ userInfo: [AnyHashable: Any]) -> OmetriaNotification? {
+        guard let aps = userInfo["aps"] as? [String: Any],
               let alert = aps["alert"] as? [String: Any],
               let ometriaContent = alert["ometria"] as? [String: Any] else {
                   return nil
@@ -96,8 +96,8 @@ class NotificationHandler {
         }
     }
     
-    func parseNotificationContent(_ content: UNNotificationContent) -> OmetriaNotificationBody? {
-        let info = content.userInfo
+    func parseNotificationContent(_ content: [AnyHashable : Any]) -> OmetriaNotificationBody? {
+        let info = content
         
         guard let aps = info["aps"] as? [String: Any],
               let alert = aps["alert"] as? [String: Any],

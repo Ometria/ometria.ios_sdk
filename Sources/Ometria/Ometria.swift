@@ -565,7 +565,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
                                      withCompletionHandler completionHandler: @escaping () -> Void)
     {
         
-        notificationHandler.handleNotificationResponse(response, withCompletionHandler: completionHandler)
+        notificationHandler.handleNotificationResponse(response.notification.request.content.userInfo, withCompletionHandler: completionHandler)
     }
     
     open func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -573,7 +573,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
                                      withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
         
-        notificationHandler.handleReceivedNotification(notification, withCompletionHandler: completionHandler)
+        notificationHandler.handleReceivedNotification(notification.request.content.userInfo, withCompletionHandler: completionHandler)
     }
     
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -586,11 +586,11 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     public func handleNotificationResponse(_ response: UNNotificationResponse) {
-        notificationHandler.handleNotificationResponse(response, withCompletionHandler: nil)
+        notificationHandler.handleNotificationResponse(response.notification.request.content.userInfo, withCompletionHandler: nil)
     }
     
     public func handleReceivedNotification(_ notification: UNNotification) {
-        notificationHandler.handleReceivedNotification(notification, withCompletionHandler: nil)
+        notificationHandler.handleReceivedNotification(notification.request.content.userInfo, withCompletionHandler: nil)
     }
     
     // MARK: Notification Utils
@@ -625,7 +625,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
             return nil
         }
         
-        return notificationHandler.parseOmetriaNotification(content)
+        return notificationHandler.parseOmetriaNotification(content.userInfo)
     }
     
     // MARK: Universal Links
@@ -666,5 +666,16 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
         } else {
             Logger.error(message: "Can not open \(url.absoluteString)", category: .push)
         }
+    }
+}
+
+// MARK: - Manual Notification Tracking - React Native
+extension Ometria {
+    public func handleNotificationResponse(_ userInfo: [AnyHashable: Any]) {
+        notificationHandler.handleNotificationResponse(userInfo, withCompletionHandler: nil)
+    }
+    
+    public func handleReceivedNotification(_ userInfo: [AnyHashable: Any]) {
+        notificationHandler.handleReceivedNotification(userInfo, withCompletionHandler: nil)
     }
 }

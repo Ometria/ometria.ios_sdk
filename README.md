@@ -28,7 +28,68 @@ The easiest way to get Ometria into your iOS project is by using [CocoaPods](htt
 3. Create a Podfile in your Xcode project directory by running `pod init` in your terminal, edit the Podfile generated and add the following line: `pod 'Ometria'`.
 4. Run `pod install` in your Xcode project directory. CocoaPods should download and install the library, and create a new Xcode workspace. Open this workspace in Xcode or typing `open *.xcworkspace` in your terminal.
 
-4\. Initialise the library
+4\. Add Notification Service Extension Target
+--------------------------
+In order to get the most out of Ometria, you are required to add a new target to your project.
+
+> :information_source: The Notification Service Extension has two purposes:
+> 1. Starting with iOS 12.0, Apple enabled regular applications to receive and display notifications that contain media content such as images. In order to be able to display the rich content, notifications have to be processed by the Notification Service Extension before being shown to the user.
+> 2. There are lots of users that forget to open their apps. In order for Ometria to accurately track all the notifications that were received, it needs to leverage the power of a background service, that has access to all notifications. 
+
+In order to add the extension, go to **File > New > Target**, and select **Notification Service Extension > Next**.
+
+![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/notification_service_extension.png)
+
+A new item is displayed in your target list:
+
+![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/project_targets.png)
+
+Next, make sure that the Ometria SDK is also available to this new target by updating your podfile to include your newly added target and specify Ometria as a dependency.
+
+```ruby
+ platform :ios, '10.0'
+
+target 'OmetriaSample' do
+  use_frameworks!
+
+  pod 'Ometria'
+
+  target 'OmetriaSampleNotificationService' do
+    pod 'Ometria'
+  end
+end
+```
+
+### Create an app group
+At this point the main application and the extension function as two separate entities with the only shared component being the code. In order for the extension to obtain read and write access to data that is relevant for the SDK, it requires to be in the same App Group as the main target. This will allow the main target and the extension to share data.
+
+In your project navigator, select your project, then go to **Signing & Capabilities** and select **+ Capability** in the top left corner.
+
+![](https://github.com/Ometria/ometria.ios_sdk/assets/6207062/dd8cd6e7-ff00-41be-9573-2589436a4616)
+
+Once you have done so, a new section will be displayed below Signing. It will allow you to add a new app group. Make sure you select a relevant identifier (e.g.`group.[BUNDLE_IDENTIFIER]`), and retain the value, as you will need it when instantiating Ometria.
+Repeat the process for the Notification Service Extension target, and you should be good to go.
+
+![alt text](https://github.com/Ometria/ometria.ios_sdk/assets/6207062/3d9d0500-3832-4312-a918-e5b05404886d)
+
+### Update NotificationService
+
+To finalise the implementation and allow Ometria to intercept notifications, open the `NotificationService` class that was automatically created alongside the extension, and replace the content with the following:
+
+```swift
+import UserNotifications
+import Ometria
+
+class NotificationService: OmetriaNotificationServiceExtension {
+    override func initializeOmetria -> Ometria? {
+        return Ometria.initializeForExtension(appGroupIdentifier: "YOUR_App_GROUP_IDENTIFIER")
+    }
+}
+```
+
+Now you can receive notifications from Ometria and you are also able to see the images that are attached to your notifications.
+
+5\. Initialise the library
 --------------------------
 To initialise Ometria, you need to enter the API key from **2. Before you begin**.
 
@@ -36,7 +97,8 @@ To initialise Ometria, you need to enter the API key from **2. Before you begin*
 
 The best place to do this is in [application(_:didFinishLaunchingWithOptions:)](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIApplicationDelegate_Protocol/#//apple_ref/occ/intfm/UIApplicationDelegate/application:didFinishLaunchingWithOptions:).
 
-Initialise the library by adding **import Ometria** and then calling **Ometria.initialize(apiToken:)** with your API key as its argument.
+Initialise the library by adding **import Ometria** and then calling **Ometria.initialize(apiToken:appGroupIdentifier:)** with your API key and the App Group Identifier you have just created as its arguments. 
+:information_source: I will quickly remind you that the `appGroupIdentifier` will allow the notification service extension to read and write data directly inside the cache used by the Ometria SDK.
 
 Once you've called this method once, you can access your instance throughout the rest of your application with **sharedInstance()**.
 
@@ -55,7 +117,7 @@ Once complete you will have something like this:
 import Ometria
 
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    Ometria.initialize(apiToken: "OMETRIA_API_TOKEN")
+    Ometria.initialize(apiToken: "OMETRIA_API_TOKEN", appGroupIdentifier: "YOUR_APP_GROUP_IDENTIFIER")
     FirebaseApp.configure()
     return
 }
@@ -111,7 +173,7 @@ There are cases where different flows of an application should log events under 
 
 Reinitializing the SDK requires the exact steps as a normal initialization. Please consult **4. Initialise the library** in order to make sure everything is set up properly.
 
-5\. Event tracking guide
+6\. Event tracking guide
 ------------------------
 You need to be aware of your users’ behaviour on your platforms in order to understand them. Some behaviour is automatically detectable, other events need work from the app developer to track.
 
@@ -359,7 +421,7 @@ Ometria.sharedInstance().clear()
 To see what events were captured, you can check the logs coming from the Ometria SDK, if logging is enabled. You can filter for the word "Ometria".
 The SDK logs all events as they happen, and also logs the flushing i.e. when they are sent to the Ometria mobile events API. Any potential errors with the sending (API issues or event validation issues) would be visible here too.
 
-6\. Push notifications guide
+7\. Push notifications guide
 ----------------------------
 
 When correctly set up, Ometria can send personalised notifications for your mobile application. 
@@ -496,70 +558,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 }
 ```
 
-### Enabling rich content notifications
 
-Starting with iOS 12.0, Apple enabled regular applications to receive and display notifications that contain media content such as images. 
-
-Ometria uses this feature to further enhance your application, but it requires you to add a new target extension that intercepts all push notifications containing 'mutable-content: 1' in the payload.
-
-To do this, go to **File > New > Target**, and select **Notification Service Extension > Next**.
-
-![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/notification_service_extension.png)
-
-A new item displays in your target list:
-
-![](https://raw.githubusercontent.com/wiki/Ometria/ometria.ios_sdk/images/project_targets.png)
-
-Next, make sure that the Ometria SDK is also available to this new target by updating your podfile to include your newly added target and specify Ometria as a dependency. 
-
-**Warning**: If you try to run pod install and then build the extension, you will get some compilation errors. 
-
-Since we are trying to run Ometria on an extension, there are several methods in the SDK that are not supported, although not being used. 
-
-To silence those errors and get everything functional you will have to update your podfile ending up with something like this:
-
-```ruby
- platform :ios, '10.0'
-
-target 'OmetriaSample' do
-  use_frameworks!
-
-  pod 'Ometria', :path => '../../SDK'
-
-  target 'OmetriaSampleNotificationService' do
-    pod 'Ometria', :path => '../../SDK'
-  end
-
-  end
-
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if target.name == 'Ometria'
-      target.build_configurations.each do |config|
-        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'No'
-      end
-    end
-  end
-end
-```
-
-Once you’ve done this, you can run your application and the extension you have just created.
-
-To finalise the implementation and allow Ometria to intercept notifications, open the `NotificationService` class and replace the content with the following:
-
-```swift
-import UserNotifications
-import Ometria
-
-class NotificationService: OmetriaNotificationServiceExtension {
-
-}
-```
-
-Now you can receive notifications from Ometria and you are also able to see the images that are attached to your notifications.
-
-
-7\. Universal links guide
+8\. Universal links guide
 ----------------------------
 
 Ometria sends personalised emails with URLs that point back to your website. In order to open these URLs inside your application, make sure you follow this guide.  

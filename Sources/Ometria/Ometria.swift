@@ -46,13 +46,14 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     public class func initialize(apiToken: String, enableSwizzling: Bool = true, appGroupIdentifier: String? = nil) -> Ometria {
         clearOldInstanceIfNeeded()
         OmetriaDefaults.appGroupIdentifier = appGroupIdentifier
+        OmetriaDefaults.lastUsedAPIToken = apiToken
         let shouldHandleApplicationLaunch = instance == nil
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling
-        
         let ometria = Ometria(apiToken: apiToken, config: config)
         instance = ometria
+        
         if shouldHandleApplicationLaunch {
             ometria.handleApplicationLaunch()
         }
@@ -76,6 +77,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     class func initialize(apiToken: String, eventCache: EventCaching, eventService: EventServiceProtocol, enableSwizzling: Bool = true, appGroupIdentifier: String? = nil) -> Ometria {
         clearOldInstanceIfNeeded()
         let shouldHandleApplicationLaunch = instance == nil
+        OmetriaDefaults.lastUsedAPIToken = apiToken
         
         let config = OmetriaConfig()
         config.automaticallyTrackNotifications = enableSwizzling

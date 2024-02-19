@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                = 'Ometria'
-  s.version             = '1.5.0'
+  s.version             = '1.5.1'
   s.module_name         = 'Ometria'
   s.license             = 'MIT'
   s.summary             = 'Ometria SDK for iOS (Swift)'

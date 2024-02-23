@@ -127,7 +127,7 @@ Ometria logs any errors encountered during runtime by default.
 You can enable advanced logging if you want more information on what’s happening in the background. Just add the following line after initialising the library:
 
 ```swift
-Ometria.sharedInstance().isLoggingEnabled = true
+Ometria.sharedInstance()?.isLoggingEnabled = true
 ```
 
 ### Disabling Swizzling
@@ -147,7 +147,7 @@ Next, you will need to provide the Firebase push token every time Firebase updat
 ```swift
 func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
     if let token = fcmToken {
-        Ometria.sharedInstance().handleFirebaseTokenChanged(token: token)
+        Ometria.sharedInstance()?.handleFirebaseTokenChanged(token: token)
     }
 }
 ```
@@ -156,11 +156,11 @@ Finally the Ometria SDK needs to know when users receive and interact with push 
 
 ```swift
 func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    Ometria.sharedInstance().handleNotificationResponse(response)
+    Ometria.sharedInstance()?.handleNotificationResponse(response)
 }
 
 func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    Ometria.sharedInstance().handleReceivedNotification(notification)
+    Ometria.sharedInstance()?.handleReceivedNotification(notification)
     completionHandler([.alert, .sound])
 }
 ```
@@ -199,7 +199,7 @@ let myItem = OmetriaBasketItem(
 let myItems = [myItem]
 let myBasket = OmetriaBasket(id: "basket-id", totalPrice: 12.0, currency: "USD", items: myItems, link: "http://sample.link.com")
 
-Ometria.sharedInstance().trackBasketUpdatedEvent(basket: myBasket)
+Ometria.sharedInstance()?.trackBasketUpdatedEvent(basket: myBasket)
 ```
 
 #### Profile identified
@@ -404,7 +404,7 @@ Instead, it composes batches of events that are sent to the backend during appli
 You can request the library to send all remaining events to the backend whenever you want by calling:
 
 ```swift
-Ometria.sharedInstance().flush()
+Ometria.sharedInstance()?.flush()
 ```
 
 ### Clear tracked events
@@ -414,7 +414,7 @@ You can completely clear all the events that have been tracked and not yet flush
 To do this, call the following method:
 
 ```swift
-Ometria.sharedInstance().clear()
+Ometria.sharedInstance()?.clear()
 ```
 
 ### Debugging events
@@ -525,7 +525,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         Ometria.initialize(apiToken: "OMETRIA_API_TOKEN")
-        Ometria.sharedInstance().notificationInteractionDelegate = self
+        Ometria.sharedInstance()?.notificationInteractionDelegate = self
 
         return true
     }
@@ -552,7 +552,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let notificationContent = notification.request.content
-        let ometriaNotification = Ometria.sharedInstance().parseNotification(notificationContent)
+        let ometriaNotification = Ometria.sharedInstance()?.parseNotification(notificationContent)
         completionHandler([.alert, .sound])
     }
 }
@@ -621,7 +621,7 @@ However, Ometria emails contain obfuscated tracking URLs, and these need to be c
 func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     if let url = userActivity.webpageURL {
         // you can check here whether the URL is one that you can handle without converting it back
-        Ometria.sharedInstance().processUniversalLink(url) { (url, error) in
+        Ometria.sharedInstance()?.processUniversalLink(url) { (url, error) in
             if let url = url {
                 // you can now handle the retrieved url as you would any other url from your website
             } else {

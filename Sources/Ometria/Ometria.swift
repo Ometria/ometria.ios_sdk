@@ -94,11 +94,8 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      
      - Returns: returns the Ometria instance
      */
-    public class func sharedInstance() -> Ometria {
-        guard instance != nil else {
-            fatalError("You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
-        }
-        return instance!
+    public class func sharedInstance() -> Ometria? {
+        return instance
     }
     
     @available(iOSApplicationExtension, unavailable)

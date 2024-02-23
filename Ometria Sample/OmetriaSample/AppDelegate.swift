@@ -24,12 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         Ometria.initialize(apiToken: "YOUR_API_TOKEN_HERE", enableSwizzling: false, appGroupIdentifier: "APP_GROUP_IDENTIFIER")
         
         // Enable logs in order to see if there are any problems encountered
-        Ometria.sharedInstance().isLoggingEnabled = true
+        Ometria.sharedInstance()?.isLoggingEnabled = true
         
         // Set the notificationInteractionDelegate in order to provide actions for
         // notifications that contain a deeplink URL.
         // The default functionality when you don't assign a delegate is opening urls in a browser
-        Ometria.sharedInstance().notificationInteractionDelegate = self
+        Ometria.sharedInstance()?.notificationInteractionDelegate = self
         
         // Configure Firebase. Make sure you replace the GoogleService-Info.plist file
         // with the one from your project.
@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         if let fcmToken = fcmToken {
-            Ometria.sharedInstance().handleFirebaseTokenChanged(token: fcmToken)
+            Ometria.sharedInstance()?.handleFirebaseTokenChanged(token: fcmToken)
         }
     }
     
@@ -83,13 +83,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        Ometria.sharedInstance().handleNotificationResponse(response)
+        Ometria.sharedInstance()?.handleNotificationResponse(response)
         print("Reaching Did receive notification response")
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("Reaching Will present notification")
-        Ometria.sharedInstance().handleReceivedNotification(notification)
+        Ometria.sharedInstance()?.handleReceivedNotification(notification)
         completionHandler([.alert, .sound])
     }
     
@@ -107,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let urlString = notification.deepLinkActionUrl, let url = URL(string: urlString) {
             if UIApplication.shared.canOpenURL(url) == true {
                 UIApplication.shared.open(url)
-                Ometria.sharedInstance().trackDeepLinkOpenedEvent(link: urlString, screenName: "Safari")
+                Ometria.sharedInstance()?.trackDeepLinkOpenedEvent(link: urlString, screenName: "Safari")
             } else {
                 print("The provided deeplink URL (\(urlString) cannot be processed.")
             }
@@ -126,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // get the final URL in your website by calling the following method.
             //
             // This is a straightforward implementation without any loading screens, but in the scenario where the users have slow data connectivity you might be waiting for a while until the redirect is obtained, so presenting a loading screen might be a good idea.
-            Ometria.sharedInstance().processUniversalLink(url) { (url, error) in
+            Ometria.sharedInstance()?.processUniversalLink(url) { (url, error) in
                 if let url = url {
                     let alert = UIAlertController(title: "Universal Link Processed", message: url.absoluteString, preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)

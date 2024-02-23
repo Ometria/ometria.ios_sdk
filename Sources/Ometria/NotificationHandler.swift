@@ -41,14 +41,14 @@ class NotificationHandler {
     
     func handleReceivedNotification(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: ((UNNotificationPresentationOptions) -> Void)?) {
         if let notificationBody = parseNotificationContent(userInfo) {
-            Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
+            Ometria.sharedInstance()?.trackNotificationReceivedEvent(context: notificationBody.context)
         }
         completionHandler?([])
     }
     
     func handleNotificationResponse(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: (() -> Void)?) {
         if let notificationBody = parseNotificationContent(userInfo) {
-            Ometria.sharedInstance().trackNotificationInteractedEvent(context: notificationBody.context)
+            Ometria.sharedInstance()?.trackNotificationInteractedEvent(context: notificationBody.context)
             if let urlString = notificationBody.deepLinkActionURL {
                 if let url = URL(string: urlString) {
                     interactionDelegate?.handleDeepLinkInteraction(url)
@@ -88,7 +88,7 @@ class NotificationHandler {
             return ometriaNotification
         } catch let error as OmetriaError {
             Logger.error(message: error.localizedDescription)
-            Ometria.sharedInstance().trackErrorOccuredEvent(error: error)
+            Ometria.sharedInstance()?.trackErrorOccuredEvent(error: error)
             return nil
         } catch {
             Logger.error(message: error.localizedDescription)
@@ -111,7 +111,7 @@ class NotificationHandler {
             return notificationBody
         } catch let error as OmetriaError {
             Logger.error(message: error.localizedDescription)
-            Ometria.sharedInstance().trackErrorOccuredEvent(error: error)
+            Ometria.sharedInstance()?.trackErrorOccuredEvent(error: error)
             
             return nil
         } catch {
@@ -131,27 +131,27 @@ class NotificationHandler {
                 if lastKnownStatus != .authorized,
                    #available(iOS 12.0, *), lastKnownStatus != .provisional {
                     Logger.verbose(message: "Notification authorization status changed to 'authorized'.", category: .push)
-                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                    Ometria.sharedInstance()?.trackPermissionsUpdateEvent(hasPermissions: true)
                 }
                 
             case .denied:
                 if lastKnownStatus != .denied {
                     Logger.verbose(message: "Notification authorization status changed to 'denied'.", category: .push)
-                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
+                    Ometria.sharedInstance()?.trackPermissionsUpdateEvent(hasPermissions: false)
                 }
                 
             case .ephemeral:
                 if #available(iOS 14, *) {
                     if lastKnownStatus != .ephemeral {
                         Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
-                        Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                        Ometria.sharedInstance()?.trackPermissionsUpdateEvent(hasPermissions: true)
                     }
                 }
                 
             case .notDetermined:
                 if lastKnownStatus != .notDetermined {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
-                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
+                    Ometria.sharedInstance()?.trackPermissionsUpdateEvent(hasPermissions: false)
                 }
                 
             @unknown default:

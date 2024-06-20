@@ -213,7 +213,7 @@ public class AutomaticPushTracker: NSObject {
     func processFirebaseToken(_ token: String) {
         OmetriaDefaults.fcmToken = token
         Logger.debug(message: "Application firebase token automatically captured:\n\(String(describing: token))")
-        Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: token)
+        Ometria.sharedInstance()?.trackPushTokenRefreshedEvent(pushToken: token)
     }
     
     // MARK: - Observer
@@ -250,7 +250,7 @@ extension UIResponder {
             }
         }
         
-        Ometria.sharedInstance().application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        Ometria.sharedInstance()?.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
     
     @objc func om_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -274,7 +274,7 @@ extension UIResponder {
             }
         }
         
-        Ometria.sharedInstance().application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        Ometria.sharedInstance()?.application(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
     
     @objc func om_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -298,7 +298,7 @@ extension UIResponder {
             }
         }
         
-        Ometria.sharedInstance().application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+        Ometria.sharedInstance()?.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
     }
 }
 
@@ -321,7 +321,7 @@ extension NSObject {
             }
         }
         
-        Ometria.sharedInstance().userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
+        Ometria.sharedInstance()?.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
     }
     
     @objc func om_userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -339,6 +339,6 @@ extension NSObject {
             }
         }
         
-        Ometria.sharedInstance().userNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
+        Ometria.sharedInstance()?.userNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
     }
 }

@@ -50,46 +50,46 @@ class EventListViewController: UITableViewController {
         switch eventType {
         
         case .basketUpdated:
-            Ometria.sharedInstance().trackBasketUpdatedEvent(basket: createSampleBasket())
+            Ometria.sharedInstance()?.trackBasketUpdatedEvent(basket: createSampleBasket())
         
         case .basketViewed:
-            Ometria.sharedInstance().trackBasketViewedEvent()
+            Ometria.sharedInstance()?.trackBasketViewedEvent()
             
         case .checkoutStarted:
-            Ometria.sharedInstance().trackCheckoutStartedEvent(orderId: "sample_order_id")
+            Ometria.sharedInstance()?.trackCheckoutStartedEvent(orderId: "sample_order_id")
         
         case .orderCompleted:
-            Ometria.sharedInstance().trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
+            Ometria.sharedInstance()?.trackOrderCompletedEvent(orderId: "sample_order_id", basket: createSampleBasket())
         
         case .productListingViewed:
-            Ometria.sharedInstance().trackProductListingViewedEvent(listingType: "category", listingAttributes: ["categoryID": "sampleCategoryID"])
+            Ometria.sharedInstance()?.trackProductListingViewedEvent(listingType: "category", listingAttributes: ["categoryID": "sampleCategoryID"])
         
         case .productViewed:
-            Ometria.sharedInstance().trackProductViewedEvent(productId: "sample_product_id")
+            Ometria.sharedInstance()?.trackProductViewedEvent(productId: "sample_product_id")
         
         case .homeScreenViewed:
-            Ometria.sharedInstance().trackHomeScreenViewedEvent()
+            Ometria.sharedInstance()?.trackHomeScreenViewedEvent()
         
         case .screenViewedExplicit:
-            Ometria.sharedInstance().trackScreenViewedEvent(screenName: "sample_screen_name")
+            Ometria.sharedInstance()?.trackScreenViewedEvent(screenName: "sample_screen_name")
         
         case .profileIdentifiedByEmail:
-            Ometria.sharedInstance().trackProfileIdentifiedEvent(email: "sample@profile.com")
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(email: "sample@profile.com")
             
         case .profileIdentifiedById:
-            Ometria.sharedInstance().trackProfileIdentifiedEvent(customerId: "sample_customer_id")
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(customerId: "sample_customer_id")
         
         case .profileDeidentified:
-            Ometria.sharedInstance().trackProfileDeidentifiedEvent()
+            Ometria.sharedInstance()?.trackProfileDeidentifiedEvent()
         
         case .custom:
-            Ometria.sharedInstance().trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])
+            Ometria.sharedInstance()?.trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])
             
         case .flush:
-            Ometria.sharedInstance().flush()
+            Ometria.sharedInstance()?.flush()
             
         case .clear:
-            Ometria.sharedInstance().clear()
+            Ometria.sharedInstance()?.clear()
         }
     }
     

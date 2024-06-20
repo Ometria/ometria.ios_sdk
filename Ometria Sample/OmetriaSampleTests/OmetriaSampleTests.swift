@@ -122,7 +122,7 @@ final class OmetriaSampleTests: XCTestCase {
         }
         Ometria.initialize(apiToken: "token", eventCache: cache1, eventService: eventService1, enableSwizzling: false)
         for _ in 0..<100 {
-            Ometria.sharedInstance().trackProductViewedEvent(productId: UUID().uuidString)
+            Ometria.sharedInstance()?.trackProductViewedEvent(productId: UUID().uuidString)
         }
         Ometria.initialize(apiToken: "token", eventCache: cache2, eventService: eventService2, enableSwizzling: false)
         
@@ -141,7 +141,7 @@ final class OmetriaSampleTests: XCTestCase {
         let cache2 = EventCache(relativePathComponent: "2")
         Ometria.initialize(apiToken: "test", eventCache: cache1, eventService: eventService)
         for _ in 0..<100 {
-            Ometria.sharedInstance().trackProductViewedEvent(productId: UUID().uuidString)
+            Ometria.sharedInstance()?.trackProductViewedEvent(productId: UUID().uuidString)
         }
         Ometria.initialize(apiToken: "test2", eventCache: cache2, eventService: eventService)
         

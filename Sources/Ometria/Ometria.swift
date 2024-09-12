@@ -306,14 +306,14 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
     public func trackScreenViewedEvent(screenName: String, additionalInfo:[String: Any] = [:]) {
-        let data: [String: Any] = ["page": screenName,
-                                   "extra": additionalInfo]
+        let data: [String: Any] = [Constants.EventKeys.page: screenName,
+                                   Constants.EventKeys.additionalInfo: additionalInfo]
         trackEvent(type: .screenViewedExplicit, data: data)
     }
     
     @available(*, deprecated, message: "Automatic screen tracking has been removed")
     func trackScreenViewedAutomaticEvent(screenName: String) {
-        trackEvent(type: .screenViewedAutomatic, data: ["page": screenName])
+        trackEvent(type: .screenViewedAutomatic, data: [Constants.EventKeys.page: screenName])
     }
     
     /**
@@ -322,26 +322,38 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      An app user has just identified themselves. This basically means: a user has logged in.
      
      - Parameter customerId: the ID reserved for a particular user in your database.
+     - Parameter storeId: the storeId of the store where the user is currently shopping. If you want to track a particular store, you can use this.
      
      - Note: If you don't have a customerId, you can use the alternate version of this method: trackProfileIdentifiedEvent(email: String)
      
      - Important: This event is absolutely pivotal to the functioning of the SDK, so take care to send it as early as possible. It is not mutually exclusive with sending an profile identified by e-mail event: send either event as soon as you have the information, for optimal integration.
      */
-    public func trackProfileIdentifiedEvent(customerId: String) {
+    public func trackProfileIdentifiedEvent(customerId: String, storeId: String? = nil) {
         OmetriaDefaults.identifiedCustomerID = customerId
-        trackProfileIdentifiedEvent(data: ["customerId": customerId])
+        var data = [Constants.EventKeys.customerId: customerId]
+        if let storeId = storeId ?? OmetriaDefaults.currentStoreID {
+            OmetriaDefaults.currentStoreID = storeId
+            data[Constants.EventKeys.storeId] = storeId
+        }
+        trackProfileIdentifiedEvent(data: data)
     }
     
     /**
      Tracks the current app user being identified by email
      
      - Parameter email: the email by which you identify a particular user in your database
+     - Parameter storeId: the storeId of the store where the user is currently shopping. If you want to track a particular store, you can use this.
      
      - Important: Having a customerId makes profile matching more robust. It is not mutually exclusive with sending an profile identified by customerId event: send either event as soon as you have the information, for optimal integration.
      */
-    public func trackProfileIdentifiedEvent(email: String) {
+    public func trackProfileIdentifiedEvent(email: String, storeId: String? = nil) {
         OmetriaDefaults.identifiedCustomerEmail = email
-        trackProfileIdentifiedEvent(data: ["email": email])
+        var data = [Constants.EventKeys.email: email]
+        if let storeId = storeId ?? OmetriaDefaults.currentStoreID {
+            OmetriaDefaults.currentStoreID = storeId
+            data[Constants.EventKeys.storeId] = storeId
+        }
+        trackProfileIdentifiedEvent(data: data)
     }
     
     private func trackProfileIdentifiedEvent(data: [String: Any]) {
@@ -360,6 +372,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     public func trackProfileDeidentifiedEvent() {
         OmetriaDefaults.identifiedCustomerEmail = nil
         OmetriaDefaults.identifiedCustomerID = nil
+        OmetriaDefaults.currentStoreID = nil
         trackEvent(type: .profileDeidentified)
     }
     
@@ -371,7 +384,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter productId: the unique identifier for the product that has been interacted with.
      */
     public func trackProductViewedEvent(productId: String) {
-        trackEvent(type: .productViewed, data: ["productId": productId])
+        trackEvent(type: .productViewed, data: [Constants.EventKeys.productId: productId])
     }
     
     
@@ -384,10 +397,10 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     public func trackProductListingViewedEvent(listingType: String? = nil, listingAttributes: [String: Any]? = nil) {
         var data: [String: Any] = [:]
         if let listingType = listingType {
-            data["listingType"] = listingType
+            data[Constants.EventKeys.listingType] = listingType
         }
         if let listingAttributes = listingAttributes {
-            data["listingAttributes"] = listingAttributes
+            data[Constants.EventKeys.listingAttributes] = listingAttributes
         }
         
         trackEvent(type: .productListingViewed, data: data)
@@ -428,7 +441,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     public func trackBasketUpdatedEvent(basket: OmetriaBasket) {
         do {
             let serializedBasket = try basket.jsonObject()
-            trackEvent(type: .basketUpdated, data: ["basket": serializedBasket])
+            trackEvent(type: .basketUpdated, data: [Constants.EventKeys.basket: serializedBasket])
         } catch {
             Logger.error(message: "Failed to track \(OmetriaEventType.basketUpdated.rawValue) event with error: \(error)", category: .events)
         }
@@ -442,7 +455,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     public func trackCheckoutStartedEvent(orderId: String? = nil) {
         var data: [String: Any] = [:]
         if let orderId = orderId {
-            data["orderId"] = orderId
+            data[Constants.EventKeys.orderId] = orderId
         }
         trackEvent(type: .checkoutStarted, data: data)
     }
@@ -455,10 +468,10 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     public func trackOrderCompletedEvent(orderId: String, basket: OmetriaBasket? = nil) {
         do {
-            var data: [String: Any] = ["orderId": orderId]
+            var data: [String: Any] = [Constants.EventKeys.orderId: orderId]
             if let basket = basket {
                 let serializedBasket = try basket.jsonObject()
-                data["basket"] = serializedBasket
+                data[Constants.EventKeys.basket] = serializedBasket
             }
             trackEvent(type: .orderCompleted, data: data)
         } catch {
@@ -469,34 +482,34 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     // MARK: Notification Related Events
     
     func trackPushTokenRefreshedEvent(pushToken: String) {
-        var data = ["pushToken": pushToken]
+        var data = [Constants.EventKeys.pushToken: pushToken]
         
         if let customerEmail = OmetriaDefaults.identifiedCustomerEmail {
-            data["email"] = customerEmail
+            data[Constants.EventKeys.email] = customerEmail
         }
         
         if let customerID = OmetriaDefaults.identifiedCustomerID {
-            data["customerId"] = customerID
+            data[Constants.EventKeys.customerId] = customerID
         }
         
         notificationHandler.verifyPushNotificationAuthorizationStatus {[weak self] (hasAuthorization) in
-            data["notifications"] = hasAuthorization ? "opt-in" : "opt-out"
+            data[Constants.EventKeys.notifications] = hasAuthorization ? Constants.EventPredefinedValues.optIn : Constants.EventPredefinedValues.optOut
             self?.trackEvent(type: .pushTokenRefreshed, data: data)
             self?.eventHandler.flushEvents()
         }
     }
     
     func trackNotificationReceivedEvent(context: [String: Any]) {
-        trackEvent(type: .notificationReceived, data: ["context": context])
+        trackEvent(type: .notificationReceived, data: [Constants.EventKeys.context: context])
     }
     
     func trackNotificationInteractedEvent(context: [String: Any]) {
-        trackEvent(type: .notificationInteracted, data: ["context": context])
+        trackEvent(type: .notificationInteracted, data: [Constants.EventKeys.context: context])
     }
     
     func trackPermissionsUpdateEvent(hasPermissions: Bool) {
-        let permissionsValue = hasPermissions ? "opt-in": "opt-out"
-        trackEvent(type: .permissionsUpdate, data: ["notifications": permissionsValue])
+        let permissionsValue = hasPermissions ? Constants.EventPredefinedValues.optIn: Constants.EventPredefinedValues.optOut
+        trackEvent(type: .permissionsUpdate, data: [Constants.EventKeys.notifications: permissionsValue])
     }
     
     // MARK: Other Events
@@ -508,8 +521,8 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameters screenName: a string representing the name of the screen that has been opened as a result of decomposing the URL
      */
     public func trackDeepLinkOpenedEvent(link: String, screenName: String) {
-        trackEvent(type: .deepLinkOpened, data: ["link": link,
-                                                 "page": screenName])
+        trackEvent(type: .deepLinkOpened, data: [Constants.EventKeys.link: link,
+                                                 Constants.EventKeys.page: screenName])
     }
     
     /**
@@ -519,9 +532,9 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter additionalInfo: a dictionary containing any key-value pairs that provide valuable information to your platform
      */
     public func trackCustomEvent(customEventType: String, additionalInfo: [String: Any]? = nil) {
-        var data: [String: Any] = ["customEventType": customEventType]
+        var data: [String: Any] = [Constants.EventKeys.customEventType: customEventType]
         if let additionalInfo = additionalInfo {
-            data["properties"] = additionalInfo
+            data[Constants.EventKeys.properties] = additionalInfo
         }
         trackEvent(type: .custom, data: data)
     }
@@ -529,6 +542,26 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     func trackErrorOccuredEvent(error: OmetriaError) {
         let data = error.errorEventData
         trackEvent(type: .errorOccurred, data: data)
+    }
+    
+    // MARK: - Store Identifier
+    
+    /**
+     updates the store identifier for the current user
+     
+     - Parameter storeId: a string representing the store identifier
+     */
+    
+    public func updateStoreIdentifier(storeId: String?) {
+        OmetriaDefaults.currentStoreID = storeId
+        
+        if let email = OmetriaDefaults.identifiedCustomerEmail {
+            trackProfileIdentifiedEvent(email: email, storeId: storeId)
+        } else if let customerId = OmetriaDefaults.identifiedCustomerID {
+            trackProfileIdentifiedEvent(customerId: customerId, storeId: storeId)
+        } else if let storeId {
+            Logger.info(message: "updateStoreIdentifier called without having identified a customer by email or customerId beforehand. The storeId will be processed when the customer is identified", category: .events)
+        }
     }
     
     // MARK: - Flush/Clear

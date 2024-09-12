@@ -106,4 +106,6 @@ enum OmetriaDefaults {
     internal static var sdkVersionRN: String?
     @UserDefault(suite: appGroupIdentifier, key: Constants.UserDefaultsKeys.lastUsedAPIToken, defaultValue: "")
     internal static var lastUsedAPIToken: String
+    @UserDefault(suite: appGroupIdentifier, key: "com.ometria.storeID", defaultValue: nil)
+    internal static var currentStoreID: String?
 }

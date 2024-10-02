@@ -26,6 +26,7 @@ enum EventType: String, CaseIterable {
     case profileIdentifiedByIdAndStoreId
     case profileDeidentified
     case updateStoreId
+    case resetStoreId
     case custom
     case flush
     case clear
@@ -92,7 +93,10 @@ class EventListViewController: UITableViewController {
             Ometria.sharedInstance().trackProfileDeidentifiedEvent()
             
         case .updateStoreId:
-            Ometria.sharedInstance().updateStoreIdentifier(storeId: "sample_store_id_update")
+            Ometria.sharedInstance().updateStoreId(storeId: "sample_store_id_update")
+            
+        case .resetStoreId:
+            Ometria.sharedInstance().updateStoreId(storeId: nil)
         
         case .custom:
             Ometria.sharedInstance().trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])

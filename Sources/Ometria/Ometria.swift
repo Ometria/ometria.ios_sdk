@@ -330,12 +330,10 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     public func trackProfileIdentifiedEvent(customerId: String, storeId: String? = nil) {
         OmetriaDefaults.identifiedCustomerID = customerId
-        var data = [Constants.EventKeys.customerId: customerId]
-        if let storeId = storeId ?? OmetriaDefaults.currentStoreID {
+        if let storeId {
             OmetriaDefaults.currentStoreID = storeId
-            data[Constants.EventKeys.storeId] = storeId
         }
-        trackProfileIdentifiedEvent(data: data)
+        trackProfileIdentifiedEvent()
     }
     
     /**
@@ -348,11 +346,25 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     public func trackProfileIdentifiedEvent(email: String, storeId: String? = nil) {
         OmetriaDefaults.identifiedCustomerEmail = email
-        var data = [Constants.EventKeys.email: email]
-        if let storeId = storeId ?? OmetriaDefaults.currentStoreID {
+        if let storeId {
             OmetriaDefaults.currentStoreID = storeId
+        }
+        trackProfileIdentifiedEvent()
+    }
+    
+    private func trackProfileIdentifiedEvent() {
+        var data: [String: Any] = [:]
+        
+        if let email = OmetriaDefaults.identifiedCustomerEmail {
+            data[Constants.EventKeys.email] = email
+        }
+        if let customerId = OmetriaDefaults.identifiedCustomerID {
+            data[Constants.EventKeys.customerId] = customerId
+        }
+        if let storeId = OmetriaDefaults.currentStoreID {
             data[Constants.EventKeys.storeId] = storeId
         }
+        
         trackProfileIdentifiedEvent(data: data)
     }
     
@@ -488,8 +500,12 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
             data[Constants.EventKeys.email] = customerEmail
         }
         
-        if let customerID = OmetriaDefaults.identifiedCustomerID {
-            data[Constants.EventKeys.customerId] = customerID
+        if let customerId = OmetriaDefaults.identifiedCustomerID {
+            data[Constants.EventKeys.customerId] = customerId
+        }
+        
+        if let storeId = OmetriaDefaults.currentStoreID {
+            data[Constants.EventKeys.storeId] = storeId
         }
         
         notificationHandler.verifyPushNotificationAuthorizationStatus {[weak self] (hasAuthorization) in
@@ -552,16 +568,9 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      - Parameter storeId: a string representing the store identifier
      */
     
-    public func updateStoreIdentifier(storeId: String?) {
+    public func updateStoreId(storeId: String?) {
         OmetriaDefaults.currentStoreID = storeId
-        
-        if let email = OmetriaDefaults.identifiedCustomerEmail {
-            trackProfileIdentifiedEvent(email: email, storeId: storeId)
-        } else if let customerId = OmetriaDefaults.identifiedCustomerID {
-            trackProfileIdentifiedEvent(customerId: customerId, storeId: storeId)
-        } else if let storeId {
-            Logger.info(message: "updateStoreIdentifier called without having identified a customer by email or customerId beforehand. The storeId will be processed when the customer is identified", category: .events)
-        }
+        trackProfileIdentifiedEvent()
     }
     
     // MARK: - Flush/Clear

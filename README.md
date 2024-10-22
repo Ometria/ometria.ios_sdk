@@ -233,6 +233,32 @@ Use this if a user logs out, or otherwise signals that this device is no longer 
 trackProfileDeidentifiedEvent()
 ```
 
+#### Update store identifier
+
+Ometria supports multiple stores for the same ecommerce platform (e.g. separate stores for different countries). There are three different methods for interacting with the store identifier for the current app installment.
+
+##### 1. Using an optional parameter in the `profileIdentified` events tracking methods
+```swift
+trackProfileIdentifiedEvent(email: String, storeId: String?)
+trackProfileIdentifiedEvent(customerId: String,  storeId: String?)
+```
+
+When omitting the `storeId` parameter, or providing a `nil` value, the store identifier will not be affected in any way. Only sending a valid, non-nil parameter will cause the store identifier to be updated to that value.
+
+
+##### 2. Using a separate method that allows setting/resetting the store identifier
+
+```swift
+updateStoreId(storeId: String?)
+```
+
+- with a nil `storeId` parameter, the method resets the store identifier.
+- with a non-nil `storeId` parameter, the method sets the store identifier to the provided value.
+
+##### 3. Using the `profileDeidentified` event
+
+Tracking a profile deidentified event, will reset the `customerId`, the `email`, and the `storeId` for the current app installment.
+
 #### Product viewed
 
 A visitor clicks/taps/views/highlights or otherwise shows interest in a product. 

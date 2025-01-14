@@ -63,7 +63,7 @@ open class AutomaticLifecycleTracker {
     @objc func appDidEnterBackground() {
         Logger.verbose(message: "Application did enter background", category: .application)
         Ometria.sharedInstance().trackAppBackgroundedEvent()
-      trackPushTokenRefreshedIfNecessary()
+        trackPushTokenRefreshedIfNecessary()
     }
     
     @objc func appWillEnterForeground() {
@@ -74,7 +74,7 @@ open class AutomaticLifecycleTracker {
     @objc func appWillResignActive() {
         Logger.verbose(message: "Application will resign active", category: .application)
         Ometria.sharedInstance().trackAppBackgroundedEvent()
-      trackPushTokenRefreshedIfNecessary()
+        trackPushTokenRefreshedIfNecessary()
     }
     
     @objc func appDidBecomeActive() {

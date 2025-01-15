@@ -60,6 +60,8 @@ enum OmetriaDefaults {
     private static var __applePushToken: String?
     @UserDefault(key: "com.ometria.fcm_token", defaultValue: nil)
     private static var __fcmToken: String?
+    @UserDefault(key: "com.ometria.fcm_token_last_refresh_date", defaultValue: nil)
+    private static var __fcmTokenLastRefreshDate: Date?
     @UserDefault(key: "com.ometria.last_launch_date", defaultValue: nil)
     private static var __lastLaunchDate: Date?
     @UserDefault(key: "com.ometria.installment_id", defaultValue: nil)
@@ -88,6 +90,8 @@ enum OmetriaDefaults {
     static var applePushToken: String?
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.fcm_token", defaultValue: __fcmToken)
     static var fcmToken: String?
+    @UserDefault(suite: appGroupIdentifier, key: "com.ometria.fcm_token_last_refresh_date", defaultValue: __fcmTokenLastRefreshDate)
+    static var fcmTokenLastRefreshDate: Date?
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.last_launch_date", defaultValue: __lastLaunchDate)
     static var lastLaunchDate: Date?
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.installment_id", defaultValue: __installationID)

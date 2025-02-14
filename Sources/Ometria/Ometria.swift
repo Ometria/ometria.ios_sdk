@@ -670,19 +670,45 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         
         return notificationHandler.parseOmetriaNotification(content.userInfo)
     }
-    
+  
     // MARK: Universal Links
     
     /**
-     Retrieves the redirect url for the url that you provide
+     Retrieves the redirect url for the url that you provide.
      
-     - Parameter url: The url that will be processed
+     - Parameter url: The url that will be processed.
      - Parameter callback: The callback that provides the final redirect url if retreived, or an error if something went wrong.
      
-     - Note: If no redirect url is found, the initial url will be provided in the callback
+     - Note: If no redirect url is found, the initial url will be provided in the callback.
      */
     open func processUniversalLink(_ url: URL, callback: @escaping (URL?, Error?)->()) {
-        RedirectService().getRedirect(url: url, callback: callback)
+          RedirectService().getRedirect(url: url, domain: nil, regex: nil, callback: callback)
+    }
+
+    /**
+     Retrieves the redirect url for the url that you provide.
+     
+     - Parameter url: The url that will be processed.
+     - Parameter domain: If a url that belongs to the given domain is found, then that is returned in the callback. Otherwise the callback returns the url retrieved after the last redirect.
+     - Parameter callback: The callback that provides the final redirect url if retreived, or an error if something went wrong.
+     
+     - Note: If no redirect url is found, the initial url will be provided in the callback.
+     */
+    open func processUniversalLink(_ url: URL, domain: String, callback: @escaping (URL?, Error?)->()) {
+          RedirectService().getRedirect(url: url, domain: domain, regex: nil, callback: callback)
+    }
+
+    /**
+     Retrieves the redirect url for the url that you provide.
+     
+     - Parameter url: The url that will be processed.
+     - Parameter regex: If a url that matches the given regex is found, then that is returned in the callback. Otherwise the callback returns the url retrieved after the last redirect.
+     - Parameter callback: The callback that provides the final redirect url if retreived, or an error if something went wrong.
+     
+     - Note: If no redirect url is found, the initial url will be provided in the callback.
+     */
+    open func processUniversalLink(_ url: URL, regex: String, callback: @escaping (URL?, Error?)->()) {
+          RedirectService().getRedirect(url: url, domain: nil, regex: regex, callback: callback)
     }
 }
 

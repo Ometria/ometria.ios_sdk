@@ -63,6 +63,7 @@ open class AutomaticLifecycleTracker {
     @objc func appDidEnterBackground() {
         Logger.verbose(message: "Application did enter background", category: .application)
         Ometria.sharedInstance().trackAppBackgroundedEvent()
+        trackPushTokenRefreshedIfNecessary()
     }
     
     @objc func appWillEnterForeground() {
@@ -73,10 +74,20 @@ open class AutomaticLifecycleTracker {
     @objc func appWillResignActive() {
         Logger.verbose(message: "Application will resign active", category: .application)
         Ometria.sharedInstance().trackAppBackgroundedEvent()
+        trackPushTokenRefreshedIfNecessary()
     }
     
     @objc func appDidBecomeActive() {
         Logger.verbose(message: "Application did become active", category: .application)
         Ometria.sharedInstance().trackAppForegroundedEvent()
+    }
+  
+    private func trackPushTokenRefreshedIfNecessary() {
+      guard let fcmToken = OmetriaDefaults.fcmToken else { return }
+      let fcmTokenLastRefreshDate: Date = OmetriaDefaults.fcmTokenLastRefreshDate ?? Date()
+      guard let dateOneWeekAgo: Date = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date()) else { return }
+      if fcmTokenLastRefreshDate < dateOneWeekAgo {
+        Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: fcmToken)
+      }
     }
 }

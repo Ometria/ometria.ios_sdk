@@ -511,6 +511,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         notificationHandler.verifyPushNotificationAuthorizationStatus {[weak self] (hasAuthorization) in
             data[Constants.EventKeys.notifications] = hasAuthorization ? Constants.EventPredefinedValues.optIn : Constants.EventPredefinedValues.optOut
             self?.trackEvent(type: .pushTokenRefreshed, data: data)
+            OmetriaDefaults.fcmTokenLastRefreshDate = Date()
             self?.eventHandler.flushEvents()
         }
     }

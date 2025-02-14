@@ -11,6 +11,8 @@ internal class RedirectService: NSObject, URLSessionTaskDelegate {
     
     var lastRedirectRequest: URLRequest?
     var callback: ((URL?, Error?) -> ())?
+  
+    private var didHandleCallback: Bool = false
     
     internal func getRedirect(url: URL, callback: @escaping (URL?, Error?) -> ()) {
         var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 5.0)
@@ -30,11 +32,16 @@ internal class RedirectService: NSObject, URLSessionTaskDelegate {
             
             DispatchQueue.main.async {
                 if let error = error {
-                    self?.callback?(nil, error)
+                    if !(self?.didHandleCallback ?? true) {
+                      self?.didHandleCallback = true
+                      self?.callback?(nil, error)
+                    }
                     return
                 }
-                
-                self?.callback?(self?.lastRedirectRequest?.url, nil)
+                if !(self?.didHandleCallback ?? true) {
+                  self?.didHandleCallback = true
+                  self?.callback?(self?.lastRedirectRequest?.url, nil)
+                }
             }
         }
         
@@ -42,6 +49,14 @@ internal class RedirectService: NSObject, URLSessionTaskDelegate {
     }
     
     internal func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        getRedirect(request: request)
+        DispatchQueue.main.async { [weak self] in
+          if !(self?.didHandleCallback ?? true) {
+            self?.didHandleCallback = true
+            self?.callback?(request.url, nil)
+          }
+        }
+        
+        // Stop following redirects
+        completionHandler(nil)
     }
 }

@@ -343,6 +343,13 @@ This event should be triggered on:
 trackProductListingViewedEvent(listingType: String?, listingAttributes: [String: Any]?)
 ```
 
+The `listingType` parameter can be any string the client chooses (currently has no effect, but helps us and the client to see what kind of listing page the user viewed). We recommend setting this to "category" for example for category pages or "search" for a search results page.
+The `listingAttributes` parameter should be an object that consists of 2 fields:
+* "type" which should be an attribute that exists in the Ometria database. For example "shoe-colour".
+* "id" which should be an attribute their_id that exists in the Ometria database. For example "red".
+
+Both "id" and "type" are needed to correctly specify attributes.
+
 #### Screen viewed
 
 Tracking a visitor’s independent screen views helps us track their engagement with the app, as well as where they are in a journey. 

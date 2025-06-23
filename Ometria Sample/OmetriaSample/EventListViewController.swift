@@ -24,6 +24,8 @@ enum EventType: String, CaseIterable {
     case profileIdentifiedByEmailAndStoreId
     case profileIdentifiedById
     case profileIdentifiedByIdAndStoreId
+    case profileIdentifiedByEmailAndCustomerId
+    case profileIdentifiedByEmailCustomerIdAndStoreId
     case profileDeidentified
     case updateStoreId
     case resetStoreId
@@ -89,6 +91,12 @@ class EventListViewController: UITableViewController {
         case .profileIdentifiedByEmailAndStoreId:
             Ometria.sharedInstance().trackProfileIdentifiedEvent(email: "sample@profile.com", storeId: "sample_store_id_email")
         
+        case .profileIdentifiedByEmailAndCustomerId:
+            Ometria.sharedInstance().trackProfileIdentifiedEvent(customerId: "sample_customer_id", email: "sample@profile.com")
+
+        case .profileIdentifiedByEmailCustomerIdAndStoreId:
+            Ometria.sharedInstance().trackProfileIdentifiedEvent(customerId: "sample_customer_id", email: "sample@profile.com", storeId: "sample_store_id_email")
+
         case .profileDeidentified:
             Ometria.sharedInstance().trackProfileDeidentifiedEvent()
             

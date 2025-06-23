@@ -351,6 +351,22 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         }
         trackProfileIdentifiedEvent()
     }
+  
+    /**
+     Tracks the current app user being identified by customerId and email
+      
+     - Parameter customerId: the ID reserved for a particular user in your database.
+     - Parameter email: the email by which you identify a particular user in your database
+     - Parameter storeId: the storeId of the store where the user is currently shopping. If you want to track a particular store, you can use this.
+     */
+    public func trackProfileIdentifiedEvent(customerId: String, email: String, storeId: String? = nil) {
+        OmetriaDefaults.identifiedCustomerID = customerId
+        OmetriaDefaults.identifiedCustomerEmail = email
+        if let storeId {
+            OmetriaDefaults.currentStoreID = storeId
+        }
+        trackProfileIdentifiedEvent()
+    }
     
     private func trackProfileIdentifiedEvent() {
         var data: [String: Any] = [:]
@@ -510,6 +526,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         
         notificationHandler.verifyPushNotificationAuthorizationStatus {[weak self] (hasAuthorization) in
             data[Constants.EventKeys.notifications] = hasAuthorization ? Constants.EventPredefinedValues.optIn : Constants.EventPredefinedValues.optOut
+            OmetriaDefaults.fcmTokenLastRefreshDate = Date()
             self?.trackEvent(type: .pushTokenRefreshed, data: data)
             OmetriaDefaults.fcmTokenLastRefreshDate = Date()
             self?.eventHandler.flushEvents()

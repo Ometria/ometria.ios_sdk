@@ -233,6 +233,32 @@ Use this if a user logs out, or otherwise signals that this device is no longer 
 trackProfileDeidentifiedEvent()
 ```
 
+#### Update store identifier
+
+Ometria supports multiple stores for the same ecommerce platform (e.g. separate stores for different countries). There are three different methods for interacting with the store identifier for the current app installment.
+
+##### 1. Using an optional parameter in the `profileIdentified` events tracking methods
+```swift
+trackProfileIdentifiedEvent(email: String, storeId: String?)
+trackProfileIdentifiedEvent(customerId: String,  storeId: String?)
+```
+
+When omitting the `storeId` parameter, or providing a `nil` value, the store identifier will not be affected in any way. Only sending a valid, non-nil parameter will cause the store identifier to be updated to that value.
+
+
+##### 2. Using a separate method that allows setting/resetting the store identifier
+
+```swift
+updateStoreId(storeId: String?)
+```
+
+- with a nil `storeId` parameter, the method resets the store identifier.
+- with a non-nil `storeId` parameter, the method sets the store identifier to the provided value.
+
+##### 3. Using the `profileDeidentified` event
+
+Tracking a profile deidentified event, will reset the `customerId`, the `email`, and the `storeId` for the current app installment.
+
 #### Product viewed
 
 A visitor clicks/taps/views/highlights or otherwise shows interest in a product. 
@@ -316,6 +342,13 @@ This event should be triggered on:
 ```swift
 trackProductListingViewedEvent(listingType: String?, listingAttributes: [String: Any]?)
 ```
+
+The `listingType` parameter can be any string the client chooses (currently has no effect, but helps us and the client to see what kind of listing page the user viewed). We recommend setting this to "category" for example for category pages or "search" for a search results page.
+The `listingAttributes` parameter should be an object that consists of 2 fields:
+* "type" which should be an attribute that exists in the Ometria database. For example "shoe-colour".
+* "id" which should be an attribute their_id that exists in the Ometria database. For example "red".
+
+Both "id" and "type" are needed to correctly specify attributes.
 
 #### Screen viewed
 

@@ -21,8 +21,14 @@ enum EventType: String, CaseIterable {
     case homeScreenViewed
     case screenViewedExplicit
     case profileIdentifiedByEmail
+    case profileIdentifiedByEmailAndStoreId
     case profileIdentifiedById
+    case profileIdentifiedByIdAndStoreId
+    case profileIdentifiedByEmailAndCustomerId
+    case profileIdentifiedByEmailCustomerIdAndStoreId
     case profileDeidentified
+    case updateStoreId
+    case resetStoreId
     case custom
     case flush
     case clear
@@ -72,16 +78,32 @@ class EventListViewController: UITableViewController {
         
         case .screenViewedExplicit:
             Ometria.sharedInstance()?.trackScreenViewedEvent(screenName: "sample_screen_name")
-        
+          
         case .profileIdentifiedByEmail:
             Ometria.sharedInstance()?.trackProfileIdentifiedEvent(email: "sample@profile.com")
-            
+          
         case .profileIdentifiedById:
             Ometria.sharedInstance()?.trackProfileIdentifiedEvent(customerId: "sample_customer_id")
-        
+          
+        case .profileIdentifiedByIdAndStoreId:
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(customerId: "sample_customer_id", storeId: "sample_store_id_customer")
+          
+        case .profileIdentifiedByEmailAndStoreId:
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(email: "sample@profile.com", storeId: "sample_store_id_email")
+          
+        case .profileIdentifiedByEmailAndCustomerId:
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(customerId: "sample_customer_id", email: "sample@profile.com")
+          
+        case .profileIdentifiedByEmailCustomerIdAndStoreId:
+            Ometria.sharedInstance()?.trackProfileIdentifiedEvent(customerId: "sample_customer_id", email: "sample@profile.com", storeId: "sample_store_id_email")
+
         case .profileDeidentified:
             Ometria.sharedInstance()?.trackProfileDeidentifiedEvent()
-        
+        case .updateStoreId:
+            Ometria.sharedInstance()?.updateStoreId(storeId: "sample_store_id_update")
+            
+        case .resetStoreId:
+            Ometria.sharedInstance()?.updateStoreId(storeId: nil)
         case .custom:
             Ometria.sharedInstance()?.trackCustomEvent(customEventType: "custom_event", additionalInfo: ["sampleField": "sampleValue"])
             

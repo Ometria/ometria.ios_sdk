@@ -87,7 +87,7 @@ open class AutomaticLifecycleTracker {
       let fcmTokenLastRefreshDate: Date = OmetriaDefaults.fcmTokenLastRefreshDate ?? Date()
       guard let dateOneWeekAgo: Date = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date()) else { return }
       if fcmTokenLastRefreshDate < dateOneWeekAgo {
-        Ometria.sharedInstance().trackPushTokenRefreshedEvent(pushToken: fcmToken)
+        Ometria.sharedInstance()?.trackPushTokenRefreshedEvent(pushToken: fcmToken)
       }
     }
 }

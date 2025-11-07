@@ -96,7 +96,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
      */
     public class func sharedInstance() -> Ometria {
         guard instance != nil else {
-            fatalError("You are not allowed to call the sharedInstance() method before calling initialize(apiToken:).")
+            return Ometria(config: OmetriaConfig())
         }
         return instance!
     }
@@ -111,7 +111,8 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         self.eventHandler = EventHandler(
             eventService: eventService,
             eventCache: EventCache(relativePathComponent: OmetriaDefaults.cacheUniquePathComponent),
-            flushLimit: config.flushLimit
+            flushLimit: config.flushLimit,
+            flushInterval: config.flushInterval
         )
         super.init()
         
@@ -136,23 +137,31 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         let eventServiceConfig = EventServiceConfig(apiToken: apiToken)
         let networkService = NetworkService(config: eventServiceConfig)
         let eventService = EventService(networkService: networkService)
+        
         self.eventHandler = EventHandler(
             eventService: eventService,
             eventCache: EventCache(relativePathComponent: OmetriaDefaults.cacheUniquePathComponent),
-            flushLimit: config.flushLimit
+            flushLimit: config.flushLimit,
+            flushInterval: config.flushInterval
         )
         super.init()
     }
     
     /// only used for testing purposes, not public
     @available(iOSApplicationExtension, unavailable)
-    init(apiToken: String, config: OmetriaConfig, eventService: EventServiceProtocol, eventCache: EventCaching) {
+    init(
+        apiToken: String,
+        config: OmetriaConfig,
+        eventService: EventServiceProtocol,
+        eventCache: EventCaching
+    ) {
         self.config = config
         self.apiToken = apiToken
         self.eventHandler = EventHandler(
             eventService: eventService,
             eventCache: eventCache,
-            flushLimit: config.flushLimit
+            flushLimit: config.flushLimit,
+            flushInterval: config.flushInterval
         )
         super.init()
         
@@ -189,7 +198,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
             return
         }
         
-        instance.eventHandler.flushEvents(saveFailedForRetry: false) {
+        instance.eventHandler.flushEvents() {
             instance.clear()
         }
         instance.clear()
@@ -529,7 +538,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
             OmetriaDefaults.fcmTokenLastRefreshDate = Date()
             self?.trackEvent(type: .pushTokenRefreshed, data: data)
             OmetriaDefaults.fcmTokenLastRefreshDate = Date()
-            self?.eventHandler.flushEvents()
+            self?.eventHandler.flushEvents(isFlushRateLimitEnabled: false)
         }
     }
     
@@ -763,5 +772,29 @@ extension Ometria {
     
     public func handleReceivedNotification(_ userInfo: [AnyHashable: Any]) {
         notificationHandler.handleReceivedNotification(userInfo, withCompletionHandler: nil)
+    }
+}
+
+//MARK: - Rich push notifications
+extension Ometria {
+    /**
+     Call this method from your `NotificationService.didReceive` function.
+     It will automatically track the notification-received event and
+     process any rich push content (like images) before calling your `contentHandler`.
+     
+     - Parameter request: The original `UNNotificationRequest` received by the service extension.
+     - Parameter ometria: An initialized instance of the Ometria SDK.
+     - Parameter contentHandler: The `contentHandler` closure from the `didReceive` method.
+     */
+    public func handleNotification(
+        _ request: UNNotificationRequest,
+        using ometria: Ometria,
+        contentHandler: @escaping (UNNotificationContent) -> Void
+    ) {
+        OmetriaNotificationProcessor.handleNotification(
+            request,
+            using: self,
+            contentHandler: contentHandler
+        )
     }
 }

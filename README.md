@@ -28,13 +28,34 @@ The easiest way to get Ometria into your iOS project is by using [CocoaPods](htt
 3. Create a Podfile in your Xcode project directory by running `pod init` in your terminal, edit the Podfile generated and add the following line: `pod 'Ometria'`.
 4. Run `pod install` in your Xcode project directory. CocoaPods should download and install the library, and create a new Xcode workspace. Open this workspace in Xcode or typing `open *.xcworkspace` in your terminal.
 
-4\. Add Notification Service Extension Target
+4\. Handling Push Notifications
 --------------------------
-In order to get the most out of Ometria, you are required to add a new target to your project.
 
-> :information_source: The Notification Service Extension has two purposes:
-> 1. Starting with iOS 12.0, Apple enabled regular applications to receive and display notifications that contain media content such as images. In order to be able to display the rich content, notifications have to be processed by the Notification Service Extension before being shown to the user.
-> 2. There are lots of users that forget to open their apps. In order for Ometria to accurately track all the notifications that were received, it needs to leverage the power of a background service, that has access to all notifications. 
+### **Option 1: Using `handleNotification` Method (Recommended)**
+
+Ometria provides a method that allows you to handle notifications directly in your app without creating a separate extension. This approach is simpler and works for most apps that want full push notification functionality.
+
+#### Usage:
+
+```swift
+func handleNotification(
+    _ request: UNNotificationRequest,
+    using ometria: Ometria,
+    contentHandler: @escaping (UNNotificationContent) -> Void
+)
+```
+
+**Explanation:**
+* This method gives you the same functionality as the Notification Service Extension:
+* Ometria can intercept the notification
+* Media content (images, videos) attached to notifications will be displayed correctly
+* No separate target or extension is needed
+* Ideal for apps that want to keep the setup simple while still supporting rich notifications
+
+
+### **Option 2: Using Notification Service Extension**
+
+For apps that require background processing of notifications (for example, when the user hasn’t opened the app), you can use a Notification Service Extension. This approach allows Ometria to accurately track all notifications received and display rich content.
 
 In order to add the extension, go to **File > New > Target**, and select **Notification Service Extension > Next**.
 
@@ -87,7 +108,10 @@ class NotificationService: OmetriaNotificationServiceExtension {
 }
 ```
 
-Now you can receive notifications from Ometria and you are also able to see the images that are attached to your notifications.
+**Result:**
+* Your app can now receive notifications from Ometria
+* Rich media content (images, videos) will be displayed in notifications
+* Notifications can be tracked even if the user hasn’t opened the app
 
 5\. Initialise the library
 --------------------------

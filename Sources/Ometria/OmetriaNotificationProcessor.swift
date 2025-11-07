@@ -11,7 +11,7 @@ import Foundation
  This approach ensures compatibility with other third-party SDKs
  (like Firebase, etc.) that also need to process notifications.
  */
-public final class OmetriaNotificationProcessor {
+internal final class OmetriaNotificationProcessor {
     /**
      The primary entry point for processing an Ometria notification.
      
@@ -23,7 +23,7 @@ public final class OmetriaNotificationProcessor {
      - Parameter ometria: An initialized instance of the Ometria SDK.
      - Parameter contentHandler: The `contentHandler` closure from the `didReceive` method.
      */
-    public static func handleNotification(
+    internal static func handleNotification(
         _ request: UNNotificationRequest,
         using ometria: Ometria,
         contentHandler: @escaping (UNNotificationContent) -> Void

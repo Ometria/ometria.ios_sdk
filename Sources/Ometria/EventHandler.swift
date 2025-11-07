@@ -10,11 +10,10 @@
 import Foundation
 
 class EventHandler {
-    
     private var eventService: EventServiceProtocol
     private var eventCache: EventCaching
     private var eventsQueue: DispatchQueue
-//    private var memoryCacheLock: ReadWriteLock = ReadWriteLock(label: "com.ometria.eventsMemoryCacheLock")
+    private var oneByOneEventsQueue: DispatchQueue
     private var trackedEvents: [OmetriaEvent] = []
     private var hasLoadedEvents: Bool = false
     private var dropStatusCodes: [Int] = {
@@ -25,12 +24,40 @@ class EventHandler {
         return retryCodes
     }()
     var flushLimit: Int
+    private let flushInterval: Int
+    private var flushTimer: Timer?
     
-    init(eventService: EventServiceProtocol, eventCache: EventCaching, flushLimit: Int) {
+    init(
+        eventService: EventServiceProtocol,
+        eventCache: EventCaching,
+        flushLimit: Int,
+        flushInterval: Int = 60
+    ) {
         self.eventService = eventService
         self.eventCache = eventCache
         self.flushLimit = flushLimit
-        eventsQueue = DispatchQueue(label: "com.ometria.eventQueue", qos: .utility)
+        self.flushInterval = flushInterval
+        
+        eventsQueue = DispatchQueue(
+            label: "com.ometria.eventQueue",
+            qos: .utility
+        )
+        
+        oneByOneEventsQueue = DispatchQueue(
+            label: "com.ometria.oneByOneEventsQueue",
+            qos: .utility
+        )
+        
+        if flushInterval > 0 {
+            startFlushTimer()
+        }
+        
+        prepareForAppLifecycleEvents()
+    }
+    
+    deinit {
+        stopFlushTimer()
+        NotificationCenter.default.removeObserver(self)
     }
     
     func processEvent(_ event: OmetriaEvent) {
@@ -55,30 +82,36 @@ class EventHandler {
             Logger.verbose(message: "Flushable events: \(events.count)", category: .events)
             
             if events.count >= self.flushLimit {
-                guard self.canPerformNetworkCall() else {
-                    Logger.debug(message: "Attempted to flush events but not enough time has passed since the last flush.", category: .network)
-                    return
-                }
-                
-                self.flushEvents()
+                self.flushEvents(isFlushRateLimitEnabled: false)
             }
         }
     }
     
-    func flushEvents(saveFailedForRetry: Bool = true, completion: (() -> Void)? = nil) {
+    func flushEvents(
+        saveFailedForRetry: Bool = true,
+        isFlushRateLimitEnabled: Bool = true,
+        completion: (() -> Void)? = nil
+    ) {
+        if isFlushRateLimitEnabled, Date() <= OmetriaDefaults.networkTimedOutUntilDate {
+            completion?()
+            return
+        }
+        
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         eventsQueue.async { [weak self] in
             guard let self = self else {
+                dispatchGroup.leave()
                 return
             }
             
             let events = self.retrieveFlushableEvents()
             
             guard events.count != 0 else {
+                dispatchGroup.leave()
                 return
             }
-            
+            OmetriaDefaults.networkTimedOutUntilDate = Date(timeIntervalSinceNow: Constants.networkCallTimeoutSeconds)
             let batchedEvents = self.batchEvents(events: events)
             
             for key in batchedEvents.keys {
@@ -99,7 +132,40 @@ class EventHandler {
         }
     }
     
-    private func flushEvents(events: [OmetriaEvent], saveFailedForRetry: Bool, completion: ((_ success: Bool) -> Void)? = nil ) {
+    
+    private func flushOneByOne(
+        _ events: [OmetriaEvent],
+        saveFailedForRetry: Bool = true,
+        completion: (() -> Void)? = nil
+    ) {
+        guard !events.isEmpty else {
+            completion?()
+            return
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        
+        oneByOneEventsQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            for event in events {
+                dispatchGroup.enter()
+                self.flushEvents(events: [event], saveFailedForRetry: saveFailedForRetry) { _ in
+                    dispatchGroup.leave()
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                completion?()
+            }
+        }
+    }
+    
+    private func flushEvents(
+        events: [OmetriaEvent],
+        saveFailedForRetry: Bool,
+        completion: ((_ success: Bool) -> Void)? = nil
+    ) {
         Logger.debug(message: "Begin flushing \(events.count) events.", category: .events)
         events.forEach({$0.isBeingFlushed = true})
         
@@ -119,10 +185,17 @@ class EventHandler {
                     Logger.debug(message: "Failed to flush \(events.count) events.", category: .events)
                     
                     if case OmetriaError.apiError(let apiError) = error,
-                        self.dropStatusCodes.contains(apiError.status) {
-                        Logger.debug(message: "Events will be discarded because server responded with status \(apiError.status).", category: .events)
-                        self.removeEvents(events)
-                    
+                       self.dropStatusCodes.contains(apiError.status) {
+                        
+                        if events.count == 1 {
+                            Logger.debug(message: "Events will be discarded because server responded with status \(apiError.status).", category: .events)
+                            self.removeEvents(events)
+                        } else {
+                            self.flushOneByOne(events) {
+                                completion?(true)
+                            }
+                            return
+                        }
                     } else {
                         if saveFailedForRetry {
                             Logger.debug(message: "Events will be saved for retry.", category: .events)
@@ -137,8 +210,6 @@ class EventHandler {
                 }
             }
         }
-        
-        OmetriaDefaults.networkTimedOutUntilDate = Date(timeIntervalSinceNow: Constants.networkCallTimeoutSeconds)
     }
     
     // MARK: - Cache accessibility
@@ -153,7 +224,6 @@ class EventHandler {
             self.trackedEvents.removeAll()
             self.eventCache.saveToFile(nil, async: false)
         }
-        
     }
     
     private func retrieveEvents() -> [OmetriaEvent] {
@@ -175,7 +245,7 @@ class EventHandler {
     
     private func saveMemoryCachedEvents() {
         let events = retrieveEvents()
-       
+        
         saveEvents(events)
     }
     
@@ -207,10 +277,68 @@ class EventHandler {
         
         return batchedEvents
     }
+}
+
+extension EventHandler {
+    private func startFlushTimer() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            flushTimer?.invalidate()
+            flushTimer = Timer.scheduledTimer(
+                withTimeInterval: TimeInterval(self.flushInterval),
+                repeats: true
+            ) { [weak self] _ in
+                self?.flushEventsIfAny()
+            }
+        }
+    }
     
-    // MARK: - Network Validation
+    private func stopFlushTimer() {
+        DispatchQueue.main.async { [weak self] in
+            self?.flushTimer?.invalidate()
+            self?.flushTimer = nil
+        }
+    }
     
-    private func canPerformNetworkCall() -> Bool {
-        return Date() > OmetriaDefaults.networkTimedOutUntilDate
+    private func flushEventsIfAny() {
+        eventsQueue.async { [weak self] in
+            guard let self else { return }
+            let events = retrieveFlushableEvents()
+            
+            if events.isEmpty {
+                return
+            }
+            
+            Logger.debug(message: "Timer-triggered flush: \(events.count) events", category: .events)
+            flushEvents(isFlushRateLimitEnabled: false)
+        }
+    }
+}
+
+extension EventHandler {
+    private func prepareForAppLifecycleEvents() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidEnterBackground),
+            name: UIApplication.didEnterBackgroundNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillEnterForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func appDidEnterBackground() {
+        stopFlushTimer()
+    }
+    
+    @objc private func appWillEnterForeground() {
+        if flushInterval > 0 {
+            startFlushTimer()
+        }
     }
 }

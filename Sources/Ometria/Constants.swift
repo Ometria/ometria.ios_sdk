@@ -9,8 +9,9 @@
 import Foundation
 
 public enum Constants {
-    static let sdkVersion = "1.8.2"
+    static let sdkVersion = "1.8.3"
     public static let defaultTriggerLimit = 10
+    public static let defaultFlushInterval = 60
     static let flushMaxBatchSize = 100
     static let networkCallTimeoutSeconds: TimeInterval = 10
     static let tooManyRequestsStatusCode: Int = 429
@@ -45,5 +46,4 @@ extension Constants {
         static let optIn = "opt-in"
         static let optOut = "opt-out"
     }
-    
 }

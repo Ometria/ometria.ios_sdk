@@ -776,7 +776,7 @@ extension Ometria {
 }
 
 //MARK: - Rich push notifications
-extension Ometria {
+public extension Ometria {
     /**
      Call this method from your `NotificationService.didReceive` function.
      It will automatically track the notification-received event and

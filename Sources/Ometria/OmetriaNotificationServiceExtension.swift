@@ -26,7 +26,7 @@ open class OmetriaNotificationServiceExtension: UNNotificationServiceExtension {
             request,
             using: ometria
         ) { content in
-            contentHandler(request.content)
+            contentHandler(content)
         }
     }
 }

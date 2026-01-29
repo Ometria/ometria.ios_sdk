@@ -8,6 +8,7 @@
 //
 
 import Foundation
+import UIKit
 
 class EventHandler {
     private var eventService: EventServiceProtocol

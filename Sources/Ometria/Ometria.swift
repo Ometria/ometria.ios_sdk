@@ -145,8 +145,12 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
             flushInterval: config.flushInterval
         )
         super.init()
+        
+#if !APP_EXTENSION
+        self.notificationHandler.interactionDelegate = self
+#endif
     }
-    
+
     /// only used for testing purposes, not public
     @available(iOSApplicationExtension, unavailable)
     init(
@@ -740,9 +744,8 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
 
 // MARK: - Deeplink Interaction
 
-@available(iOSApplicationExtension, unavailable)
+#if !APP_EXTENSION
 extension Ometria: OmetriaNotificationInteractionDelegate {
-    
     public func handleOmetriaNotificationInteraction(_ notification: OmetriaNotification) {
         guard let urlString = notification.deepLinkActionUrl?.trimmingCharacters(in: .init(charactersIn: " ")),
               let urlEncodingString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
@@ -763,6 +766,7 @@ extension Ometria: OmetriaNotificationInteractionDelegate {
         }
     }
 }
+#endif
 
 // MARK: - Manual Notification Tracking - React Native
 extension Ometria {

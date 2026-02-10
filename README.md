@@ -68,7 +68,7 @@ A new item is displayed in your target list:
 Next, make sure that the Ometria SDK is also available to this new target by updating your podfile to include your newly added target and specify Ometria as a dependency.
 
 ```ruby
- platform :ios, '10.0'
+ platform :ios, '15.0'
 
 target 'OmetriaSample' do
   use_frameworks!

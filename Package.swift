@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Ometria",
-    platforms: [.iOS(.v11)],
+    platforms: [.iOS(.v15)],
     products: [
         .library(
             name: "Ometria",

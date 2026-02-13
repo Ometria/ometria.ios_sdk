@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Ometria",
+    name: "ometria.ios_sdk",
     platforms: [.iOS(.v15)],
     products: [
         .library(
@@ -19,6 +19,6 @@ let package = Package(
             name: "Ometria",
             dependencies: [
                 .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
-                ]),
+            ]),
     ]
 )

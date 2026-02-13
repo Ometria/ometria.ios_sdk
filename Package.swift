@@ -12,15 +12,13 @@ let package = Package(
             targets: ["Ometria"]),
     ],
     dependencies: [
-        .package(name: "Firebase",
-                 url: "https://github.com/firebase/firebase-ios-sdk.git",
-                 "10.10.0"..<"999.0.0")
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", "10.10.0"..<"999.0.0")
     ],
     targets: [
         .target(
             name: "Ometria",
             dependencies: [
-                .product(name: "FirebaseMessaging", package: "Firebase")
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
                 ]),
     ]
 )

@@ -559,6 +559,42 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
         trackEvent(type: .permissionsUpdate, data: [Constants.EventKeys.notifications: permissionsValue])
     }
     
+    /**
+     Tracks a permissions update event indicating whether the user has granted or revoked consent for activity tracking.
+
+     Call this method whenever the user updates their tracking consent preference.
+
+     - Parameter isEnabled: A Boolean value indicating whether tracking is allowed.
+     */
+    public func setTrackingEnabled(_ isEnabled: Bool) {
+        if !isEnabled {
+            trackEvent(
+                type: .permissionsUpdate,
+                data: [Constants.EventKeys.notifications: Constants.EventPredefinedValues.optOut]
+            )
+            eventHandler.flushEvents(isFlushRateLimitEnabled: false)
+        } else {
+            notificationHandler.checkNotificationSettings(useLastKnownStatus: false)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                guard let self else { return }
+                eventHandler.flushEvents(isFlushRateLimitEnabled: false)
+            }
+        }
+        
+        OmetriaDefaults.isTrackingActivityEnabled = isEnabled
+    }
+    
+    /**
+     Returns whether activity tracking is currently enabled for the user.
+
+     The value is persisted locally and reflects the user's last saved consent preference.
+
+     - Returns: `true` if tracking is enabled, `false` otherwise.
+     */
+    public func isTrackingEnabled() -> Bool {
+        OmetriaDefaults.isTrackingActivityEnabled
+    }
+    
     // MARK: Other Events
     
     /**

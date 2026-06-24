@@ -121,7 +121,7 @@ class NotificationHandler {
         }
     }
     
-    func checkNotificationSettings() {
+    func checkNotificationSettings(useLastKnownStatus: Bool = true) {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { settings in
             let lastKnownStatusInt = OmetriaDefaults.lastKnownNotificationAuthorizationStatus
             let lastKnownStatus = UNAuthorizationStatus(rawValue: lastKnownStatusInt)
@@ -132,24 +132,27 @@ class NotificationHandler {
                    #available(iOS 12.0, *), lastKnownStatus != .provisional {
                     Logger.verbose(message: "Notification authorization status changed to 'authorized'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
+                } else if !useLastKnownStatus {
+                    Logger.verbose(message: "Notification authorization status changed to 'authorized'.", category: .push)
+                    Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
                 }
                 
             case .denied:
-                if lastKnownStatus != .denied {
+                if (lastKnownStatus != .denied) || !useLastKnownStatus {
                     Logger.verbose(message: "Notification authorization status changed to 'denied'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }
                 
             case .ephemeral:
                 if #available(iOS 14, *) {
-                    if lastKnownStatus != .ephemeral {
+                    if (lastKnownStatus != .ephemeral) || !useLastKnownStatus {
                         Logger.verbose(message: "Notification authorization status changed to 'ephemeral'.", category: .push)
                         Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: true)
                     }
                 }
                 
             case .notDetermined:
-                if lastKnownStatus != .notDetermined {
+                if (lastKnownStatus != .notDetermined) || !useLastKnownStatus {
                     Logger.verbose(message: "Notification authorization status changed to 'not determined'.", category: .push)
                     Ometria.sharedInstance().trackPermissionsUpdateEvent(hasPermissions: false)
                 }

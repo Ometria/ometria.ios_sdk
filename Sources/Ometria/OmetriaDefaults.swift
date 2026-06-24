@@ -112,4 +112,6 @@ enum OmetriaDefaults {
     internal static var lastUsedAPIToken: String
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.storeID", defaultValue: nil)
     internal static var currentStoreID: String?
+    @UserDefault(suite: appGroupIdentifier, key: "com.ometria.isTrackingActivityEnabled", defaultValue: true)
+    internal static var isTrackingActivityEnabled: Bool
 }

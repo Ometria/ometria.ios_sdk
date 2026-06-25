@@ -478,6 +478,24 @@ Ometria.sharedInstance().clear()
 To see what events were captured, you can check the logs coming from the Ometria SDK, if logging is enabled. You can filter for the word "Ometria".
 The SDK logs all events as they happen, and also logs the flushing i.e. when they are sent to the Ometria mobile events API. Any potential errors with the sending (API issues or event validation issues) would be visible here too.
 
+### Managing tracking consent
+
+Ometria allows you to manage the user's consent for activity tracking. Use this when you need to honour user preferences around analytics/tracking (e.g. as part of a privacy or GDPR-style consent flow).
+
+#### Update tracking consent
+
+Call `setTrackingEnabled(_:)` whenever the user changes their tracking consent preference. The value is persisted locally, so you do not need to call it on every app launch — only when the user updates their choice.
+
+#### Check current tracking consent
+
+To read the user's current tracking consent state, call:
+
+```swift
+func isTrackingEnabled() -> Bool
+```
+
+Returns `true` if tracking is enabled, `false` otherwise. The value is read from local storage and reflects the user's last saved preference.
+
 7\. Push notifications guide
 ----------------------------
 

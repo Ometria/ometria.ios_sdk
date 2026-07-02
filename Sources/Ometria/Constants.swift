@@ -9,7 +9,7 @@
 import Foundation
 
 public enum Constants {
-    static let sdkVersion = "1.9.0"
+    static let sdkVersion = "1.9.1"
     public static let defaultTriggerLimit = 10
     public static let defaultFlushInterval = 60
     static let flushMaxBatchSize = 100

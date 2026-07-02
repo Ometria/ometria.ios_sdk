@@ -277,6 +277,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     // MARK: - Event Tracking
     
     private func trackEvent(type: OmetriaEventType, data: [String: Any] = [:]) {
+        if !OmetriaDefaults.isTrackingActivityEnabled { return }
         let event = OmetriaEvent(eventType: type, data: data)
         eventHandler.processEvent(event)
     }

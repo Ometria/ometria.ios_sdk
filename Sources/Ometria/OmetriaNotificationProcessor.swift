@@ -52,6 +52,7 @@ extension OmetriaNotificationProcessor {
         guard let notificationBody = NotificationHandler().parseNotificationContent(userInfo) else {
             return
         }
+        storeSendId(of: notificationBody)
         ometria.trackNotificationReceivedEvent(context: notificationBody.context)
         ometria.flush()
     }
@@ -94,6 +95,17 @@ extension OmetriaNotificationProcessor {
         } else {
             return request.content
         }
+    }
+    
+    /// Stores the `send_id` so the app doesn't track this notification again
+    /// (on `willPresent` or when processing delivered notifications).
+    private static func storeSendId(of notificationBody: OmetriaNotificationBody) {
+        guard let sendId = notificationBody.sendId else {
+            return
+        }
+        var ids = OmetriaDefaults.receivedNotificationIds
+        ids[sendId] = Date()
+        OmetriaDefaults.receivedNotificationIds = ids
     }
 }
 

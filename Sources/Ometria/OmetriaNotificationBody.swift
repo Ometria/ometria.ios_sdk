@@ -12,6 +12,10 @@ struct OmetriaNotificationBody {
     var imageURL: String?
     var deepLinkActionURL: String?
     
+    var sendId: String? {
+        context["send_id"] as? String
+    }
+    
     init(from dictionary: [String: Any]) throws {
         guard let context = dictionary["context"] as? [String: Any] else {
             throw OmetriaError.invalidNotificationContent(content: dictionary)

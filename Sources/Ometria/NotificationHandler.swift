@@ -40,10 +40,19 @@ class NotificationHandler {
     weak var interactionDelegate: OmetriaNotificationInteractionDelegate?
     
     func handleReceivedNotification(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: ((UNNotificationPresentationOptions) -> Void)?) {
-        if let notificationBody = parseNotificationContent(userInfo) {
+        if let notificationBody = parseNotificationContent(userInfo),
+           !isAlreadyTracked(notificationBody) {
             Ometria.sharedInstance().trackNotificationReceivedEvent(context: notificationBody.context)
         }
         completionHandler?([])
+    }
+    
+    /// Returns `true` when the notification was already tracked by `OmetriaNotificationProcessor` in the NSE.
+    private func isAlreadyTracked(_ notificationBody: OmetriaNotificationBody) -> Bool {
+        guard let sendId = notificationBody.sendId else {
+            return false
+        }
+        return OmetriaDefaults.receivedNotificationIds[sendId] != nil
     }
     
     func handleNotificationResponse(_ userInfo: [AnyHashable : Any], withCompletionHandler completionHandler: (() -> Void)?) {
@@ -68,12 +77,15 @@ class NotificationHandler {
         UNUserNotificationCenter.current().getDeliveredNotifications { [weak self] (notifications) in
             let lastProcessedDate = OmetriaDefaults.notificationProcessDate
             let newNotifications = notifications.filter({$0.date > lastProcessedDate})
-            
+
             OmetriaDefaults.notificationProcessDate = Date()
-            
+
             newNotifications.forEach({
                 self?.handleReceivedNotification($0.request.content.userInfo, withCompletionHandler: {_ in })
             })
+
+            OmetriaDefaults.receivedNotificationIds = OmetriaDefaults.receivedNotificationIds
+                .filter { $0.value > lastProcessedDate.addingTimeInterval(-60) }
         }
     }
     

@@ -114,4 +114,7 @@ enum OmetriaDefaults {
     internal static var currentStoreID: String?
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.isTrackingActivityEnabled", defaultValue: true)
     internal static var isTrackingActivityEnabled: Bool
+    
+    @UserDefault(suite: appGroupIdentifier, key: "com.ometria.received_notifcation_ids", defaultValue: [:])
+    static var receivedNotificationIds: [String: Date]
 }

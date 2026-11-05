@@ -118,3 +118,9 @@ enum OmetriaDefaults {
     @UserDefault(suite: appGroupIdentifier, key: "com.ometria.received_notifcation_ids", defaultValue: [:])
     static var receivedNotificationIds: [String: Date]
 }
+
+extension OmetriaDefaults {
+    static var suite: UserDefaults {
+        appGroupIdentifier.flatMap { UserDefaults(suiteName: $0) } ?? .standard
+    }
+}

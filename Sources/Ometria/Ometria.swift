@@ -298,6 +298,7 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     }
     
     func trackAppForegroundedEvent() {
+        importExtensionPendingEvents()
         trackEvent(type: .appForegrounded)
         notificationHandler.checkNotificationSettings()
         notificationHandler.processDeliveredNotifications()
@@ -549,6 +550,21 @@ public class Ometria: NSObject, UNUserNotificationCenterDelegate {
     
     func trackNotificationReceivedEvent(context: [String: Any]) {
         trackEvent(type: .notificationReceived, data: [Constants.EventKeys.context: context])
+    }
+    
+    /// Sends the event straight to the API, bypassing the event cache.
+    @discardableResult
+    func sendEventDirectly(_ event: OmetriaEvent, completion: @escaping (_ shouldRetry: Bool) -> Void) -> URLSessionTask? {
+        eventHandler.sendEventDirectly(event, completion: completion)
+    }
+    
+    private func importExtensionPendingEvents() {
+        let pending = ExtensionPendingEvents.takeAll()
+        guard !pending.isEmpty else {
+            return
+        }
+        Logger.debug(message: "Imported \(pending.count) events from the extension.", category: .events)
+        pending.forEach { eventHandler.processEvent($0) }
     }
     
     func trackNotificationInteractedEvent(context: [String: Any]) {

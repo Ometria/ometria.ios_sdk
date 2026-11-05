@@ -28,10 +28,17 @@ public final class OmetriaNotificationProcessor {
         using ometria: Ometria,
         contentHandler: @escaping (UNNotificationContent) -> Void
     ) {
-        trackNotificationReceived(using: request.content.userInfo, ometria: ometria)
+        let trackingGroup = DispatchGroup()
+        trackingGroup.enter()
+        trackNotificationReceived(using: request.content.userInfo, ometria: ometria) {
+            trackingGroup.leave()
+        }
         
         let notificationContent = updatedNotificationContent(from: request)
-        contentHandler(notificationContent)
+        
+        trackingGroup.notify(queue: .main) {
+            contentHandler(notificationContent)
+        }
     }
 }
 
@@ -40,21 +47,51 @@ extension OmetriaNotificationProcessor {
     /**
      Tracks the notification received event.
      
-     This method parses the notification payload and sends a tracking event to Ometria.
+     Sends the event straight to Ometria. If it fails or times out, the event is saved
+     so the app sends it on the next `appForegrounded`.
      
      - Parameter userInfo: The `userInfo` dictionary from the notification content.
      - Parameter ometria: An initialized instance of the Ometria SDK.
+     - Parameter completion: Called once, when the event was sent, saved for later, or skipped.
      */
     private static func trackNotificationReceived(
         using userInfo: [AnyHashable: Any],
-        ometria: Ometria
+        ometria: Ometria,
+        completion: @escaping () -> Void
     ) {
-        guard let notificationBody = NotificationHandler().parseNotificationContent(userInfo) else {
+        guard OmetriaDefaults.isTrackingActivityEnabled,
+              let notificationBody = NotificationHandler().parseNotificationContent(userInfo) else {
+            completion()
             return
         }
         storeSendId(of: notificationBody)
-        ometria.trackNotificationReceivedEvent(context: notificationBody.context)
-        ometria.flush()
+        
+        let event = OmetriaEvent(
+            eventType: .notificationReceived,
+            data: [Constants.EventKeys.context: notificationBody.context]
+        )
+        let once = OnceFlag()
+        
+        let task = ometria.sendEventDirectly(event) { shouldRetry in
+            guard once.set() else {
+                // Timed out: the task was cancelled and the event is already saved.
+                return
+            }
+            if shouldRetry {
+                ExtensionPendingEvents.save(event)
+            }
+            completion()
+        }
+
+        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + Constants.extensionSendTimeout) {
+            guard once.set() else {
+                return
+            }
+            Logger.debug(message: "Sending event \(event.eventId) timed out.", category: .events)
+            task?.cancel()
+            ExtensionPendingEvents.save(event)
+            completion()
+        }
     }
     
     /**
@@ -157,5 +194,21 @@ extension OmetriaNotificationProcessor {
         }
         
         return nil
+    }
+}
+
+/// Lets only the first caller through (the send result or the timeout).
+private final class OnceFlag {
+    private let lock = NSLock()
+    private var isSet = false
+    
+    func set() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !isSet else {
+            return false
+        }
+        isSet = true
+        return true
     }
 }

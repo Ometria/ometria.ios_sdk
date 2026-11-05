@@ -27,6 +27,7 @@ class EventHandler {
     var flushLimit: Int
     private let flushInterval: Int
     private var flushTimer: Timer?
+    private let isRunningInExtension = Bundle.main.bundlePath.hasSuffix(".appex")
     
     init(
         eventService: EventServiceProtocol,
@@ -49,7 +50,7 @@ class EventHandler {
             qos: .utility
         )
         
-        if flushInterval > 0 {
+        if flushInterval > 0, !isRunningInExtension {
             startFlushTimer()
         }
         
@@ -338,8 +339,37 @@ extension EventHandler {
     }
     
     @objc private func appWillEnterForeground() {
-        if flushInterval > 0 {
+        if flushInterval > 0, !isRunningInExtension {
             startFlushTimer()
+        }
+    }
+}
+
+// MARK: - Notification Service Extension events
+extension EventHandler {
+    /// Sends this single event straight to the API, skipping the shared
+    /// cache and the flush rate limit. Saving on failure is the caller's job.
+    /// - Parameter completion: `shouldRetry` is `true` when the event should be kept for later.
+    @discardableResult
+    func sendEventDirectly(_ event: OmetriaEvent, completion: @escaping (_ shouldRetry: Bool) -> Void) -> URLSessionTask? {
+        Logger.debug(message: "Sending event directly: \(event)", category: .events)
+
+        return eventService.flushEvents([event]) { [dropStatusCodes] result in
+            switch result {
+            case .success:
+                Logger.debug(message: "Successfully sent event \(event.eventId).", category: .events)
+                completion(false)
+                
+            case .failure(let error):
+                if case OmetriaError.apiError(let apiError) = error,
+                   dropStatusCodes.contains(apiError.status) {
+                    Logger.debug(message: "Event discarded because server responded with status \(apiError.status).", category: .events)
+                    completion(false)
+                } else {
+                    Logger.debug(message: "Failed to send event \(event.eventId).", category: .events)
+                    completion(true)
+                }
+            }
         }
     }
 }

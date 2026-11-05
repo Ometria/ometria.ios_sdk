@@ -20,7 +20,8 @@ struct EventServiceConfig: NetworkServiceConfig {
 
 protocol EventServiceProtocol {
     func validateEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->())
-    func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->())
+    @discardableResult
+    func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) -> URLSessionTask?
 }
 
 struct EventService: EventServiceProtocol {
@@ -61,7 +62,8 @@ struct EventService: EventServiceProtocol {
         }
     }
     
-    func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) {
+    @discardableResult
+    func flushEvents(_ events: [OmetriaEvent], completion: @escaping (Result<Any>)->()) -> URLSessionTask? {
         var parameters = events.first!.baseDictionary ?? [:]
         parameters["events"] = events.compactMap({$0.dictionary})
         parameters["dtSent"] = ISO8601DateFormatter.ometriaDateFormatter.string(from: Date())
@@ -70,17 +72,17 @@ struct EventService: EventServiceProtocol {
         Logger.debug(message: parameters as Any, category: .network)
         
         do {
-            try networkService.request(.post, path: EventPath.flush.rawValue, parameters: parameters) { (result: Result<Any>) in
+            return try networkService.request(.post, path: EventPath.flush.rawValue, parameters: parameters) { (result: Result<Any>) in
                 switch result {
-                    
+
                 case .failure(let error):
                     Logger.error(message: error.localizedDescription, category: .network)
-                    
+
                 case .success(let response):
                     Logger.verbose(message: "Server response: \(response)", category: .network)
                     break
                 }
-                
+
                 DispatchQueue.main.async {
                     completion(result)
                 }
@@ -88,6 +90,10 @@ struct EventService: EventServiceProtocol {
         }
         catch {
             Logger.error(message: error.localizedDescription, category: .network)
+            DispatchQueue.main.async {
+                completion(.failure(error))
+            }
+            return nil
         }
     }
 }

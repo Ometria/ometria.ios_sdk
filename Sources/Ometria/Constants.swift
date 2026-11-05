@@ -9,11 +9,12 @@
 import Foundation
 
 public enum Constants {
-    static let sdkVersion = "1.9.2"
+    static let sdkVersion = "1.9.3"
     public static let defaultTriggerLimit = 10
     public static let defaultFlushInterval = 60
     static let flushMaxBatchSize = 100
     static let networkCallTimeoutSeconds: TimeInterval = 10
+    static let extensionSendTimeout: TimeInterval = 20
     static let tooManyRequestsStatusCode: Int = 429
     
     enum UserDefaultsKeys {
